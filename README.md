@@ -98,7 +98,7 @@ year = {2016}}
 
 ## 其它语言实现
 PKUSeg（C#版）：
-(https://github.com/lancopku/PKUSeg)
+https://github.com/lancopku/PKUSeg
 
 ## 作者
 
