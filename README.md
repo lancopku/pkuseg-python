@@ -50,8 +50,8 @@ PKUSeg是由北京大学语言计算与机器学习研究组研制推出的一套全新的中文分词工具包。PK
     [-trainFile] & [-testFile] 用户标注的语料，句子之间以换行符分隔，词语之间以空格分隔
     
 ### 运行样例
-    python3 main.py test data/input.txt data/output.txt 	    分词
-    python3 main.py train data/train.txt data/test.txt 		根据指定的训练文件训练，训练模型会保存到./model目录下
+    python3 main.py test data/input.txt data/output.txt         分词
+    python3 main.py train data/train.txt data/test.txt          根据指定的训练文件训练，训练模型会保存到./model目录下
 
 	
 ### 预训练模型
