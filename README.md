@@ -102,4 +102,4 @@ https://github.com/lancopku/PKUSeg
 
 ## 作者
 
-Jingjing Xu（许晶晶，博士生）,  Ruixuan Luo （罗睿轩，本科生）,  Xu Sun （孙栩，导师）
+Xu Sun （孙栩，导师）,  Ruixuan Luo （罗睿轩，本科生）,  Jingjing Xu（许晶晶，博士生）
