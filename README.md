@@ -46,32 +46,46 @@ PKUSeg是由北京大学语言计算与机器学习研究组研制推出的一套全新的中文分词工具包。PK
 
 ## 使用方式
 1. 旧版本代码
+
 	cd oldversion
+
 	分词模式：python3 main.py test [-input file] [-output file]
+
 	训练模式：python3 main.py train [-train file] [-test file]
+
 	从文本文件输入输出（注意均为UTF8文本）
+	
 	在config.py中有参数的设置，运行时根据运行环境的实际情况修改其中的nThread参数设置并行的进程数。
 
+
 	参数说明
-    test  分词
+	```
+	test  分词
     train 训练
     [-input file] 用户指定的待分词文件
     [-output file] 用户指定的分词结果输出文件
     [-train file] & [-test file] 用户标注的语料，句子之间以换行符分隔，词语之间以空格分隔
-    
+    ```
+
 	运行样例
+	```
     python3 main.py test data/input.txt data/output.txt         分词
     python3 main.py train data/train.txt data/test.txt          根据指定的训练文件训练，训练模型会保存到./model目录下
+	```
 2. 新版本代码
+	```
 	代码示例1
 	import PKUSeg
 	seg = PKUSeg.PKUSeg()	#加载模型
 	text = seg.cut('我爱北京天安门')	#进行分词
 	print(text)
+	```
 
+	```
 	代码示例2
 	import PKUSeg
 	PKUSeg.test('input.txt', 'output.txt')	#加载models中的模型，对input.txt的文件分词输出到output.txt中
+	```
 
 
 ### 预训练模型
