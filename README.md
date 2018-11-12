@@ -45,28 +45,7 @@ PKUSeg是由北京大学语言计算与机器学习研究组研制推出的一套全新的中文分词工具包。PK
 
 
 ## 使用方式
-1. 旧版本代码
-	```
-	cd oldversion
-	分词模式：python3 main.py test [-input file] [-output file]
-	训练模式：python3 main.py train [-train file] [-test file]
-	从文本文件输入输出（注意均为UTF8文本）
-	在config.py中有参数的设置，运行时根据运行环境的实际情况修改其中的nThread参数设置并行的进程数。
-	```
-	参数说明
-	```
-	test  分词
-    train 训练
-    [-input file] 用户指定的待分词文件
-    [-output file] 用户指定的分词结果输出文件
-    [-train file] & [-test file] 用户标注的语料，句子之间以换行符分隔，词语之间以空格分隔
-    ```
-	运行样例
-	```
-    python3 main.py test data/input.txt data/output.txt         分词
-    python3 main.py train data/train.txt data/test.txt          根据指定的训练文件训练，训练模型会保存到./model目录下
-	```
-2. 新版本代码
+1. 新版本代码(支持对给定字符串即时分词及对文件中的UTF8文本分词)
 	```
 	代码示例1
 	import PKUSeg
@@ -79,12 +58,31 @@ PKUSeg是由北京大学语言计算与机器学习研究组研制推出的一套全新的中文分词工具包。PK
 	import PKUSeg
 	PKUSeg.test('input.txt', 'output.txt')	#加载models中的模型，对input.txt的文件分词输出到output.txt中
 	```
+2. 旧版本代码(支持根据给定语料训练模型以及对文件中的UTF8文本分词)
+	```
+	cd oldversion
+	分词模式：python3 main.py test [-input file] [-output file]
+	训练模式：python3 main.py train [-train file] [-test file]
+	从文本文件输入输出（注意均为UTF8文本）
+	在config.py中有参数的设置，运行时根据运行环境的实际情况修改其中的nThread参数设置并行的进程数。
+	```
+	test  分词
+    train 训练
+    [-input file] 用户指定的待分词文件
+    [-output file] 用户指定的分词结果输出文件
+    [-train file] & [-test file] 用户标注的语料，句子之间以换行符分隔，词语之间以空格分隔
+    ```
+	运行样例
+	```
+    python3 main.py test data/input.txt data/output.txt         分词
+    python3 main.py train data/train.txt data/test.txt          根据指定的训练文件训练，训练模型会保存到./model目录下
+	```
 
 
 ### 预训练模型
-分词模式下，用户需要在./model目录下加载预训练好的模型。我们提供了三种在不同类型数据上训练得到的模型，根据具体需要，用户可以选择不同的预训练模型。以下是对预训练模型的说明：
+分词模式下，用户需要加载预训练好的模型。我们提供了三种在不同类型数据上训练得到的模型，根据具体需要，用户可以选择不同的预训练模型。以下是对预训练模型的说明：
 
-MSRA: 在MSRA（新闻语料）上训练的模型。[下载地址](https://pan.baidu.com/s/1twci0QVBeWXUg06dK47tiA)
+MSRA: 在MSRA（新闻语料）上训练的模型。新版本代码采用的是此模型。[下载地址](https://pan.baidu.com/s/1twci0QVBeWXUg06dK47tiA)
 
 CTB8: 在CTB8（新闻文本及网络文本的混合型语料）上训练的模型。[下载地址](https://pan.baidu.com/s/1DCjDOxB0HD2NmP9w1jm8MA)
 
