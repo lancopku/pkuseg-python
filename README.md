@@ -3,6 +3,7 @@ PKUSeg-python¼òµ¥Ò×ÓÃ£¬Ö§³Ö¶àÁìÓò·Ö´Ê£¬ÔÚ²»Í¬ÁìÓòµÄÊý¾ÝÉÏ¶¼´ó·ùÌá¸ßÁË·Ö´ÊµÄ×¼È·Â
 
 ## Ä¿Â¼
 * [Ö÷ÒªÁÁµã](#Ö÷ÒªÁÁµã)
+* [±àÒëºÍ°²×°](#±àÒëºÍ°²×°)
 * [¸÷Àà·Ö´Ê¹¤¾ß°üµÄÐÔÄÜ¶Ô±È](#¸÷Àà·Ö´Ê¹¤¾ß°üµÄÐÔÄÜ¶Ô±È)
 * [Ê¹ÓÃ·½Ê½](#Ê¹ÓÃ·½Ê½)
 * [Ïà¹ØÂÛÎÄ](#Ïà¹ØÂÛÎÄ)
@@ -16,6 +17,14 @@ PKUSegÊÇÓÉ±±¾©´óÑ§ÓïÑÔ¼ÆËãÓë»úÆ÷Ñ§Ï°ÑÐ¾¿×éÑÐÖÆÍÆ³öµÄÒ»Ì×È«ÐÂµÄÖÐÎÄ·Ö´Ê¹¤¾ß°ü¡£PK
 1. ¸ß·Ö´Ê×¼È·ÂÊ¡£Ïà±ÈÓÚÆäËûµÄ·Ö´Ê¹¤¾ß°ü£¬ÎÒÃÇµÄ¹¤¾ß°üÔÚ²»Í¬ÁìÓòµÄÊý¾ÝÉÏ¶¼´ó·ùÌá¸ßÁË·Ö´ÊµÄ×¼È·¶È¡£¸ù¾ÝÎÒÃÇµÄ²âÊÔ½á¹û£¬PKUSeg·Ö±ðÔÚÊ¾ÀýÊý¾Ý¼¯£¨MSRAºÍCTB8£©ÉÏ½µµÍÁË79.33%ºÍ63.67%µÄ·Ö´Ê´íÎóÂÊ¡£
 2. ¶àÁìÓò·Ö´Ê¡£ÎÒÃÇÑµÁ·ÁË¶àÖÖ²»Í¬ÁìÓòµÄ·Ö´ÊÄ£ÐÍ¡£¸ù¾Ý´ý·Ö´ÊµÄÁìÓòÌØµã£¬ÓÃ»§¿ÉÒÔ×ÔÓÉµØÑ¡Ôñ²»Í¬µÄÄ£ÐÍ¡£
 3. Ö§³ÖÓÃ»§×ÔÑµÁ·Ä£ÐÍ¡£Ö§³ÖÓÃ»§Ê¹ÓÃÈ«ÐÂµÄ±ê×¢Êý¾Ý½øÐÐÑµÁ·¡£
+
+## ±àÒëºÍ°²×°
+1. ´ÓgithubÏÂÔØ(ÐèÒªÏÂÔØÄ£ÐÍÎÄ¼þ£¬¼û[Ô¤ÑµÁ·Ä£ÐÍ](#Ô¤ÑµÁ·Ä£ÐÍ)£¬¾É°æ±¾´úÂëÖ§³ÖÑµÁ·)
+	½«PKUSegÎÄ¼þ·Åµ½Ä¿Â¼ÏÂ£¬Í¨¹ýimport PKUSegÊ¹ÓÃ
+	ÏÂÔØµÄÄ£ÐÍÐèÒª·Åµ½PKUSeg/modelsÄ¿Â¼ÏÂ(¾É°æ±¾´úÂëÎªoldversion/modelÄ¿Â¼)¡£
+2. Í¨¹ýpipÏÂÔØ(×Ô´øÄ£ÐÍÎÄ¼þ£¬ÔÝ²»Ö§³ÖÑµÁ·)
+	pip install PKUSeg
+	Ö®ºóÍ¨¹ýimport PKUSegÀ´ÒýÓÃ
 
 ## ¸÷Àà·Ö´Ê¹¤¾ß°üµÄÐÔÄÜ¶Ô±È
 ÎÒÃÇÑ¡ÔñTHULAC¡¢½á°Í·Ö´ÊµÈ¹úÄÚ´ú±í·Ö´Ê¹¤¾ß°üÓëPKUSeg×öÐÔÄÜ±È½Ï¡£ÎÒÃÇÑ¡ÔñLinux×÷Îª²âÊÔ»·¾³£¬ÔÚÐÂÎÅÊý¾Ý(MSRA)ºÍ»ìºÏÐÍÎÄ±¾(CTB8)Êý¾ÝÉÏ¶Ô²»Í¬¹¤¾ß°ü½øÐÐÁË×¼È·ÂÊ²âÊÔ¡£ÎÒÃÇÊ¹ÓÃÁËµÚ¶þ½ì¹ú¼ÊººÓï·Ö´ÊÆÀ²â±ÈÈüÌá¹©µÄ·Ö´ÊÆÀ¼Û½Å±¾¡£ÆÀ²â½á¹ûÈçÏÂ£º
@@ -35,25 +44,36 @@ PKUSegÊÇÓÉ±±¾©´óÑ§ÓïÑÔ¼ÆËãÓë»úÆ÷Ñ§Ï°ÑÐ¾¿×éÑÐÖÆÍÆ³öµÄÒ»Ì×È«ÐÂµÄÖÐÎÄ·Ö´Ê¹¤¾ß°ü¡£PK
 |PKUSeg| **95.64 (+8.97%)**|**4.36 (-64.35%)**
 
 
-
 ## Ê¹ÓÃ·½Ê½
-* ·Ö´ÊÄ£Ê½£ºpython3 main.py test [-input file] [-output file]
-* ÑµÁ·Ä£Ê½£ºpython3 main.py train [-train file] [-test file]
-* ´ÓÎÄ±¾ÎÄ¼þÊäÈëÊä³ö£¨×¢Òâ¾ùÎªUTF8ÎÄ±¾£©
-* ÔÚconfig.pyÖÐÓÐ²ÎÊýµÄÉèÖÃ£¬ÔËÐÐÊ±¸ù¾ÝÔËÐÐ»·¾³µÄÊµ¼ÊÇé¿öÐÞ¸ÄÆäÖÐµÄnThread²ÎÊýÉèÖÃ²¢ÐÐµÄ½ø³ÌÊý¡£
+1. ¾É°æ±¾´úÂë
+	cd oldversion
+	·Ö´ÊÄ£Ê½£ºpython3 main.py test [-input file] [-output file]
+	ÑµÁ·Ä£Ê½£ºpython3 main.py train [-train file] [-test file]
+	´ÓÎÄ±¾ÎÄ¼þÊäÈëÊä³ö£¨×¢Òâ¾ùÎªUTF8ÎÄ±¾£©
+	ÔÚconfig.pyÖÐÓÐ²ÎÊýµÄÉèÖÃ£¬ÔËÐÐÊ±¸ù¾ÝÔËÐÐ»·¾³µÄÊµ¼ÊÇé¿öÐÞ¸ÄÆäÖÐµÄnThread²ÎÊýÉèÖÃ²¢ÐÐµÄ½ø³ÌÊý¡£
 
-### ²ÎÊýËµÃ÷
+	²ÎÊýËµÃ÷
     test  ·Ö´Ê
     train ÑµÁ·
-    [-input] ÓÃ»§Ö¸¶¨µÄ´ý·Ö´ÊÎÄ¼þ
-    [-output] ÓÃ»§Ö¸¶¨µÄ·Ö´Ê½á¹ûÊä³öÎÄ¼þ
-    [-trainFile] & [-testFile] ÓÃ»§±ê×¢µÄÓïÁÏ£¬¾ä×ÓÖ®¼äÒÔ»»ÐÐ·û·Ö¸ô£¬´ÊÓïÖ®¼äÒÔ¿Õ¸ñ·Ö¸ô
+    [-input file] ÓÃ»§Ö¸¶¨µÄ´ý·Ö´ÊÎÄ¼þ
+    [-output file] ÓÃ»§Ö¸¶¨µÄ·Ö´Ê½á¹ûÊä³öÎÄ¼þ
+    [-train file] & [-test file] ÓÃ»§±ê×¢µÄÓïÁÏ£¬¾ä×ÓÖ®¼äÒÔ»»ÐÐ·û·Ö¸ô£¬´ÊÓïÖ®¼äÒÔ¿Õ¸ñ·Ö¸ô
     
-### ÔËÐÐÑùÀý
+	ÔËÐÐÑùÀý
     python3 main.py test data/input.txt data/output.txt         ·Ö´Ê
     python3 main.py train data/train.txt data/test.txt          ¸ù¾ÝÖ¸¶¨µÄÑµÁ·ÎÄ¼þÑµÁ·£¬ÑµÁ·Ä£ÐÍ»á±£´æµ½./modelÄ¿Â¼ÏÂ
+2. ÐÂ°æ±¾´úÂë
+	´úÂëÊ¾Àý1
+	import PKUSeg
+	seg = PKUSeg.PKUSeg()	#¼ÓÔØÄ£ÐÍ
+	text = seg.cut('ÎÒ°®±±¾©Ìì°²ÃÅ')	#½øÐÐ·Ö´Ê
+	print(text)
 
-	
+	´úÂëÊ¾Àý2
+	import PKUSeg
+	PKUSeg.test('input.txt', 'output.txt')	#¼ÓÔØmodelsÖÐµÄÄ£ÐÍ£¬¶Ôinput.txtµÄÎÄ¼þ·Ö´ÊÊä³öµ½output.txtÖÐ
+
+
 ### Ô¤ÑµÁ·Ä£ÐÍ
 ·Ö´ÊÄ£Ê½ÏÂ£¬ÓÃ»§ÐèÒªÔÚ./modelÄ¿Â¼ÏÂ¼ÓÔØÔ¤ÑµÁ·ºÃµÄÄ£ÐÍ¡£ÎÒÃÇÌá¹©ÁËÈýÖÖÔÚ²»Í¬ÀàÐÍÊý¾ÝÉÏÑµÁ·µÃµ½µÄÄ£ÐÍ£¬¸ù¾Ý¾ßÌåÐèÒª£¬ÓÃ»§¿ÉÒÔÑ¡Ôñ²»Í¬µÄÔ¤ÑµÁ·Ä£ÐÍ¡£ÒÔÏÂÊÇ¶ÔÔ¤ÑµÁ·Ä£ÐÍµÄËµÃ÷£º
 
@@ -102,4 +122,4 @@ https://github.com/lancopku/PKUSeg
 
 ## ×÷Õß
 
-Ruixuan Luo £¨ÂÞî£Ðù£¬±¾¿ÆÉú£©,  Jingjing Xu£¨Ðí¾§¾§£¬²©Ê¿Éú£©,  Xu Sun £¨Ëïèò£¬µ¼Ê¦£©
+Ruixuan Luo £¨ÂÞî£Ðù£©,  Jingjing Xu£¨Ðí¾§¾§£©,  Xu Sun £¨Ëïèò£©
