@@ -16,12 +16,12 @@ class Feature:
     def train_init(self):
         self.trainLexiconSet = set()
         self.trainBigramSet = set()
-        self.convertTrain(self.file, 'temp/c.train.txt', True)
+        self.convertTrain(self.file, config.tempFile+'/c.train.txt', True)
         self.saveBigramFeature(config.modelDir+'/bigram_word.txt')
         self.saveUnigram(config.modelDir+'/unigram_word.txt')
-        self.getFeatureSet('temp/c.train.txt')
+        self.getFeatureSet(config.tempFile+'/c.train.txt')
         self.saveFeature(config.modelDir+'/featureSet.txt')
-        self.processFile('temp/c.train.txt', 'temp/train.txt')
+        self.processFile(config.tempFile+'/c.train.txt', config.tempFile+'/train.txt')
 
     def test_wofile(self):
         self.trainLexiconSet = set()
@@ -36,8 +36,8 @@ class Feature:
         self.readBigramFeature(config.modelDir+'/bigram_word.txt')
         self.readUnigram(config.modelDir+'/unigram_word.txt')
         self.readFeature(config.modelDir+'/featureSet.txt')
-        self.convertTest(self.file, 'temp/c.test.txt', 'temp/test.raw.txt')
-        self.processFile('temp/c.test.txt', 'temp/test.txt')
+        self.convertTest(self.file, config.tempFile+'/c.test.txt', config.tempFile+'/test.raw.txt')
+        self.processFile(config.tempFile+'/c.test.txt', config.tempFile+'/test.txt')
         
 
     def keywordTransfer(self, w):

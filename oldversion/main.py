@@ -295,7 +295,7 @@ def clearDir(d):
 if __name__ == '__main__':
     starttime = time.time()
     if len(sys.argv)<4:
-        print('Wrong  inputs')
+        print('Wrong inputs')
         sys.exit()
     elif not os.path.exists(sys.argv[2]):
         print('file does not exist.')
@@ -311,8 +311,8 @@ if __name__ == '__main__':
         os.mkdir('temp')
     if not os.path.exists('temp/output'):
         os.mkdir('temp/output')
-    if not os.path.exists('model'):
-        os.mkdir('model')
+    if not os.path.exists('models'):
+        os.mkdir('models')
     run()
     clearDir('temp')
     print('Total time: '+str(time.time()-starttime))

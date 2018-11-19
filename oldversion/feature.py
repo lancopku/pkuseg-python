@@ -177,8 +177,8 @@ class Feature:
                 for c in w:
                     if c.strip() == '':
                         continue
-                    c = self.keywordTransfer(c)
                     fraw.write(c)
+                    c = self.keywordTransfer(c)
                     if len(w) == 1:
                         fout.write(c+' '+B_single+'\n')
                     elif position == 0:

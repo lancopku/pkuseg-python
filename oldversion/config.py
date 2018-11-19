@@ -87,8 +87,8 @@ class Config:
 
 
         
-        self.fModel = "model/model.txt"
-        self.modelDir = "model"
+        self.fModel = "models/model.txt"
+        self.modelDir = "models"
 
         # feature
         self.numLetterNorm = True
