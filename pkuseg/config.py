@@ -1,10 +1,12 @@
 import os
+import tempfile
+
 class Config:
     def __init__(self):
         # main setting
         self.trainFile = 'data/small_training.utf8'
         self.testFile = 'data/small_test.utf8'
-        self.homepath = os.environ['HOME']
+        self.homepath = tempfile.gettempdir()
         self.tempFile = os.path.join(self.homepath, '.pkuseg/temp')
         self.readFile = 'data/small_test.utf8'
         self.outputFile = 'data/small_test_output.utf8'

@@ -6,7 +6,7 @@ long_description='pkuseg-python'
 
 setuptools.setup(
         name="pkuseg",
-        version="0.0.1",
+        version="0.0.7",
         author="Lanco",
         author_email="luoruixuan97@pku.edu.cn",
         description="A small package for Chinese word segmentation",
@@ -17,7 +17,10 @@ setuptools.setup(
         package_data={'': ['*.txt*']},
         classifiers=[
             "Programming Language :: Python :: 3",
-            "License :: OSI Approved :: MIT License",
+            "License :: Other/Proprietary License",
             "Operating System :: OS Independent",
             ],
+        install_requires=[
+            'numpy'
+            ]
         )
