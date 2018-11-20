@@ -309,7 +309,7 @@ if __name__ == '__main__':
         config.readFile = sys.argv[2]
         config.outputFile = sys.argv[3]
     if not os.path.exists(config.tempFile):
-        os.mkdir(config.tempFile)
+        os.makedirs(config.tempFile)
     if not os.path.exists(config.tempFile+'/output'):
         os.mkdir(config.tempFile+'/output')
     if not os.path.exists(config.modelDir):

@@ -151,7 +151,7 @@ def test(readFile, outputFile):
     config.readFile = readFile
     config.outputFile = outputFile
     if not os.path.exists(config.tempFile):
-        os.mkdir(config.tempFile)
+        os.makedirs(config.tempFile)
     if not os.path.exists(config.tempFile+'/output'):
         os.mkdir(config.tempFile+'/output')
     if not os.path.exists(config.modelDir):
