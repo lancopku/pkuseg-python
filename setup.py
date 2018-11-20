@@ -2,17 +2,17 @@ import setuptools
 
 #with open("README.md", "r") as fh:
 #    long_description = fh.read()
-long_description='PKUSeg-python'
+long_description='pkuseg-python'
 
 setuptools.setup(
-        name="PKUSeg",
-        version="0.0.4",
+        name="pkuseg",
+        version="0.0.1",
         author="Lanco",
         author_email="luoruixuan97@pku.edu.cn",
         description="A small package for Chinese word segmentation",
         long_description=long_description,
         long_description_content_type="text/markdown",
-        url="https://github.com/lancopku/PKUSeg-python",
+        url="https://github.com/lancopku/pkuseg-python",
         packages=setuptools.find_packages(),
         package_data={'': ['*.txt*']},
         classifiers=[

@@ -6,7 +6,7 @@ from .inference import *
 from .model import *
 from .main import *
 
-class PKUSeg:
+class pkuseg:
     def __init__(self):
         print('loading model')
         self.testFeature = Feature(None, 'test')    # convert: keywordtransfor, process: test.txt

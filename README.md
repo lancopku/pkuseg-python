@@ -1,5 +1,5 @@
-# PKUSeg-python£ºÒ»¸ö¸ß×¼È·¶ÈµÄÖÐÎÄ·Ö´Ê¹¤¾ß°ü
-PKUSeg-python¼òµ¥Ò×ÓÃ£¬Ö§³Ö¶àÁìÓò·Ö´Ê£¬ÔÚ²»Í¬ÁìÓòµÄÊý¾ÝÉÏ¶¼´ó·ùÌá¸ßÁË·Ö´ÊµÄ×¼È·ÂÊ¡£
+# pkuseg-python£ºÒ»¸ö¸ß×¼È·¶ÈµÄÖÐÎÄ·Ö´Ê¹¤¾ß°ü
+pkuseg-python¼òµ¥Ò×ÓÃ£¬Ö§³Ö¶àÁìÓò·Ö´Ê£¬ÔÚ²»Í¬ÁìÓòµÄÊý¾ÝÉÏ¶¼´ó·ùÌá¸ßÁË·Ö´ÊµÄ×¼È·ÂÊ¡£
 
 ## Ä¿Â¼
 * [Ö÷ÒªÁÁµã](#Ö÷ÒªÁÁµã)
@@ -12,55 +12,55 @@ PKUSeg-python¼òµ¥Ò×ÓÃ£¬Ö§³Ö¶àÁìÓò·Ö´Ê£¬ÔÚ²»Í¬ÁìÓòµÄÊý¾ÝÉÏ¶¼´ó·ùÌá¸ßÁË·Ö´ÊµÄ×¼È·Â
 
 ## Ö÷ÒªÁÁµã
 
-PKUSegÊÇÓÉ±±¾©´óÑ§ÓïÑÔ¼ÆËãÓë»úÆ÷Ñ§Ï°ÑÐ¾¿×éÑÐÖÆÍÆ³öµÄÒ»Ì×È«ÐÂµÄÖÐÎÄ·Ö´Ê¹¤¾ß°ü¡£PKUSeg¾ßÓÐÈçÏÂ¼¸¸öÌØµã£º
+pkusegÊÇÓÉ±±¾©´óÑ§ÓïÑÔ¼ÆËãÓë»úÆ÷Ñ§Ï°ÑÐ¾¿×éÑÐÖÆÍÆ³öµÄÒ»Ì×È«ÐÂµÄÖÐÎÄ·Ö´Ê¹¤¾ß°ü¡£pkuseg¾ßÓÐÈçÏÂ¼¸¸öÌØµã£º
 
-1. ¸ß·Ö´Ê×¼È·ÂÊ¡£Ïà±ÈÓÚÆäËûµÄ·Ö´Ê¹¤¾ß°ü£¬ÎÒÃÇµÄ¹¤¾ß°üÔÚ²»Í¬ÁìÓòµÄÊý¾ÝÉÏ¶¼´ó·ùÌá¸ßÁË·Ö´ÊµÄ×¼È·¶È¡£¸ù¾ÝÎÒÃÇµÄ²âÊÔ½á¹û£¬PKUSeg·Ö±ðÔÚÊ¾ÀýÊý¾Ý¼¯£¨MSRAºÍCTB8£©ÉÏ½µµÍÁË79.33%ºÍ63.67%µÄ·Ö´Ê´íÎóÂÊ¡£
+1. ¸ß·Ö´Ê×¼È·ÂÊ¡£Ïà±ÈÓÚÆäËûµÄ·Ö´Ê¹¤¾ß°ü£¬ÎÒÃÇµÄ¹¤¾ß°üÔÚ²»Í¬ÁìÓòµÄÊý¾ÝÉÏ¶¼´ó·ùÌá¸ßÁË·Ö´ÊµÄ×¼È·¶È¡£¸ù¾ÝÎÒÃÇµÄ²âÊÔ½á¹û£¬pkuseg·Ö±ðÔÚÊ¾ÀýÊý¾Ý¼¯£¨MSRAºÍCTB8£©ÉÏ½µµÍÁË79.33%ºÍ63.67%µÄ·Ö´Ê´íÎóÂÊ¡£
 2. ¶àÁìÓò·Ö´Ê¡£ÎÒÃÇÑµÁ·ÁË¶àÖÖ²»Í¬ÁìÓòµÄ·Ö´ÊÄ£ÐÍ¡£¸ù¾Ý´ý·Ö´ÊµÄÁìÓòÌØµã£¬ÓÃ»§¿ÉÒÔ×ÔÓÉµØÑ¡Ôñ²»Í¬µÄÄ£ÐÍ¡£
 3. Ö§³ÖÓÃ»§×ÔÑµÁ·Ä£ÐÍ¡£Ö§³ÖÓÃ»§Ê¹ÓÃÈ«ÐÂµÄ±ê×¢Êý¾Ý½øÐÐÑµÁ·¡£
 
 ## ±àÒëºÍ°²×°
 1. ´ÓgithubÏÂÔØ(ÐèÒªÏÂÔØÄ£ÐÍÎÄ¼þ£¬¼û[Ô¤ÑµÁ·Ä£ÐÍ](#Ô¤ÑµÁ·Ä£ÐÍ)£¬¾É°æ±¾´úÂëÖ§³ÖÑµÁ·)
 	```
-	½«PKUSegÎÄ¼þ·Åµ½Ä¿Â¼ÏÂ£¬Í¨¹ýimport PKUSegÊ¹ÓÃ
-	ÏÂÔØµÄÄ£ÐÍÐèÒª·Åµ½PKUSeg/modelsÄ¿Â¼ÏÂ(¾É°æ±¾´úÂëÎªoldversion/modelÄ¿Â¼)¡£
+	½«pkusegÎÄ¼þ·Åµ½Ä¿Â¼ÏÂ£¬Í¨¹ýimport pkusegÊ¹ÓÃ
+	ÏÂÔØµÄÄ£ÐÍÐèÒª·Åµ½pkuseg/modelsÄ¿Â¼ÏÂ(¾É°æ±¾´úÂëÎªoldversion/modelÄ¿Â¼)¡£
 	```
 2. Í¨¹ýpipÏÂÔØ(×Ô´øÄ£ÐÍÎÄ¼þ£¬ÔÝ²»Ö§³ÖÑµÁ·)
 	```
-	pip install PKUSeg
-	Ö®ºóÍ¨¹ýimport PKUSegÀ´ÒýÓÃ
+	pip install pkuseg
+	Ö®ºóÍ¨¹ýimport pkusegÀ´ÒýÓÃ
 	```
 
 ## ¸÷Àà·Ö´Ê¹¤¾ß°üµÄÐÔÄÜ¶Ô±È
-ÎÒÃÇÑ¡ÔñTHULAC¡¢½á°Í·Ö´ÊµÈ¹úÄÚ´ú±í·Ö´Ê¹¤¾ß°üÓëPKUSeg×öÐÔÄÜ±È½Ï¡£ÎÒÃÇÑ¡ÔñLinux×÷Îª²âÊÔ»·¾³£¬ÔÚÐÂÎÅÊý¾Ý(MSRA)ºÍ»ìºÏÐÍÎÄ±¾(CTB8)Êý¾ÝÉÏ¶Ô²»Í¬¹¤¾ß°ü½øÐÐÁË×¼È·ÂÊ²âÊÔ¡£ÎÒÃÇÊ¹ÓÃÁËµÚ¶þ½ì¹ú¼ÊººÓï·Ö´ÊÆÀ²â±ÈÈüÌá¹©µÄ·Ö´ÊÆÀ¼Û½Å±¾¡£ÆÀ²â½á¹ûÈçÏÂ£º
+ÎÒÃÇÑ¡ÔñTHULAC¡¢½á°Í·Ö´ÊµÈ¹úÄÚ´ú±í·Ö´Ê¹¤¾ß°üÓëpkuseg×öÐÔÄÜ±È½Ï¡£ÎÒÃÇÑ¡ÔñLinux×÷Îª²âÊÔ»·¾³£¬ÔÚÐÂÎÅÊý¾Ý(MSRA)ºÍ»ìºÏÐÍÎÄ±¾(CTB8)Êý¾ÝÉÏ¶Ô²»Í¬¹¤¾ß°ü½øÐÐÁË×¼È·ÂÊ²âÊÔ¡£ÎÒÃÇÊ¹ÓÃÁËµÚ¶þ½ì¹ú¼ÊººÓï·Ö´ÊÆÀ²â±ÈÈüÌá¹©µÄ·Ö´ÊÆÀ¼Û½Å±¾¡£ÆÀ²â½á¹ûÈçÏÂ£º
 
 
 |MSRA | F-score| Error Rate |
 |:------------|------------:|------------:|
 | jieba |81.45 | 18.55
 | THULAC | 85.48 |  14.52
-| PKUSeg | **96.75 (+13.18%)**| **3.25 (-77.62%)**
+| pkuseg | **96.75 (+13.18%)**| **3.25 (-77.62%)**
 
 
 |CTB8 | F-score | Error Rate|
 |:------------|------------:|------------:|
 |jieba|79.58|20.42
 |THULAC|87.77|12.23
-|PKUSeg| **95.64 (+8.97%)**|**4.36 (-64.35%)**
+|pkuseg| **95.64 (+8.97%)**|**4.36 (-64.35%)**
 
 
 ## Ê¹ÓÃ·½Ê½
 1. ÐÂ°æ±¾´úÂë(Ö§³Ö¶Ô¸ø¶¨×Ö·û´®¼´Ê±·Ö´Ê¼°¶ÔÎÄ¼þÖÐµÄUTF8ÎÄ±¾·Ö´Ê)
 	```
 	´úÂëÊ¾Àý1
-	import PKUSeg
-	seg = PKUSeg.PKUSeg()	#¼ÓÔØÄ£ÐÍ
+	import pkuseg
+	seg = pkuseg.pkuseg()	#¼ÓÔØÄ£ÐÍ
 	text = seg.cut('ÎÒ°®±±¾©Ìì°²ÃÅ')	#½øÐÐ·Ö´Ê
 	print(text)
 	```
 	```
 	´úÂëÊ¾Àý2
-	import PKUSeg
-	PKUSeg.test('input.txt', 'output.txt')	#¼ÓÔØmodelsÖÐµÄÄ£ÐÍ£¬¶Ôinput.txtµÄÎÄ¼þ·Ö´ÊÊä³öµ½output.txtÖÐ
+	import pkuseg
+	pkuseg.test('input.txt', 'output.txt')	#¼ÓÔØmodelsÖÐµÄÄ£ÐÍ£¬¶Ôinput.txtµÄÎÄ¼þ·Ö´ÊÊä³öµ½output.txtÖÐ
 	```
 2. ¾É°æ±¾´úÂë(Ö§³Ö¸ù¾Ý¸ø¶¨ÓïÁÏÑµÁ·Ä£ÐÍÒÔ¼°¶ÔÎÄ¼þÖÐµÄUTF8ÎÄ±¾·Ö´Ê)
 	```
@@ -100,8 +100,8 @@ WEIBO: ÔÚÎ¢²©£¨ÍøÂçÎÄ±¾ÓïÁÏ£©ÉÏÑµÁ·µÄÄ£ÐÍ¡£[ÏÂÔØµØÖ·](https://pan.baidu.com/s/1Q
 
 
 ## ¿ªÔ´Ð­Òé
-1. PKUSegÃæÏò¹úÄÚÍâ´óÑ§¡¢ÑÐ¾¿Ëù¡¢ÆóÒµÒÔ¼°¸öÈËÓÃÓÚÑÐ¾¿Ä¿µÄÃâ·Ñ¿ª·ÅÔ´´úÂë¡£
-2. ÈçÓÐ»ú¹¹»ò¸öÈËÄâ½«PKUSegÓÃÓÚÉÌÒµÄ¿µÄ£¬Çë·¢ÓÊ¼þÖÁxusun@pku.edu.cnÇ¢Ì¸¼¼ÊõÐí¿ÉÐ­Òé¡£
+1. pkusegÃæÏò¹úÄÚÍâ´óÑ§¡¢ÑÐ¾¿Ëù¡¢ÆóÒµÒÔ¼°¸öÈËÓÃÓÚÑÐ¾¿Ä¿µÄÃâ·Ñ¿ª·ÅÔ´´úÂë¡£
+2. ÈçÓÐ»ú¹¹»ò¸öÈËÄâ½«pkusegÓÃÓÚÉÌÒµÄ¿µÄ£¬Çë·¢ÓÊ¼þÖÁxusun@pku.edu.cnÇ¢Ì¸¼¼ÊõÐí¿ÉÐ­Òé¡£
 3. »¶Ó­¶Ô¸Ã¹¤¾ß°üÌá³öÈÎºÎ±¦¹óÒâ¼ûºÍ½¨Òé£¬Çë·¢ÓÊ¼þÖÁjingjingxu@pku.edu.cn¡£
 
 ## Ïà¹ØÂÛÎÄ
@@ -128,8 +128,8 @@ year = {2016}}
 ```
 
 ## ÆäËüÓïÑÔÊµÏÖ
-PKUSeg£¨C#°æ£©£º
-https://github.com/lancopku/PKUSeg
+pkuseg£¨C#°æ£©£º
+https://github.com/lancopku/pkuseg
 
 ## ×÷Õß
 

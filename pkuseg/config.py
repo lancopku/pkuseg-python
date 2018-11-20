@@ -5,7 +5,7 @@ class Config:
         self.trainFile = 'data/small_training.utf8'
         self.testFile = 'data/small_test.utf8'
         self.homepath = os.environ['HOME']
-        self.tempFile = os.path.join(self.homepath, '.PKUSeg/temp')
+        self.tempFile = os.path.join(self.homepath, '.pkuseg/temp')
         self.readFile = 'data/small_test.utf8'
         self.outputFile = 'data/small_test_output.utf8'
 
@@ -61,7 +61,7 @@ class Config:
         self.outDir = self.outFolder
         self.testrawDir = "rawinputs/"
         self.testinputDir = "inputs/"
-        self.tempDir = os.path.join(self.homepath, '.PKUSeg/temp')
+        self.tempDir = os.path.join(self.homepath, '.pkuseg/temp')
         self.testoutputDir = "entityoutputs/"
 
         self.GL_init = True
