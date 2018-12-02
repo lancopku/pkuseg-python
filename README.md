@@ -62,6 +62,20 @@ pkuseg是由北京大学语言计算与机器学习研究组研制推出的一套全新的中文分词工具包。pk
 	import pkuseg
 	pkuseg.test('input.txt', 'output.txt')	#加载models中的模型，对input.txt的文件分词输出到output.txt中
 	```
+	参数说明
+	```
+	pkuseg.pkuseg(model_name='msra', user_dict=None)
+	model_name		在pip版本中填'msra'可以选择使用我们预训练好的模型。此外在两种版本中都可以填下载或自己训练的模型所在的路径如model_name='./models'。
+	user_dict		设置用户词典。在pip版本中填写'idiom'可以使用我们提供的一个中文成语词典。此外在两种版本中都可以填用户自己的词典文件路径如user_dict='./dicts/dict.txt'。None表示不使用词典。词典文件中一行一个词，使用utf-8编码。
+	```
+	```
+	pkuseg.test(readFile, outputFile, model_name='msra', user_dict=None, nthread=10)
+	readFile		输入文件路径
+	outputFile		输出文件路径
+	model_name		同pkuseg.pkuseg
+	user_dict		同pkuseg.pkuseg
+	nthread			测试时开的进程数
+	```
 2. 旧版本代码(支持根据给定语料训练模型以及对文件中的UTF8文本分词)
 	```
 	cd oldversion

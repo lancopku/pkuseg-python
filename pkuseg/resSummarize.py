@@ -1,21 +1,20 @@
-from .config import config
 import numpy as np
 
 
 def tomatrix(s):
-    lines = s.split(config.lineEnd)
+    lines = s.split(Config.lineEnd)
     lst = []
     for line in lines:
         if line == '':
             continue
         if not line.startswith('%'):
             tmp = []
-            for i in line.split(config.comma):
+            for i in line.split(Config.comma):
                 tmp.append(float(i))
             lst.append(tmp)
     return np.array(lst)
 
-def summarize(fn='f2'):
+def summarize(config, fn='f2'):
     with open(config.outDir+config.fResRaw, encoding='utf-8') as sr:
         txt = sr.read()
     tst = txt.replace('\r', '')
@@ -54,7 +53,7 @@ def summarize(fn='f2'):
                 sw.write('\n')
             sw.write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n\n')
 
-def write():
+def write(config):
     if config.runMode.find('test')>=0:
         assert len(config.scoreListList)<=1 and len(config.timeList)<=1
         if config.rawResWrite:

@@ -1,5 +1,4 @@
 import numpy as np
-from .config import config
 import random
 
 class optimizer:
@@ -20,7 +19,8 @@ class optimizer:
         return val
 
 class optimStochastic(optimizer):
-    def __init__(self, tb):
+    def __init__(self, config, tb):
+        self.config = config
         optimizer.__init__(self)
         self._model = tb.Model
         self._X = tb.X
@@ -30,6 +30,7 @@ class optimStochastic(optimizer):
         config.decayList = np.ones_like(self._model.W)*config.rate0
 
     def optimize(self):
+        config = self.config
         error = 0
         if config.modelOptimizer.endswith('adf'):
             error = self.adf()
@@ -41,6 +42,7 @@ class optimStochastic(optimizer):
         return error
 
     def adf(self):
+        config = self.config
         w = self._model.W
         fsize = w.shape[0]
         xsize = len(self._X)

@@ -1,5 +1,4 @@
 from .feature import *
-from .config import config
 from .dataformat import *
 from .toolbox import *
 from .resSummarize import write as reswrite
@@ -7,18 +6,21 @@ from .resSummarize import summarize
 import sys
 import os
 from .inference import *
+from .config import Config
 import time
 from .ProcessData import tocrfoutput
 
-def run():
+def run(config=None):
+    if config is None:
+        config=Config()
     if config.runMode.find('train')>=0:
-        trainFeature = Feature(config.trainFile, 'train')
-        testFeature = Feature(config.testFile, 'test')
+        trainFeature = Feature(config, config.trainFile, 'train')
+        testFeature = Feature(config, config.testFile, 'test')
     else:
-        testFeature = Feature(config.readFile, 'test')
+        testFeature = Feature(config, config.readFile, 'test')
 
     if config.formatConvert:
-        df = dataFormat()
+        df = dataFormat(config)
         df.convert()
 
     config.globalCheck()
@@ -33,25 +35,25 @@ def run():
     if config.runMode.find('tune')>=0:
         print('\nstart tune...')
         config.swLog.write('\nstart tune...\n')
-        tuneStochasticOptimizer()
+        tuneStochasticOptimizer(config)
     elif config.runMode.find('train')>=0:
         print('\nstart training...')
         config.swLog.write('\nstart training...\n')
         if config.runMode.find('rich')>=0:
             richEdge.train()
         else:
-            train() 
+            train(config) 
     elif config.runMode.find('test')>=0:
         config.swLog.write('\nstart testing...\n')
         if config.runMode.find('rich')>=0:
             richEdge.test()
         else:
-            test()
-        tocrfoutput(config.outFolder+'outputTag.txt', config.outputFile, config.tempFile+'/test.raw.txt')
+            test(config)
+        tocrfoutput(config, config.outFolder+'outputTag.txt', config.outputFile, config.tempFile+'/test.raw.txt')
     elif config.rumMode.find('cv')>=0:
         print('\nstart cross validation')
         config.swLog.write('\nstart cross validation\n')
-        crossValidation()
+        crossValidation(config)
     else:
         raise Exception('error')
 
@@ -66,7 +68,7 @@ def run():
 
     print('finished.')
 
-def train():
+def train(config):
     print('\nreading training & test data...')
     config.swLog.write('\nreading training & test data...\n')
     if config.runMode.find('tune')>=0:
@@ -77,7 +79,7 @@ def train():
     else:
         X = dataSet(config.fFeatureTrain, config.fGoldTrain)
         XX = dataSet(config.fFeatureTest, config.fGoldTest)
-        dataSizeScale(X)
+        dataSizeScale(config, X)
     print('done! train/test data sizes: {}/{}'.format(len(X), len(XX)))
     config.swLog.write('done! train/test data sizes: {}/{}\n'.format(len(X), len(XX)))
     for r in config.regList:
@@ -86,27 +88,27 @@ def train():
         print('\nr: '+str(r))
         if config.rawResWrite:
             config.swResRaw.write('\n%r: '+str(r)+'\n')
-        tb = toolbox(X, True)
-        score = basicTrain(XX, tb)
+        tb = toolbox(config, X, True)
+        score = basicTrain(config, XX, tb)
         reswrite()
         if config.save == 1:
             tb.Model.save(config.fModel)
         return score
 
-def test():
+def test(config):
     config.swLog.write('reading test data...\n')
     XX = dataSet(config.fFeatureTest, config.fGoldTest)
     print('test data size: {}'.format(len(XX)))
     config.swLog.write('Done! test data size: {}\n'.format(len(XX)))
-    tb = toolbox(XX, False)
+    tb = toolbox(config, XX, False)
     scorelist = tb.test(XX, 0)
         
-def crossValidation():
+def crossValidation(config):
     print('reading cross validation data...')
     config.swLog.write('reading cross validation data...\n')
     XList = []
     XXList = []
-    loadDataForCV(XList, XXList)
+    loadDataForCV(config, XList, XXList)
     for r in config.regList:
         config.swLog.write('\ncross validation. r={}\n'.format(r))
         print('\ncross validation. r={}'.format(r))
@@ -121,17 +123,17 @@ def crossValidation():
             Xi = XList[i]
             if config.runMode.find('rich')>=0:
                 tb = toolboxRich(Xi)
-                basicTrain(XXList[i], tb)
+                basicTrain(config, XXList[i], tb)
             else:
-                tb = toolbox(Xi)
-                basicTrain(XXList[i], tb)
+                tb = toolbox(config, Xi)
+                basicTrain(config, XXList[i], tb)
             reswrite()
             if config.rawResWrite:
                 config.swResRaw.write('\n')
         if config.rawResWrite:
             config.swResRaw.write('\n')
 
-def tuneStochasticOptimizer():
+def tuneStochasticOptimizer(config):
     if config.modelOptimizer.endswith('sgd') or config.modelOptimizer.endswith('sgder') or config.modelOptimizer.endswith('adf'):
         origTtlIter = config.ttlIter
         origRegList = config.regList
@@ -144,7 +146,7 @@ def tuneStochasticOptimizer():
         bestScore = 0.
         for im in rates:
             config.rate0 = im
-            score = reinitTrain()
+            score = reinitTrain(config)
             strlog = 'reg={}  rate0={} --> {}={}%'.format(config.regList[0], im, conifig.metric, '%.2f'%score)
             config.swTune.write(strlog+'\n')
             config.swLog.write(strlog+'\n')
@@ -160,7 +162,7 @@ def tuneStochasticOptimizer():
         for im in regs:
             config.regList.clear()
             config.regList.append(im)
-            score = reinitTrain()
+            score = reinitTrain(config)
             strlog = "reg={}  rate0={} --> {}={}%".format(config.regList[0], config.rate0, config.metric, '%.2f'%score)
             config.swTune.write(strlog+'\n')
             config.swLog.write(strlog+'\n')
@@ -178,7 +180,7 @@ def tuneStochasticOptimizer():
         print('no need tuning for non-stochastic optimizer! done.')
         config.swLog.write('no need tuning for non-stochastic optimizer! done.\n')
 
-def reinitTrain():
+def reinitTrain(config):
     config.reinitGlobal()
     score = 0
     if config.runMode.find('rich')>=0:
@@ -187,7 +189,7 @@ def reinitTrain():
         score = train()
     return score
 
-def basicTrain(XTest, tb):
+def basicTrain(config, XTest, tb):
     config.reinitGlobal()
     score = 0
     if config.modelOptimizer.endswith('bfgs'):
@@ -214,7 +216,7 @@ def basicTrain(XTest, tb):
             print(logstr)
     return score
 
-def dataSizeScale(X):
+def dataSizeScale(config, X):
     XX = dataSet()
     XX.setDataInfo(X)
     for im in X:
@@ -260,7 +262,7 @@ def dataSplit(*arg):
     else:
         raise Exception('Error')
 
-def loadDataForCV(XList, XXList):
+def loadDataForCV(config, XList, XXList):
     XList.clear()
     XXList.clear()
     X = dataSet(config.fFeatureTrain, config.fGoldTrain)
@@ -301,6 +303,7 @@ if __name__ == '__main__':
     elif not os.path.exists(sys.argv[2]):
         print('file does not exist.')
         sys.exit()
+    config = Config()
     config.runMode = sys.argv[1]
     if config.runMode == 'train':
         config.trainFile = sys.argv[2]
@@ -314,7 +317,7 @@ if __name__ == '__main__':
         os.mkdir(config.tempFile+'/output')
     if not os.path.exists(config.modelDir):
         os.mkdir(config.modelDir)
-    run()
+    run(config)
     clearDir(config.tempFile)
     print('Total time: '+str(time.time()-starttime))
 

@@ -2,6 +2,27 @@ import os
 import tempfile
 
 class Config:
+    lineEnd = '\n'
+    biLineEnd = '\n\n'
+    triLineEnd = '\n\n\n'
+    undrln = '_'
+    blank = ' '
+    tab = '\t'
+    star = '*'
+    slash = '/'
+    comma = ','
+    delimInFeature = '.'
+    B = 'B'
+    chnNum = '几二三四五六七八九十千万亿兆零'
+    engNum = '0123456789.１２３４５６７８９０'
+    num = '0123456789.几二三四五六七八九十千万亿兆零１２３４５６７８９０％'
+    letter = 'ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｇｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ／・－'
+    orgAppndx = '院部社国会所办库长委业协宫大局厂业区队帮'
+    nsLastWords = '地区市县乡区洲国村'
+    ntLastWords = '局院委会协联厂大中行艺站足办总队专所化党法部师校汽电新处室支贸司班垒监革厅小工高社科检系署百盟学旅组警段险团馆庭矿政'
+    mark = '*'
+    normalLetter = 'abcdefghigklmnopqrstuvwxyz'
+        
     def __init__(self):
         # main setting
         self.trainFile = 'data/small_training.utf8'
@@ -91,7 +112,7 @@ class Config:
 
 
         
-        self.modelDir = os.path.dirname(os.path.realpath(__file__))+"/models/"
+        self.modelDir = os.path.dirname(os.path.realpath(__file__))+"/models/msra"
         self.fModel = self.modelDir + "/model.txt"
 
         # feature
@@ -103,28 +124,6 @@ class Config:
         self.nLabel = 5
         self.order = 1
 
-        self.lineEnd = '\n'
-        self.biLineEnd = '\n\n'
-        self.triLineEnd = '\n\n\n'
-        self.undrln = '_'
-        self.blank = ' '
-        self.tab = '\t'
-        self.star = '*'
-        self.slash = '/'
-        self.comma = ','
-        self.delimInFeature = '.'
-        self.B = 'B'
-        self.chnNum = '几二三四五六七八九十千万亿兆零'
-        self.engNum = '0123456789.１２３４５６７８９０'
-        self.num = '0123456789.几二三四五六七八九十千万亿兆零１２３４５６７８９０％'
-        self.letter = 'ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｇｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ／・－'
-        self.orgAppndx = '院部社国会所办库长委业协宫大局厂业区队帮'
-        self.nsLastWords = '地区市县乡区洲国村'
-        self.ntLastWords = '局院委会协联厂大中行艺站足办总队专所化党法部师校汽电新处室支贸司班垒监革厅小工高社科检系署百盟学旅组警段险团馆庭矿政'
-        self.mark = '*'
-        self.normalLetter = 'abcdefghigklmnopqrstuvwxyz'
-
-        
     def globalCheck(self):
         if self.runMode.find('test')>=0:
             self.ttlIter = 1

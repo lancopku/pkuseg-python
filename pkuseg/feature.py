@@ -1,8 +1,8 @@
-from .config import config
 from multiprocessing import Process, Queue
 
 class Feature:
-    def __init__(self, file, phase):
+    def __init__(self, config, file, phase):
+        self.config = config
         self.file = file
         self.phase = phase
         if phase == 'train':
@@ -14,6 +14,7 @@ class Feature:
                 self.test_init()
 
     def train_init(self):
+        config = self.config
         self.trainLexiconSet = set()
         self.trainBigramSet = set()
         self.convertTrain(self.file, config.tempFile+'/c.train.txt', True)
@@ -24,6 +25,7 @@ class Feature:
         self.processFile(config.tempFile+'/c.train.txt', config.tempFile+'/train.txt')
 
     def test_wofile(self):
+        config = self.config
         self.trainLexiconSet = set()
         self.trainBigramSet = set()
         self.readBigramFeature(config.modelDir+'/bigram_word.txt')
@@ -31,6 +33,7 @@ class Feature:
         self.readFeature(config.modelDir+'/featureSet.txt')
 
     def test_init(self):
+        config = self.config
         self.trainLexiconSet = set()
         self.trainBigramSet = set()
         self.readBigramFeature(config.modelDir+'/bigram_word.txt')
@@ -81,6 +84,7 @@ class Feature:
             
 
     def convertTrain(self, trainfile, outfile, collectInfo):
+        config = self.config
         fin = open(trainfile, 'r', encoding='utf-8')
         txt = fin.read()
         fin.close()
@@ -149,6 +153,7 @@ class Feature:
                 print('length = %d : %d'%(i, lens[i]))
 
     def convertTest(self, trainfile, outfile, rawfile):
+        config = self.config
         fin = open(trainfile, 'r', encoding='utf-8')
         txt = fin.read()
         fin.close()
@@ -224,6 +229,7 @@ class Feature:
         self.writeFeaturesTag(wordSeqList, tagSeqList, file1)
 
     def writeFeaturesTag(self, wordSeqList, tagSeqList, file):
+        config = self.config
         with open(file, 'w', encoding='utf-8') as fout:
             featureList = [None]*len(wordSeqList)
             interval = (len(wordSeqList)+config.nThread-1)//config.nThread
@@ -245,6 +251,7 @@ class Feature:
                 fout.write(f)
 
     def Parallel_FT(self, wordSeqList, tagSeqList, start, end, Q):
+        config = self.config
         for i in range(start, end):
             wordSeq = wordSeqList[i]
             wordAry = wordSeq.split(config.blank)
@@ -274,6 +281,7 @@ class Feature:
                     
 
     def getFeatureSet(self, file):
+        config = self.config
         self.featureSet = set()
         print('getting feature set')
         wordlst = []
@@ -299,6 +307,7 @@ class Feature:
                 self.featureSet.add(k)
 
     def normalize(self, file, wordlst, taglst):
+        config = self.config
         with open(file, 'r', encoding='utf-8') as f:
             txt = f.read()
         txt.replace('\t',' ')
@@ -333,6 +342,7 @@ class Feature:
             taglst.append(config.blank.join(tmptag))
 
     def getNodeFeatures(self, n, wordary, flist):
+        config = self.config
         w = wordary[n]
         flist.append('$$')
         flist.append('c.'+w)

@@ -1,9 +1,9 @@
 import os
 import numpy as np
-from .config import config
+from .config import Config
 
 class model:
-    def __init__(self, *args):
+    def __init__(self, config, *args):
         if len(args)==1:
             file = args[0]
             if os.path.exists(file):
@@ -34,7 +34,7 @@ class model:
         with open(file, encoding='utf-8') as f:
             txt = f.read()
         txt = txt.replace('\r', '')
-        ary = txt.split(config.lineEnd)
+        ary = txt.split(Config.lineEnd)
         self.NTag = int(ary[0])
         wsize = int(ary[1])
         self.W = np.zeros(wsize)

@@ -1,11 +1,10 @@
-from .config import config
 class featureTemp:
     def __init__(self, a, b):
         self.id = a
         self.val = b
 
 class featureGenerator:
-    def __init__(self, *args):
+    def __init__(self, config, *args):
         self._nFeatureTemp = 0
         self._nCompleteFeature = 0
         self._backoff1 = 0

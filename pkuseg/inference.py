@@ -1,4 +1,3 @@
-from .config import config
 import numpy as np
 from .viterbi import *
 

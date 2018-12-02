@@ -1,6 +1,5 @@
-from .config import config
 
-def tocrfoutput(readpath, writedatapath, rawdatapath):
+def tocrfoutput(config, readpath, writedatapath, rawdatapath):
     with open(config.modelDir + '/tagIndex.txt') as f:
         lines = f.readlines()
     tags = {}

@@ -8,12 +8,13 @@ from .dataformat import *
 import time
 
 class toolbox:
-    def __init__(self, *args):
+    def __init__(self, config, *args):
+        self.config = config
         if len(args)==2:
             if args[1]:
                 self.X = args[0]
-                self.FGene = featureGenerator(self.X)
-                self.Model = model(self.X, self.FGene)
+                self.FGene = featureGenerator(config, self.X)
+                self.Model = model(config, self.X, self.FGene)
                 self.Optim = None
                 self.Grad = None
                 self.Inf = inference(self)
@@ -21,15 +22,15 @@ class toolbox:
                 self.initOptimizer()
             else:
                 self.X = args[0]
-                self.FGene = featureGenerator(self.X)
-                self.Model = model(config.fModel)
+                self.FGene = featureGenerator(config, self.X)
+                self.Model = model(config, config.fModel)
                 self.Optim = None
                 self.Grad = None
                 self.Inf = inference(self)
                 self.Grad = gradient(self)
         elif len(args)==3:
             self.X = args[0]
-            self.FGene = featureGenerator(self.X)
+            self.FGene = featureGenerator(config, self.X)
             self.Model = args[2]
             self.Optim = None
             self.Grad = None
@@ -39,9 +40,10 @@ class toolbox:
             raise Exception('Unknown toolbox args')
             
     def initOptimizer(self):
+        config = self.config
         if config.modelOptimizer.startswith('crf'):
             if config.modelOptimizer.endswith('sgd') or config.modelOptimizer.endswith('sgder') or config.modelOptimizer.endswith('adf'):
-                self.Optim = optimStochastic(self)
+                self.Optim = optimStochastic(config, self)
             elif config.modelOptimizer.endswith('bfgs'):
                 self.Optim = optimBFGS(self, self.Model.W, config.mBFGS, 0, config.ttlIter)
             else:
@@ -53,6 +55,7 @@ class toolbox:
         return self.Optim.optimize()
 
     def test(self, X, a1, dynamic=False):
+        config = self.config
         if type(a1) == str:
             outfile = a1
             config.swOutput = open(outfile, 'w')
@@ -87,6 +90,7 @@ class toolbox:
 
     # token accuracy
     def decode_tokAcc(self, X, m, dynamic=False):
+        config = self.config
         nTag = m.NTag
         tmpAry = [0]*nTag
         corrOutput = [0]*nTag
@@ -141,6 +145,7 @@ class toolbox:
         return [fscore]
 
     def decode_strAcc(self, X, m, dynamic=False):
+        config = self.config
         xsize = len(X)
         corr = 0
         X2 = []
@@ -163,6 +168,7 @@ class toolbox:
         return [acc]
 
     def decode_fscore(self, X, m, dynamic=False):
+        config = self.config
         X2 = []
 
         self.multiThreading(X, X2, dynamic)
@@ -193,6 +199,7 @@ class toolbox:
         return scoreList
 
     def multiThreading(self, X, X2, dynamic=False):
+        config = self.config
         if dynamic:
             for i in range(len(X)):
                 X2.append(dataSeqTest(X[i], []))
@@ -233,7 +240,7 @@ class toolbox:
 
 
 
-def getFscore(goldTagList, resTagList, infoList):
+def getFscore(config, goldTagList, resTagList, infoList):
     scoreList = []
     assert len(resTagList) == len(goldTagList)
     getNewTagList(config.chunkTagMap, goldTagList)
@@ -280,7 +287,7 @@ def getFscore(goldTagList, resTagList, infoList):
 def getNewTagList(tagMap, tagList):
     tmpList = []
     for im in tagList:
-        tagAry = im.split(config.comma)
+        tagAry = im.split(Config.comma)
         for i in range(len(tagAry)):
             if tagAry[i]=='':
                 continue
@@ -297,7 +304,7 @@ def getNewTagList(tagMap, tagList):
 def getChunks(tagList):
     tmpList = []
     for im in tagList:
-        tagAry = im.split(config.comma)
+        tagAry = im.split(Config.comma)
         tmp = []
         for t in tagAry:
             if t != '':

@@ -1,14 +1,16 @@
-from .config import *
+from .config import Config
 from .featuregenerator import *
 import os
 import copy
 import random
 
 class dataFormat:
-    def __init__(self):
+    def __init__(self, config):
         self.featureIndexMap = {}
         self.tagIndexMap = {}
+        self.config = config
     def convert(self):
+        config = self.config
         if config.runMode.find('train')>=0:
             self.getMaps(config.fTrain)
             self.saveFeature(config.modelDir+'/featureIndex.txt')
@@ -61,6 +63,7 @@ class dataFormat:
             self.tagIndexMap[u] = int(v)
 
     def getMaps(self, file):
+        config = self.config
         if not os.path.exists(file):
             print('file {} not exist!'.format(file))
         print('file {} converting...'.format(file))
@@ -128,6 +131,7 @@ class dataFormat:
                 swTag.write('{} {}\n'.format(l, i))
 
     def convertFile(self, file):
+        config = self.config
         if not os.path.exists(file):
             print('file {} not exist!'.format(file))
         print('file converting...')
@@ -233,7 +237,7 @@ class dataSet:
         srfileTag = open(fileTag, encoding='utf-8')
         txt = srfileFeature.read()
         txt.replace('\r', '')
-        fAry = txt.split(config.biLineEnd)
+        fAry = txt.split(Config.biLineEnd)
         tmp = []
         for i in fAry:
             if i != '':
@@ -241,7 +245,7 @@ class dataSet:
         fAry = tmp
         txt = srfileTag.read()
         txt.replace('\r', '')
-        tAry = txt.split(config.biLineEnd)
+        tAry = txt.split(Config.biLineEnd)
         tmp = []
         for i in tAry:
             if i != '':
@@ -279,24 +283,24 @@ class dataSeq:
     def __len__(self):
         return len(self.featureTemps)
     def read(self, a, b):
-        lineAry = a.split(config.lineEnd)
+        lineAry = a.split(Config.lineEnd)
         for im in lineAry:
             if im == '':
                 continue
             nodeList = []
-            imAry = im.split(config.comma)
+            imAry = im.split(Config.comma)
             for imm in imAry:
                 if imm == '':
                     continue
                 if imm.find('/')>=0:
-                    biAry = imm.split(config.slash)
+                    biAry = imm.split(Config.slash)
                     ft = featureTemp(int(biAry[0], float(biAry[1])))
                     nodeList.append(ft)
                 else:
                     ft = featureTemp(int(imm), 1)
                     nodeList.append(ft)
             self.featureTemps.append(nodeList)
-        lineAry = b.split(config.comma)
+        lineAry = b.split(Config.comma)
         for im in lineAry:
             if im == '':
                 continue
@@ -308,7 +312,7 @@ class dataSeq:
                 if imm == '':
                     continue
                 if imm.find('/')>=0:
-                    biAry = imm.split(config.slash)
+                    biAry = imm.split(Config.slash)
                     ft = featureTemp(int(biAry[0], float(biAry[1])))
                     nodeList.append(ft)
                 else:
