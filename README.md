@@ -144,11 +144,7 @@ title = {Dependency-based Gated Recursive Neural Network for Chinese Word Segmen
 booktitle = {Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics, {ACL} 2016, August 7-12, 2016, Berlin, Germany, Volume 2: Short Papers},
 year = {2016}}
 ```
-<div style='display: none'>
-## 其它语言实现
-pkuseg（C#版）：
-https://github.com/lancopku/PKUSeg-csharp
-</div>
+
 
 ## 作者
 
