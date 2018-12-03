@@ -5,6 +5,7 @@ from .toolbox import *
 from .inference import *
 from .model import *
 from .main import *
+import os
 from multiprocessing import Process, Queue
 
 class TrieNode:
@@ -13,14 +14,19 @@ class TrieNode:
         self.children = {}
 
 class Preprocesser:
-    def __init__(self, dict_file=None):
-        self.dict_file = dict_file
-        if dict_file is not None:
+    def __init__(self, dict_file):
+        self.dict_data = dict_file
+        if isinstance(dict_file, str):
             with open(dict_file) as f:
                 lines = f.readlines()
             self.trie = TrieNode(False)
             for line in lines:
                 self.insert(line.strip())
+        else:
+            self.trie = TrieNode(False)
+            for w in dict_file:
+                assert isinstance(w, str)
+                self.insert(w.strip())
 
     def insert(self, word):
         l = len(word)
@@ -33,8 +39,6 @@ class Preprocesser:
         now.isword = True
 
     def solve(self, txt):
-        if self.dict_file is None:
-            return [txt], [False]
         outlst = []
         iswlst = []
         l = len(txt)
@@ -71,23 +75,20 @@ class Preprocesser:
         return outlst, iswlst
 
 class pkuseg:
-    def __init__(self, model_name='msra', user_dict=None):
+    def __init__(self, model_name='msra', user_dict='safe_lexicon'):
         print('loading model')
         config = Config()
         self.config = config
         if model_name in ['msra']:
-            config.modelDir = os.path.dirname(os.path.realpath(__file__))+'/models/'+model_name
+            config.modelDir = os.path.join(os.path.dirname(os.path.realpath(__file__)),'models',model_name)
         else:
             config.modelDir = model_name
-        config.fModel = config.modelDir + '/model.txt'
-        if user_dict is None:
-            self.preprocesser = Preprocesser(None)
+        config.fModel = os.path.join(config.modelDir, 'model.txt')
+        if user_dict == 'safe_lexicon':
+            file_name = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'dicts/safe_lexicon.txt')
         else:
-            if user_dict == 'idiom':
-                file_name = os.path.dirname(os.path.realpath(__file__))+'/dicts/idiom.txt'
-            else:
-                file_name = user_dict
-            self.preprocesser = Preprocesser(file_name)
+            file_name = user_dict
+        self.preprocesser = Preprocesser(file_name)
         self.testFeature = Feature(config, None, 'test')    # convert: keywordtransfor, process: test.txt
         self.df = dataFormat(config)  # test.txt -> ftest.txt
         self.df.readFeature(config.modelDir+'/featureIndex.txt')
@@ -203,31 +204,40 @@ class pkuseg:
                     taglist = taglist[0].split(',')[:-1]
                     out = []
                     now = ''
+                    isstart = True
                     for t, k in zip(taglist, w):
-                        if self.idx2tag[int(t)].find('B')>=0:
+                        if isstart:
+                            now = k
+                            isstart = False
+                        elif self.idx2tag[int(t)].find('B')>=0:
                             out.append(now)
                             now = k
                         else:
                             now = now+k
                     out.append(now)
-                    out = out[1:]
                     ret.extend(out)
         return ret
 
-# TODO train
-'''
-def train(trainFile, testFile):
+def train(trainFile, testFile, savedir, nthread=10):
     config = Config()
     starttime = time.time()
     if not os.path.exists(trainFile):
-        raise Exception('file does not exist.')
+        raise Exception('trainfile does not exist.')
+    if not os.path.exists(testFile):
+        raise Exception('testfile does not exist.')
+    if not os.path.exists(config.tempFile):
+        os.makedirs(config.tempFile)
+    if not os.path.exists(config.tempFile+'/output'):
+        os.mkdir(config.tempFile+'/output')
     config.runMode = 'train'
     config.trainFile = trainFile
     config.testFile = testFile
+    config.modelDir = savedir
+    config.fModel = os.path.join(config.modelDir, 'model.txt')
+    config.nThread = nthread
     run(config)
     clearDir(config.tempFile)
     print('Total time: '+str(time.time()-starttime))
-'''
 
 def _proc(seg, lines, start, end, q):
     for i in range(start, end):
@@ -235,11 +245,11 @@ def _proc(seg, lines, start, end, q):
         ret = seg.cut(l)
         q.put((i, ' '.join(ret)))
 
-def test(readFile, outputFile, model_name='msra', user_dict=None, nthread=10):
+def test(readFile, outputFile, model_name='msra', user_dict='safe_lexicon', nthread=10):
     starttime = time.time()
     seg = pkuseg(model_name, user_dict)
     if not os.path.exists(readFile):
-        raise Exception('file does not exist.')
+        raise Exception('inputfile does not exist.')
     with open(readFile, encoding='utf-8') as f:
         lines = f.readlines()
     total = len(lines)
@@ -260,16 +270,5 @@ def test(readFile, outputFile, model_name='msra', user_dict=None, nthread=10):
         p.join()
     with open(outputFile, 'w', encoding='utf-8') as f:
         f.write('\n'.join(result))
-    #config.runMode = 'test'
-    #config.readFile = readFile
-    #config.outputFile = outputFile
-    #if not os.path.exists(config.tempFile):
-    #    os.makedirs(config.tempFile)
-    #if not os.path.exists(config.tempFile+'/output'):
-    #    os.mkdir(config.tempFile+'/output')
-    #if not os.path.exists(config.modelDir):
-    #    os.mkdir(config.modelDir)
-    #run(config)
-    #clearDir(config.tempFile)
     print('Total time: '+str(time.time()-starttime))
 

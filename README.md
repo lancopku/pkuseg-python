@@ -19,15 +19,15 @@ pkuseg是由北京大学语言计算与机器学习研究组研制推出的一套全新的中文分词工具包。pk
 3. 支持用户自训练模型。支持用户使用全新的标注数据进行训练。
 
 ## 编译和安装
-1. 从github下载(需要下载模型文件，见[预训练模型](#预训练模型)，旧版本代码支持训练)
-	```
-	将pkuseg文件放到目录下，通过import pkuseg使用
-	下载的模型需要放到pkuseg/models目录下(旧版本代码为oldversion/model目录)。
-	```
-2. 通过pip下载(自带模型文件，暂不支持训练)
+1. 通过pip下载(自带模型文件)
 	```
 	pip install pkuseg
 	之后通过import pkuseg来引用
+	```
+2. 从github下载(需要下载模型文件，见[预训练模型](#预训练模型))
+	```
+	将pkuseg文件放到目录下，通过import pkuseg使用
+	模型需要下载或自己训练。
 	```
 
 ## 各类分词工具包的性能对比
@@ -49,53 +49,59 @@ pkuseg是由北京大学语言计算与机器学习研究组研制推出的一套全新的中文分词工具包。pk
 
 
 ## 使用方式
-1. 新版本代码(支持对给定字符串即时分词及对文件中的UTF8文本分词)
+1. 代码示例
 	```
-	代码示例1
+	代码示例1		使用默认模型及默认词典分词
 	import pkuseg
-	seg = pkuseg.pkuseg()	#加载模型
+	seg = pkuseg.pkuseg()				#以默认配置加载模型
 	text = seg.cut('我爱北京天安门')	#进行分词
 	print(text)
 	```
 	```
-	代码示例2
+	代码示例2		设置用户自定义词典
 	import pkuseg
-	pkuseg.test('input.txt', 'output.txt')	#加载models中的模型，对input.txt的文件分词输出到output.txt中
-	```
-	参数说明
-	```
-	pkuseg.pkuseg(model_name='msra', user_dict=None)
-	model_name		在pip版本中填'msra'可以选择使用我们预训练好的模型。此外在两种版本中都可以填下载或自己训练的模型所在的路径如model_name='./models'。
-	user_dict		设置用户词典。在pip版本中填写'idiom'可以使用我们提供的一个中文成语词典。此外在两种版本中都可以填用户自己的词典文件路径如user_dict='./dicts/dict.txt'。None表示不使用词典。词典文件中一行一个词，使用utf-8编码。
+	lexicon = ['北京大学', '北京天安门']	#希望分词时用户词典中的词固定不分开
+	seg = pkuseg.pkuseg(user_dict=lexicon)	#加载模型，给定用户词典
+	text = seg.cut('我爱北京天安门')		#进行分词
+	print(text)
 	```
 	```
-	pkuseg.test(readFile, outputFile, model_name='msra', user_dict=None, nthread=10)
+	代码示例3
+	import pkuseg
+	seg = pkuseg.pkuseg(model_name='./ctb8')	#假设用户已经下载好了ctb8的模型并放在了'./ctb8'目录下，通过设置model_name加载该模型
+	text = seg.cut('我爱北京天安门')			#进行分词
+	print(text)
+	```
+	```
+	代码示例4
+	import pkuseg
+	pkuseg.test('input.txt', 'output.txt', nthread=20)	#加载models中的模型，对input.txt的文件分词输出到output.txt中，使用默认模型和词典，开20个进程
+	```
+	```
+	代码示例5
+	import pkuseg
+	pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)	#训练文件为'msr_training.utf8'，测试文件为'msr_test_gold.utf8'，模型存到'./models'目录下，开20个进程训练模型
+	```
+2. 参数说明
+	```
+	pkuseg.pkuseg(model_name='msra', user_dict='safe_lexicon')
+	model_name		模型路径。默认是'msra'表示我们预训练好的模型(仅对pip下载的用户)。用户可以填自己下载或训练的模型所在的路径如model_name='./models'。
+	user_dict		设置用户词典。默认为'safe_lexicon'表示我们提供的一个中文词典(仅pip)。用户可以传入一个包含若干自定义单词的迭代器。
+	```
+	```
+	pkuseg.test(readFile, outputFile, model_name='msra', user_dict='safe_lexicon', nthread=10)
 	readFile		输入文件路径
 	outputFile		输出文件路径
 	model_name		同pkuseg.pkuseg
 	user_dict		同pkuseg.pkuseg
 	nthread			测试时开的进程数
 	```
-2. 旧版本代码(支持根据给定语料训练模型以及对文件中的UTF8文本分词)
 	```
-	cd oldversion
-	分词模式：python3 main.py test [-input file] [-output file]
-	训练模式：python3 main.py train [-train file] [-test file]
-	从文本文件输入输出（注意均为UTF8文本）
-	在config.py中有参数的设置，运行时根据运行环境的实际情况修改其中的nThread参数设置并行的进程数。
-	```
-	参数说明
-	```
-	test  分词
-    train 训练
-    [-input file] 用户指定的待分词文件
-    [-output file] 用户指定的分词结果输出文件
-    [-train file] & [-test file] 用户标注的语料，句子之间以换行符分隔，词语之间以空格分隔
-    ```
-	运行样例
-	```
-    python3 main.py test data/input.txt data/output.txt         分词
-    python3 main.py train data/train.txt data/test.txt          根据指定的训练文件训练，训练模型会保存到./model目录下
+	pkuseg.train(trainFile, testFile, savedir, nthread=10)
+	trainFile		训练文件路径
+	testFile		测试文件路径
+	savedir			训练模型的保存路径
+	nthread			训练时开的进程数
 	```
 
 
@@ -109,8 +115,6 @@ CTB8: 在CTB8（新闻文本及网络文本的混合型语料）上训练的模型。[下载地址](https://p
 WEIBO: 在微博（网络文本语料）上训练的模型。[下载地址](https://pan.baidu.com/s/1QHoK2ahpZnNmX6X7Y9iCgQ)
 
 其中，MSRA数据由[第二届国际汉语分词评测比赛](http://sighan.cs.uchicago.edu/bakeoff2005/)提供，CTB8数据由[LDC](https://catalog.ldc.upenn.edu/ldc2013t21)提供，WEIBO数据由[NLPCC](http://tcci.ccf.org.cn/conference/2016/pages/page05_CFPTasks.html)分词比赛提供。
-
-
 
 
 ## 开源协议

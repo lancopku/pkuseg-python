@@ -194,7 +194,7 @@ class toolbox:
         scoreList = []
         if config.runMode == 'train':
             infoList = []
-            scoreList = getFscore(goldTagList, resTagList, infoList)
+            scoreList = getFscore(config, goldTagList, resTagList, infoList)
             config.swLog.write('#gold-chunk={}  #output-chunk={}  #correct-output-chunk={}  precision={}  recall={}  f-score={}\n'.format(infoList[0], infoList[1], infoList[2], '%.2f'%scoreList[1], '%.2f'%scoreList[2], '%.2f'%scoreList[0]))
         return scoreList
 

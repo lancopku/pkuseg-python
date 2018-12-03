@@ -62,7 +62,7 @@ def run(config=None):
     config.swTune.close()
     
     if config.runMode.find('train')>=0:
-        summarize()
+        summarize(config)
 
     #ClearDirectory(config.tempFile)
 
@@ -90,7 +90,7 @@ def train(config):
             config.swResRaw.write('\n%r: '+str(r)+'\n')
         tb = toolbox(config, X, True)
         score = basicTrain(config, XX, tb)
-        reswrite()
+        reswrite(config)
         if config.save == 1:
             tb.Model.save(config.fModel)
         return score
@@ -127,7 +127,7 @@ def crossValidation(config):
             else:
                 tb = toolbox(config, Xi)
                 basicTrain(config, XXList[i], tb)
-            reswrite()
+            reswrite(config)
             if config.rawResWrite:
                 config.swResRaw.write('\n')
         if config.rawResWrite:
@@ -291,7 +291,7 @@ def clearDir(d):
     if os.path.isdir(d):
         for f in os.listdir(d):
             clearDir(d+'/'+f)
-        os.removedirs(d)
+        #os.removedirs(d)
     else:
         os.remove(d)
 

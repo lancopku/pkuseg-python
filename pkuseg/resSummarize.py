@@ -1,4 +1,5 @@
 import numpy as np
+from .config import Config
 
 
 def tomatrix(s):
