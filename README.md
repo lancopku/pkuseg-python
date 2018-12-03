@@ -123,7 +123,7 @@ WEIBO: 在微博（网络文本语料）上训练的模型。[下载地址](http
 3. 欢迎对该工具包提出任何宝贵意见和建议，请发邮件至jingjingxu@pku.edu.cn。
 
 ## 相关论文
-若使用此工具包，请引用如下文章：
+本工具包基于以下文献：
 * Xu Sun, Houfeng Wang, Wenjie Li. Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection. ACL. 253–262. 2012 
 
 ```
