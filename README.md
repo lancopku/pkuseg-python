@@ -75,7 +75,7 @@ pkuseg是由北京大学语言计算与机器学习研究组研制推出的一套全新的中文分词工具包。pk
 	```
 	代码示例4
 	import pkuseg
-	pkuseg.test('input.txt', 'output.txt', nthread=20)	#加载models中的模型，对input.txt的文件分词输出到output.txt中，使用默认模型和词典，开20个进程
+	pkuseg.test('input.txt', 'output.txt', nthread=20)	#对input.txt的文件分词输出到output.txt中，使用默认模型和词典，开20个进程
 	```
 	```
 	代码示例5
