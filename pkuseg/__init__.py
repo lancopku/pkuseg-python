@@ -17,7 +17,7 @@ class Preprocesser:
     def __init__(self, dict_file):
         self.dict_data = dict_file
         if isinstance(dict_file, str):
-            with open(dict_file) as f:
+            with open(dict_file, encoding='utf-8') as f:
                 lines = f.readlines()
             self.trie = TrieNode(False)
             for line in lines:
