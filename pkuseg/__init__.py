@@ -75,7 +75,7 @@ class Preprocesser:
         return outlst, iswlst
 
 class pkuseg:
-    def __init__(self, model_name='msra', user_dict='safe_lexicon'):
+    def __init__(self, model_name='msra', user_dict=[]):
         print('loading model')
         config = Config()
         self.config = config
@@ -245,7 +245,7 @@ def _proc(seg, lines, start, end, q):
         ret = seg.cut(l)
         q.put((i, ' '.join(ret)))
 
-def test(readFile, outputFile, model_name='msra', user_dict='safe_lexicon', nthread=10):
+def test(readFile, outputFile, model_name='msra', user_dict=[], nthread=10):
     starttime = time.time()
     seg = pkuseg(model_name, user_dict)
     if not os.path.exists(readFile):

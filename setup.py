@@ -6,7 +6,7 @@ long_description='pkuseg-python'
 
 setuptools.setup(
         name="pkuseg",
-        version="0.0.10",
+        version="0.0.11",
         author="Lanco",
         author_email="luoruixuan97@pku.edu.cn",
         description="A small package for Chinese word segmentation",
