@@ -112,7 +112,7 @@ class Config:
 
 
         
-        self.modelDir = os.path.dirname(os.path.realpath(__file__))+"/models/msra"
+        self.modelDir = os.path.dirname(os.path.realpath(__file__))+"/models/ctb8"
         self.fModel = self.modelDir + "/model.txt"
 
         # feature

@@ -75,11 +75,11 @@ class Preprocesser:
         return outlst, iswlst
 
 class pkuseg:
-    def __init__(self, model_name='msra', user_dict=[]):
+    def __init__(self, model_name='ctb8', user_dict=[]):
         print('loading model')
         config = Config()
         self.config = config
-        if model_name in ['msra']:
+        if model_name in ['ctb8']:
             config.modelDir = os.path.join(os.path.dirname(os.path.realpath(__file__)),'models',model_name)
         else:
             config.modelDir = model_name
@@ -245,7 +245,7 @@ def _proc(seg, lines, start, end, q):
         ret = seg.cut(l)
         q.put((i, ' '.join(ret)))
 
-def test(readFile, outputFile, model_name='msra', user_dict=[], nthread=10):
+def test(readFile, outputFile, model_name='ctb8', user_dict=[], nthread=10):
     starttime = time.time()
     seg = pkuseg(model_name, user_dict)
     if not os.path.exists(readFile):

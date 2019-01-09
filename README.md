@@ -124,12 +124,12 @@ pkuseg是由北京大学语言计算与机器学习研究组研制推出的一�
 	```
 2. 参数说明
 	```
-	pkuseg.pkuseg(model_name='msra', user_dict=[])
-	model_name		模型路径。默认是'msra'表示我们预训练好的模型(仅对pip下载的用户)。用户可以填自己下载或训练的模型所在的路径如model_name='./models'。
+	pkuseg.pkuseg(model_name='ctb8', user_dict=[])
+	model_name		模型路径。默认是'ctb8'表示我们预训练好的模型(仅对pip下载的用户)。用户可以填自己下载或训练的模型所在的路径如model_name='./models'。
 	user_dict		设置用户词典。默认不使用词典。填'safe_lexicon'表示我们提供的一个中文词典(仅pip)。用户可以传入一个包含若干自定义单词的迭代器。
 	```
 	```
-	pkuseg.test(readFile, outputFile, model_name='msra', user_dict=[], nthread=10)
+	pkuseg.test(readFile, outputFile, model_name='ctb8', user_dict=[], nthread=10)
 	readFile		输入文件路径
 	outputFile		输出文件路径
 	model_name		同pkuseg.pkuseg
