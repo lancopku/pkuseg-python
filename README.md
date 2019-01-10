@@ -240,13 +240,13 @@ year = {2016}}
 ## 常见问题及解答
 
 
-1. [为什么要发布pkuseg？](https://github.com/lancopku/pkuseg-python/wiki#1-为什么要发布pkuseg？)
-2. [pkuseg使用了哪些技术？](https://github.com/lancopku/pkuseg-python/wiki#2-pkuseg使用了哪些技术？)
-3. [是如何跟其它工具包在细领域数据上进行比较的？](https://github.com/lancopku/pkuseg-python/wiki#3-是如何跟其它工具包在细领域数据上进行比较的？)
-4. [在黑盒测试集上进行比较的话，效果如何？](https://github.com/lancopku/pkuseg-python/wiki#4-在黑盒测试集上进行比较的话，效果如何？)
-5. [如果我不了解待分词语料的所属领域呢？](https://github.com/lancopku/pkuseg-python/wiki#5-如果我不了解待分词语料的所属领域呢？)
+1. [为什么要发布pkuseg？](https://github.com/lancopku/pkuseg-python/wiki#1-为什么要发布pkuseg)
+2. [pkuseg使用了哪些技术？](https://github.com/lancopku/pkuseg-python/wiki#2-pkuseg使用了哪些技术)
+3. [是如何跟其它工具包在细领域数据上进行比较的？](https://github.com/lancopku/pkuseg-python/wiki#3-是如何跟其它工具包在细领域数据上进行比较的)
+4. [在黑盒测试集上进行比较的话，效果如何？](https://github.com/lancopku/pkuseg-python/wiki#4-在黑盒测试集上进行比较的话，效果如何)
+5. [如果我不了解待分词语料的所属领域呢？](https://github.com/lancopku/pkuseg-python/wiki#5-如果我不了解待分词语料的所属领域呢)
 6. [如何看待在一些特定样例上的分词结果？](https://github.com/lancopku/pkuseg-python/wiki#6-为什么要发布pkuseg？如何看待在一些特定样例上的分词结果？)
-7. [如何看待网络上的文稿？](https://github.com/lancopku/pkuseg-python/wiki#7-如何看待网络上的文稿？)
+7. [如何看待网络上的文稿？](https://github.com/lancopku/pkuseg-python/wiki#7-如何看待网络上的文稿)
 
 
 
