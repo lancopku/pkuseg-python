@@ -12,6 +12,7 @@ pkuseg-python简单易用，支持细分领域分词，有效提升了分词准�
 * [使用方式](#使用方式)
 * [相关论文](#相关论文)
 * [作者](#作者)
+* [常见问题及解答](#常见问题及解答)
 
 
 
@@ -234,6 +235,18 @@ title = {Dependency-based Gated Recursive Neural Network for Chinese Word Segmen
 booktitle = {Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics, {ACL} 2016, August 7-12, 2016, Berlin, Germany, Volume 2: Short Papers},
 year = {2016}}
 ```
+
+
+## 常见问题及解答
+
+
+1. [为什么要发布pkuseg？](https://github.com/lancopku/pkuseg-python/wiki#1-为什么要发布pkuseg？)
+2. [pkuseg使用了哪些技术？](https://github.com/lancopku/pkuseg-python/wiki#2-pkuseg使用了哪些技术？)
+3. [是如何跟其它工具包在细领域数据上进行比较的？](https://github.com/lancopku/pkuseg-python/wiki#3-是如何跟其它工具包在细领域数据上进行比较的？)
+4. [在黑盒测试集上进行比较的话，效果如何？](https://github.com/lancopku/pkuseg-python/wiki#4-在黑盒测试集上进行比较的话，效果如何？)
+5. [如果我不了解待分词语料的所属领域呢？](https://github.com/lancopku/pkuseg-python/wiki#5-如果我不了解待分词语料的所属领域呢？)
+6. [如何看待在一些特定样例上的分词结果？](https://github.com/lancopku/pkuseg-python/wiki#6-为什么要发布pkuseg？如何看待在一些特定样例上的分词结果？)
+7. [如何看待网络上的文稿？](https://github.com/lancopku/pkuseg-python/wiki#7-如何看待网络上的文稿？)
 
 
 
