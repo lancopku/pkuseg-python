@@ -123,60 +123,84 @@ pkuseg具有如下几个特点：
 
 
 ## 使用方式
-1. 代码示例
-	```
-	代码示例1		使用默认模型及默认词典分词
-	import pkuseg
-	seg = pkuseg.pkuseg()				#以默认配置加载模型
-	text = seg.cut('我爱北京天安门')	#进行分词
-	print(text)
-	```
-	```
-	代码示例2		设置用户自定义词典
-	import pkuseg
-	lexicon = ['北京大学', '北京天安门']	#希望分词时用户词典中的词固定不分开
-	seg = pkuseg.pkuseg(user_dict=lexicon)	#加载模型，给定用户词典
-	text = seg.cut('我爱北京天安门')		#进行分词
-	print(text)
-	```
-	```
-	代码示例3
-	import pkuseg
-	seg = pkuseg.pkuseg(model_name='./ctb8')	#假设用户已经下载好了ctb8的模型并放在了'./ctb8'目录下，通过设置model_name加载该模型
-	text = seg.cut('我爱北京天安门')			#进行分词
-	print(text)
-	```
-	```
-	代码示例4
-	import pkuseg
-	pkuseg.test('input.txt', 'output.txt', nthread=20)	#对input.txt的文件分词输出到output.txt中，使用默认模型和词典，开20个进程
-	```
-	```
-	代码示例5
-	import pkuseg
-	pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)	#训练文件为'msr_training.utf8'，测试文件为'msr_test_gold.utf8'，模型存到'./models'目录下，开20个进程训练模型
-	```
-2. 参数说明
-	```
-	pkuseg.pkuseg(model_name='ctb8', user_dict=[])
-	model_name		模型路径。默认是'ctb8'表示我们预训练好的模型(仅对pip下载的用户)。用户可以填自己下载或训练的模型所在的路径如model_name='./models'。
-	user_dict		设置用户词典。默认不使用词典。填'safe_lexicon'表示我们提供的一个中文词典(仅pip)。用户可以传入一个包含若干自定义单词的迭代器。
-	```
-	```
-	pkuseg.test(readFile, outputFile, model_name='ctb8', user_dict=[], nthread=10)
+
+#### 代码示例
+
+代码示例1：使用默认模型及默认词典分词
+```python3
+import pkuseg
+
+seg = pkuseg.pkuseg()                                  # 以默认配置加载模型
+text = seg.cut('我爱北京天安门')                        # 进行分词
+print(text)
+```
+
+代码示例2：设置用户自定义词典
+```python3
+import pkuseg
+
+lexicon = ['北京大学', '北京天安门']                     # 希望分词时用户词典中的词固定不分开
+seg = pkuseg.pkuseg(user_dict=lexicon)                  # 加载模型，给定用户词典
+text = seg.cut('我爱北京天安门')                         # 进行分词
+print(text)
+```
+
+代码示例3：使用其它模型
+```python3
+import pkuseg
+
+seg = pkuseg.pkuseg(model_name='./ctb8')                # 假设用户已经下载好了ctb8的模型
+                                                        # 并放在了'./ctb8'目录下，通过设置model_name加载该模型
+text = seg.cut('我爱北京天安门')                         # 进行分词
+print(text)
+```
+
+代码示例4：对文件分词
+```python3
+import pkuseg
+
+pkuseg.test('input.txt', 'output.txt', nthread=20)     # 对input.txt的文件分词输出到output.txt中，
+                                                       # 使用默认模型和词典，开20个进程
+```
+
+代码示例5：训练新模型
+```python3
+import pkuseg
+
+# 训练文件为'msr_training.utf8'
+# 测试文件为'msr_test_gold.utf8'
+# 模型存到'./models'目录下，开20个进程训练模型
+pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)	
+```
+#### 参数说明
+
+模型配置
+```
+pkuseg.pkuseg(model_name='ctb8', user_dict=[])
+	model_name		模型路径。默认是'ctb8'表示我们预训练好的模型(仅对pip下载的用户)。
+	                        用户可以填自己下载或训练的模型所在的路径如model_name='./models'。
+	user_dict		设置用户词典。默认不使用词典。填'safe_lexicon'表示我们提供的一个中文词典(仅pip)。
+	                        用户可以传入一个包含若干自定义单词的迭代器。
+```
+
+对文件进行分词
+```
+pkuseg.test(readFile, outputFile, model_name='ctb8', user_dict=[], nthread=10)
 	readFile		输入文件路径
 	outputFile		输出文件路径
 	model_name		同pkuseg.pkuseg
 	user_dict		同pkuseg.pkuseg
 	nthread			测试时开的进程数
-	```
-	```
-	pkuseg.train(trainFile, testFile, savedir, nthread=10)
+```
+
+模型训练
+```
+pkuseg.train(trainFile, testFile, savedir, nthread=10)
 	trainFile		训练文件路径
 	testFile		测试文件路径
 	savedir			训练模型的保存路径
 	nthread			训练时开的进程数
-	```
+```
 
 
 
