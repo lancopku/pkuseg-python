@@ -28,6 +28,8 @@ pkuseg具有如下几个特点：
 
 ## 编译和安装
 
+**目前仅支持python3**，python2支持正在加紧施工。
+
 1. 通过pip下载(自带模型文件)
 	```
 	pip install pkuseg
