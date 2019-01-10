@@ -29,10 +29,14 @@ pkuseg具有如下几个特点：
 
 **目前仅支持python3**，python2支持正在加紧施工。
 
-1. 通过pip下载(自带模型文件)
+1. 通过pip3下载(自带模型文件)
 	```
-	pip install pkuseg
+	pip3 install pkuseg
 	之后通过import pkuseg来引用
+	```
+   如果下载速度不理想，建议使用镜像源，比如
+	```
+	pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple pkuseg
 	```
 2. 从github下载(需要下载模型文件，见[预训练模型](#预训练模型))
 	```
