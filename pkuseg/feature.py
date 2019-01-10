@@ -1,11 +1,12 @@
 from multiprocessing import Process, Queue
 
+
 class Feature:
     def __init__(self, config, file, phase):
         self.config = config
         self.file = file
         self.phase = phase
-        if phase == 'train':
+        if phase == "train":
             self.train_init()
         else:
             if file is None:
@@ -17,54 +18,61 @@ class Feature:
         config = self.config
         self.trainLexiconSet = set()
         self.trainBigramSet = set()
-        self.convertTrain(self.file, config.tempFile+'/c.train.txt', True)
-        self.saveBigramFeature(config.modelDir+'/bigram_word.txt')
-        self.saveUnigram(config.modelDir+'/unigram_word.txt')
-        self.getFeatureSet(config.tempFile+'/c.train.txt')
-        self.saveFeature(config.modelDir+'/featureSet.txt')
-        self.processFile(config.tempFile+'/c.train.txt', config.tempFile+'/train.txt')
+        self.convertTrain(self.file, config.tempFile + "/c.train.txt", True)
+        self.saveBigramFeature(config.modelDir + "/bigram_word.txt")
+        self.saveUnigram(config.modelDir + "/unigram_word.txt")
+        self.getFeatureSet(config.tempFile + "/c.train.txt")
+        self.saveFeature(config.modelDir + "/featureSet.txt")
+        self.processFile(
+            config.tempFile + "/c.train.txt", config.tempFile + "/train.txt"
+        )
 
     def test_wofile(self):
         config = self.config
         self.trainLexiconSet = set()
         self.trainBigramSet = set()
-        self.readBigramFeature(config.modelDir+'/bigram_word.txt')
-        self.readUnigram(config.modelDir+'/unigram_word.txt')
-        self.readFeature(config.modelDir+'/featureSet.txt')
+        self.readBigramFeature(config.modelDir + "/bigram_word.txt")
+        self.readUnigram(config.modelDir + "/unigram_word.txt")
+        self.readFeature(config.modelDir + "/featureSet.txt")
 
     def test_init(self):
         config = self.config
         self.trainLexiconSet = set()
         self.trainBigramSet = set()
-        self.readBigramFeature(config.modelDir+'/bigram_word.txt')
-        self.readUnigram(config.modelDir+'/unigram_word.txt')
-        self.readFeature(config.modelDir+'/featureSet.txt')
-        self.convertTest(self.file, config.tempFile+'/c.test.txt', config.tempFile+'/test.raw.txt')
-        self.processFile(config.tempFile+'/c.test.txt', config.tempFile+'/test.txt')
-        
+        self.readBigramFeature(config.modelDir + "/bigram_word.txt")
+        self.readUnigram(config.modelDir + "/unigram_word.txt")
+        self.readFeature(config.modelDir + "/featureSet.txt")
+        self.convertTest(
+            self.file,
+            config.tempFile + "/c.test.txt",
+            config.tempFile + "/test.raw.txt",
+        )
+        self.processFile(config.tempFile + "/c.test.txt", config.tempFile + "/test.txt")
 
     def keywordTransfer(self, w):
-        if w in '-._,|/*:':
-            return '&'
+        if w in "-._,|/*:":
+            return "&"
         return w
 
     def saveUnigram(self, file):
-        f = open(file, 'w', encoding='utf-8')
-        for w in self.trainLexiconSet:
-            f.write(w+'\n')
-        f.close()
+        with open(file, "w", encoding="utf-8") as f:
+            for w in self.trainLexiconSet:
+                f.write(w + "\n")
+            f.close()
+
     def readUnigram(self, file):
-        with open(file, 'r', encoding='utf-8') as f:
+        with open(file, "r", encoding="utf-8") as f:
             lines = f.readlines()
         for line in lines:
             self.trainLexiconSet.add(line.strip())
+
     def saveBigramFeature(self, file):
-        f = open(file, 'w', encoding='utf-8')
-        for w in self.trainBigramSet:
-            f.write(w+'\n')
-        f.close()
+        with open(file, "w", encoding="utf-8") as f:
+            for w in self.trainBigramSet:
+                f.write(w + "\n")
+
     def readBigramFeature(self, file):
-        with open(file, 'r', encoding='utf-8') as f:
+        with open(file, "r", encoding="utf-8") as f:
             lines = f.readlines()
         for line in lines:
             self.trainBigramSet.add(line.strip())
@@ -73,7 +81,7 @@ class Feature:
         featureList = []
         for i in range(10):
             featureList.append([])
-            with open(file + "_" + str(i), encoding='utf-8') as sr:
+            with open(file + "_" + str(i), encoding="utf-8") as sr:
                 lines = sr.readlines()
             for line in lines:
                 featureList[i].append(line.strip())
@@ -81,146 +89,140 @@ class Feature:
         for i in range(10):
             for k in range(len(featureList[i])):
                 self.featureSet.add(featureList[i][k])
-            
 
     def convertTrain(self, trainfile, outfile, collectInfo):
         config = self.config
-        fin = open(trainfile, 'r', encoding='utf-8')
-        txt = fin.read()
-        fin.close()
-        txt = txt.replace('\r', '')
-        txt = txt.replace('\t', ' ')
-        fout = open(outfile, 'w', encoding='utf-8')
-        if config.nLabel == 2:
-            B = B_single = 'B'
-            I_first = I = I_end = 'I'
-        elif config.nLabel == 3:
-            B = B_single = 'B'
-            I_first = I = 'I'
-            I_end = 'I_end'
-        elif config.nLabel == 4:
-            B = 'B'
-            B_single = 'B_single'
-            I_first = I = 'I'
-            I_end = 'I_end'
-        elif config.nLabel == 5:
-            B = 'B'
-            B_single = 'B_single'
-            I_first = 'I_first'
-            I = 'I'
-            I_end = 'I_end'
+        with open(trainfile, "r", encoding="utf-8") as fin:
+            txt = fin.read()
+        txt = txt.replace("\r", "")
+        txt = txt.replace("\t", " ")
+        with open(outfile, "w", encoding="utf-8") as fout:
+            if config.nLabel == 2:
+                B = B_single = "B"
+                I_first = I = I_end = "I"
+            elif config.nLabel == 3:
+                B = B_single = "B"
+                I_first = I = "I"
+                I_end = "I_end"
+            elif config.nLabel == 4:
+                B = "B"
+                B_single = "B_single"
+                I_first = I = "I"
+                I_end = "I_end"
+            elif config.nLabel == 5:
+                B = "B"
+                B_single = "B_single"
+                I_first = "I_first"
+                I = "I"
+                I_end = "I_end"
 
-        lens = [0]*20
-        ary = txt.split(config.lineEnd)
-        for im in ary:
-            if len(im) == 0:
-                continue
-            imary = im.split(config.blank)
-            tmpary = []
-            for w in imary:
-                if len(w) != 0:
-                    tmpary.append(w)
-            imary = tmpary
-            for w in imary:
+            lens = [0] * 20
+            ary = txt.split(config.lineEnd)
+            for im in ary:
+                if len(im) == 0:
+                    continue
+                imary = im.split(config.blank)
+                tmpary = []
+                for w in imary:
+                    if len(w) != 0:
+                        tmpary.append(w)
+                imary = tmpary
+                for w in imary:
+                    if collectInfo:
+                        self.trainLexiconSet.add(w)
+                        if len(w) <= 15:
+                            lens[len(w)] += 1
+                    position = 0
+                    for c in w:
+                        if c.strip() == "":
+                            continue
+                        c = self.keywordTransfer(c)
+                        if len(w) == 1:
+                            fout.write(c + " " + B_single + "\n")
+                        elif position == 0:
+                            fout.write(c + " " + B + "\n")
+                        elif position == len(w) - 1:
+                            fout.write(c + " " + I_end + "\n")
+                        elif position == 1:
+                            fout.write(c + " " + I_first + "\n")
+                        else:
+                            fout.write(c + " " + I + "\n")
+                        position += 1
+                fout.write("\n")
                 if collectInfo:
-                    self.trainLexiconSet.add(w)
-                    if len(w)<=15:
-                        lens[len(w)] += 1
-                position = 0
-                for c in w:
-                    if c.strip() == '':
-                        continue
-                    c = self.keywordTransfer(c)
-                    if len(w) == 1:
-                        fout.write(c+' '+B_single+'\n')
-                    elif position == 0:
-                        fout.write(c+' '+B+'\n')
-                    elif position==len(w)-1:
-                        fout.write(c+' '+I_end+'\n')
-                    elif position == 1:
-                        fout.write(c+' '+I_first+'\n')
-                    else:
-                        fout.write(c+' '+I+'\n')
-                    position += 1
-            fout.write('\n')
-            if collectInfo:
-                for i in range(1, len(imary)):
-                    self.trainBigramSet.add(imary[i-1]+'*'+imary[i])
-        
-        fout.close()
+                    for i in range(1, len(imary)):
+                        self.trainBigramSet.add(imary[i - 1] + "*" + imary[i])
+
         if collectInfo:
-            for i in range(1,16):
-                print('length = %d : %d'%(i, lens[i]))
+            for i in range(1, 16):
+                print("length = %d : %d" % (i, lens[i]))
 
     def convertTest(self, trainfile, outfile, rawfile):
         config = self.config
-        fin = open(trainfile, 'r', encoding='utf-8')
-        txt = fin.read()
-        fin.close()
-        txt = txt.replace('\r', '')
-        txt = txt.replace('\t', ' ')
-        fout = open(outfile, 'w', encoding='utf-8')
-        fraw = open(rawfile, 'w', encoding='utf-8')
-        if config.nLabel == 2:
-            B = B_single = 'B'
-            I_first = I = I_end = 'I'
-        elif config.nLabel == 3:
-            B = B_single = 'B'
-            I_first = I = 'I'
-            I_end = 'I_end'
-        elif config.nLabel == 4:
-            B = 'B'
-            B_single = 'B_single'
-            I_first = I = 'I'
-            I_end = 'I_end'
-        elif config.nLabel == 5:
-            B = 'B'
-            B_single = 'B_single'
-            I_first = 'I_first'
-            I = 'I'
-            I_end = 'I_end'
+        with open(trainfile, "r", encoding="utf-8") as fin:
+            txt = fin.read()
+        txt = txt.replace("\r", "")
+        txt = txt.replace("\t", " ")
+        with open(outfile, "w", encoding="utf-8") as fout, open(
+            rawfile, "w", encoding="utf-8"
+        ) as fraw:
+            if config.nLabel == 2:
+                B = B_single = "B"
+                I_first = I = I_end = "I"
+            elif config.nLabel == 3:
+                B = B_single = "B"
+                I_first = I = "I"
+                I_end = "I_end"
+            elif config.nLabel == 4:
+                B = "B"
+                B_single = "B_single"
+                I_first = I = "I"
+                I_end = "I_end"
+            elif config.nLabel == 5:
+                B = "B"
+                B_single = "B_single"
+                I_first = "I_first"
+                I = "I"
+                I_end = "I_end"
 
-        ary = txt.split(config.lineEnd)
-        for im in ary:
-            if len(im) == 0:
-                continue
-            imary = im.split(config.blank)
-            for w in imary: 
-                if len(w) == 0:
+            ary = txt.split(config.lineEnd)
+            for im in ary:
+                if len(im) == 0:
                     continue
-                position = 0
-                for c in w:
-                    if c.strip() == '':
+                imary = im.split(config.blank)
+                for w in imary:
+                    if len(w) == 0:
                         continue
-                    fraw.write(c)
-                    c = self.keywordTransfer(c)
-                    if len(w) == 1:
-                        fout.write(c+' '+B_single+'\n')
-                    elif position == 0:
-                        fout.write(c+' '+B+'\n')
-                    elif position==len(w)-1:
-                        fout.write(c+' '+I_end+'\n')
-                    elif position == 1:
-                        fout.write(c+' '+I_first+'\n')
-                    else:
-                        fout.write(c+' '+I+'\n')
-                    position += 1
-            fout.write('\n')
-            fraw.write('\n')
-        fout.close()
-        fraw.close()
+                    position = 0
+                    for c in w:
+                        if c.strip() == "":
+                            continue
+                        fraw.write(c)
+                        c = self.keywordTransfer(c)
+                        if len(w) == 1:
+                            fout.write(c + " " + B_single + "\n")
+                        elif position == 0:
+                            fout.write(c + " " + B + "\n")
+                        elif position == len(w) - 1:
+                            fout.write(c + " " + I_end + "\n")
+                        elif position == 1:
+                            fout.write(c + " " + I_first + "\n")
+                        else:
+                            fout.write(c + " " + I + "\n")
+                        position += 1
+                fout.write("\n")
+                fraw.write("\n")
 
     def saveFeature(self, file):
         featureList = list(self.featureSet)
-        num = len(featureList)//10
+        num = len(featureList) // 10
         for i in range(10):
-            l = i*num
-            r = (i+1)*num if i<9 else len(featureList)
-            sw = open(file+'_'+str(i), 'w', encoding='utf-8')
-            for w in range(l,r):
-                word = featureList[w]
-                sw.write(word+'\n')
-            sw.close()
+            l = i * num
+            r = (i + 1) * num if i < 9 else len(featureList)
+            with open(file + "_" + str(i), "w", encoding="utf-8") as sw:
+                for w in range(l, r):
+                    word = featureList[w]
+                    sw.write(word + "\n")
 
     def processFile(self, file, file1):
         wordSeqList = []
@@ -230,15 +232,18 @@ class Feature:
 
     def writeFeaturesTag(self, wordSeqList, tagSeqList, file):
         config = self.config
-        with open(file, 'w', encoding='utf-8') as fout:
-            featureList = [None]*len(wordSeqList)
-            interval = (len(wordSeqList)+config.nThread-1)//config.nThread
+        with open(file, "w", encoding="utf-8") as fout:
+            featureList = [None] * len(wordSeqList)
+            interval = (len(wordSeqList) + config.nThread - 1) // config.nThread
             procs = []
             Q = Queue(5000)
             for i in range(config.nThread):
-                start = i*interval
-                end = min(start+interval, len(wordSeqList))
-                proc = Process(target=Feature.Parallel_FT, args=(self, wordSeqList, tagSeqList, start, end, Q))
+                start = i * interval
+                end = min(start + interval, len(wordSeqList))
+                proc = Process(
+                    target=Feature.Parallel_FT,
+                    args=(self, wordSeqList, tagSeqList, start, end, Q),
+                )
                 proc.start()
                 procs.append(proc)
             for i in range(len(wordSeqList)):
@@ -262,28 +267,26 @@ class Feature:
             for k in range(length):
                 nodeFeatures = []
                 self.getNodeFeatures(k, wordAry, nodeFeatures)
-                writeFeature.append(wordAry[k] + ' ')
+                writeFeature.append(wordAry[k] + " ")
                 for f in nodeFeatures:
-                    if f == '/':
-                        writeFeature.append('/ ')
+                    if f == "/":
+                        writeFeature.append("/ ")
                     else:
                         fAry = f.split(config.slash)
                         id = fAry[0]
                         if id in self.featureSet:
-                            writeFeature.append(f+' ')
+                            writeFeature.append(f + " ")
                         else:
-                            writeFeature.append('/ ')
-                writeFeature.append(tagAry[k]+'\n')
-            writeFeature.append('\n')
-            writeFeature = ''.join(writeFeature)
+                            writeFeature.append("/ ")
+                writeFeature.append(tagAry[k] + "\n")
+            writeFeature.append("\n")
+            writeFeature = "".join(writeFeature)
             Q.put((i, writeFeature))
-            
-                    
 
     def getFeatureSet(self, file):
         config = self.config
         self.featureSet = set()
-        print('getting feature set')
+        print("getting feature set")
         wordlst = []
         taglst = []
         self.normalize(file, wordlst, taglst)
@@ -294,11 +297,10 @@ class Feature:
                 nodeFeatures = []
                 self.getNodeFeatures(k, wordary, nodeFeatures)
                 for f in nodeFeatures:
-                    if f == '/':
+                    if f == "/":
                         continue
                     fary = f.split(config.slash)
                     id = fary[0]
-                    # id = f ?
                     if not id in featureFreqMap:
                         featureFreqMap[id] = 0
                     featureFreqMap[id] += 1
@@ -308,14 +310,14 @@ class Feature:
 
     def normalize(self, file, wordlst, taglst):
         config = self.config
-        with open(file, 'r', encoding='utf-8') as f:
+        with open(file, "r", encoding="utf-8") as f:
             txt = f.read()
-        txt.replace('\t',' ')
-        txt.replace('\r', '')
-        txt.replace('/', '$')
+        txt.replace("\t", " ")
+        txt.replace("\r", "")
+        txt.replace("/", "$")
         ary = txt.split(config.biLineEnd)
         for im in ary:
-            if len(im)==0:
+            if len(im) == 0:
                 continue
             tmpword = []
             tmptag = []
@@ -328,9 +330,9 @@ class Feature:
                 if config.numLetterNorm:
                     tmp1 = biary[0]
                     if tmp1 in config.num:
-                        biary[0] = '**Num'
+                        biary[0] = "**Num"
                     if tmp1 in config.letter:
-                        biary[0] = '**Letter'
+                        biary[0] = "**Letter"
                 tmp2 = biary[1]
                 if config.order == 2:
                     biary[1] = preTag + config.mark + tmp2
@@ -344,120 +346,115 @@ class Feature:
     def getNodeFeatures(self, n, wordary, flist):
         config = self.config
         w = wordary[n]
-        flist.append('$$')
-        flist.append('c.'+w)
-        if n>0:
-            flist.append('c-1.'+wordary[n-1])
+        flist.append("$$")
+        flist.append("c." + w)
+        if n > 0:
+            flist.append("c-1." + wordary[n - 1])
         else:
-            flist.append('/')
-        if n<len(wordary)-1:
-            flist.append('c1.'+wordary[n+1])
+            flist.append("/")
+        if n < len(wordary) - 1:
+            flist.append("c1." + wordary[n + 1])
         else:
-            flist.append('/')
-        if n>1:
-            flist.append('c-2.'+wordary[n-2])
+            flist.append("/")
+        if n > 1:
+            flist.append("c-2." + wordary[n - 2])
         else:
-            flist.append('/')
-        if n<len(wordary)-2:
-            flist.append('c2.'+wordary[n+2])
+            flist.append("/")
+        if n < len(wordary) - 2:
+            flist.append("c2." + wordary[n + 2])
         else:
-            flist.append('/')
-        if n>0:
-            flist.append('c-1c.'+wordary[n-1]+config.delimInFeature+w)
+            flist.append("/")
+        if n > 0:
+            flist.append("c-1c." + wordary[n - 1] + config.delimInFeature + w)
         else:
-            flist.append('/')
-        if n<len(wordary)-1:
-            flist.append('cc1.'+w+config.delimInFeature+wordary[n+1])
+            flist.append("/")
+        if n < len(wordary) - 1:
+            flist.append("cc1." + w + config.delimInFeature + wordary[n + 1])
         else:
-            flist.append('/')
-        if n>1:
-            flist.append('c-2c-1.'+wordary[n-2]+config.delimInFeature+wordary[n-1])
+            flist.append("/")
+        if n > 1:
+            flist.append(
+                "c-2c-1." + wordary[n - 2] + config.delimInFeature + wordary[n - 1]
+            )
         else:
-            flist.append('/')
+            flist.append("/")
 
         # no num/letter based features
-
         if config.wordFeature:
             tmplst = []
-            for l in range(config.wordMax, config.wordMin-1, -1):
-                tmp = getCharSeq(wordary, n-l+1, l)
-                if tmp != '':
+            for l in range(config.wordMax, config.wordMin - 1, -1):
+                tmp = getCharSeq(wordary, n - l + 1, l)
+                if tmp != "":
                     if tmp in self.trainLexiconSet:
-                        flist.append('w-1.'+tmp)
+                        flist.append("w-1." + tmp)
                         tmplst.append(tmp)
                     else:
-                        flist.append('/')
-                        tmplst.append('**noWord')
+                        flist.append("/")
+                        tmplst.append("**noWord")
                 else:
-                    flist.append('/')
-                    tmplst.append('**noWord')
+                    flist.append("/")
+                    tmplst.append("**noWord")
             prelst_in = tmplst
 
             tmplst = []
-            for l in range(config.wordMax, config.wordMin-1, -1):
+            for l in range(config.wordMax, config.wordMin - 1, -1):
                 tmp = getCharSeq(wordary, n, l)
-                if tmp != '':
+                if tmp != "":
                     if tmp in self.trainLexiconSet:
-                        flist.append('w1.'+tmp)
+                        flist.append("w1." + tmp)
                         tmplst.append(tmp)
                     else:
-                        flist.append('/')
-                        tmplst.append('**noWord')
+                        flist.append("/")
+                        tmplst.append("**noWord")
                 else:
-                    flist.append('/')
-                    tmplst.append('**noWord')
+                    flist.append("/")
+                    tmplst.append("**noWord")
             postlst_in = tmplst
 
             tmplst = []
-            for l in range(config.wordMax, config.wordMin-1, -1):
-                tmp = getCharSeq(wordary, n-l, l)
-                if tmp != '':
+            for l in range(config.wordMax, config.wordMin - 1, -1):
+                tmp = getCharSeq(wordary, n - l, l)
+                if tmp != "":
                     if tmp in self.trainLexiconSet:
                         tmplst.append(tmp)
                     else:
-                        tmplst.append('**noWord')
+                        tmplst.append("**noWord")
                 else:
-                    tmplst.append('**noWord')
+                    tmplst.append("**noWord")
             prelst_ex = tmplst
 
             tmplst = []
-            for l in range(config.wordMax, config.wordMin-1, -1):
-                tmp = getCharSeq(wordary, n+1, l)
-                if tmp != '':
+            for l in range(config.wordMax, config.wordMin - 1, -1):
+                tmp = getCharSeq(wordary, n + 1, l)
+                if tmp != "":
                     if tmp in self.trainLexiconSet:
                         tmplst.append(tmp)
                     else:
-                        tmplst.append('**noWord')
+                        tmplst.append("**noWord")
                 else:
-                    tmplst.append('**noWord')
+                    tmplst.append("**noWord")
             postlst_ex = tmplst
 
             for pre in prelst_ex:
                 for post in postlst_in:
-                    bigram = pre + '*' + post
+                    bigram = pre + "*" + post
                     if bigram in self.trainBigramSet:
-                        flist.append('ww.l.'+bigram)
+                        flist.append("ww.l." + bigram)
                     else:
-                        flist.append('/')
+                        flist.append("/")
 
             for pre in prelst_in:
                 for post in postlst_ex:
-                    bigram = pre + '*' + post
+                    bigram = pre + "*" + post
                     if bigram in self.trainBigramSet:
-                        flist.append('ww.r.'+bigram)
+                        flist.append("ww.r." + bigram)
                     else:
-                        flist.append('/')
+                        flist.append("/")
+
 
 def getCharSeq(sen, i, length):
-    if i<0 or i>=len(sen):
-        return ''
-    if i+length-1>=len(sen):
-        return ''
-    return ''.join(sen[i:i+length])
-
-                
-if __name__ == '__main__':
-    f = Feature('train', 'data/small_training.utf8')
-
-
-
+    if i < 0 or i >= len(sen):
+        return ""
+    if i + length - 1 >= len(sen):
+        return ""
+    return "".join(sen[i : i + length])

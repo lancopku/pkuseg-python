@@ -1,21 +1,24 @@
 from .inference import *
 
+
 class gradient:
     def __init__(self, tb):
         self._optim = tb.Optim
         self._inf = tb.Inf
         self._fGene = tb.FGene
+
     def getGrad_SGD_miniBatch(self, g, m, X, idset):
         if idset is not None:
             idset.clear()
         error = 0
         for x in X:
             idset2 = set()
-            error += self.getGradCRF(g,m,x,idset2)
+            error += self.getGradCRF(g, m, x, idset2)
             if idset is not None:
                 for i in idset2:
                     idset.add(i)
         return error
+
     def getGradCRF(self, *args):
         if len(args) == 4:
             vecGrad, m, x, idSet = args
@@ -24,7 +27,7 @@ class gradient:
             vecGrad, scalar, m, x, idSet = args
             sca_version = True
         else:
-            raise Exception('error.')
+            raise Exception("error.")
         if idSet is not None:
             idSet.clear()
         nTag = m.NTag
@@ -44,7 +47,7 @@ class gradient:
         ZGold = belMasked.Z
         Z = bel.Z
         for i in range(len(x)):
-            fList = self._fGene.getFeatureTemp(x,i)
+            fList = self._fGene.getFeatureTemp(x, i)
             for im in fList:
                 for s in range(nTag):
                     f = self._fGene.getNodeFeatID(im.id, s)
@@ -60,8 +63,4 @@ class gradient:
                         idSet.add(f)
                     vecGrad[f] += bel.belEdge[i][sPre, s]
                     vecGrad[f] -= belMasked.belEdge[i][sPre, s]
-        return Z-ZGold
-    def getGrad_BFGS(self, *args):
-        raise Exception('Not implemented')
-    def getGrad_SGD(self, *args):
-        raise Exception('Not implemented')
+        return Z - ZGold

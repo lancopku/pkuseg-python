@@ -8,16 +8,23 @@ from .main import *
 import os
 from multiprocessing import Process, Queue
 
+
 class TrieNode:
+    """建立词典的Trie树节点"""
+
     def __init__(self, isword):
         self.isword = isword
         self.children = {}
 
+
 class Preprocesser:
+    """预处理器，在用户词典中的词强制分割"""
+
     def __init__(self, dict_file):
+        """初始化建立Trie树"""
         self.dict_data = dict_file
         if isinstance(dict_file, str):
-            with open(dict_file, encoding='utf-8') as f:
+            with open(dict_file, encoding="utf-8") as f:
                 lines = f.readlines()
             self.trie = TrieNode(False)
             for line in lines:
@@ -29,6 +36,7 @@ class Preprocesser:
                 self.insert(w.strip())
 
     def insert(self, word):
+        """Trie树中插入单词"""
         l = len(word)
         now = self.trie
         for i in range(l):
@@ -39,12 +47,13 @@ class Preprocesser:
         now.isword = True
 
     def solve(self, txt):
+        """对文本进行预处理"""
         outlst = []
         iswlst = []
         l = len(txt)
         last = 0
         i = 0
-        while i<l:
+        while i < l:
             now = self.trie
             j = i
             found = False
@@ -53,14 +62,14 @@ class Preprocesser:
                 if not c in now.children:
                     break
                 now = now.children[c]
-                j+=1
+                j += 1
                 if now.isword:
                     found = True
                     break
-                if j==l:
+                if j == l:
                     break
             if found:
-                if last!=i:
+                if last != i:
                     outlst.append(txt[last:i])
                     iswlst.append(False)
                 outlst.append(txt[i:j])
@@ -69,67 +78,76 @@ class Preprocesser:
                 i = j
             else:
                 i += 1
-        if last<l:
+        if last < l:
             outlst.append(txt[last:l])
             iswlst.append(False)
         return outlst, iswlst
 
+
 class pkuseg:
-    def __init__(self, model_name='ctb8', user_dict=[]):
-        print('loading model')
+    def __init__(self, model_name="ctb8", user_dict=[]):
+        """初始化函数，加载模型及用户词典"""
+        print("loading model")
         config = Config()
         self.config = config
-        if model_name in ['ctb8']:
-            config.modelDir = os.path.join(os.path.dirname(os.path.realpath(__file__)),'models',model_name)
+        if model_name in ["ctb8"]:
+            config.modelDir = os.path.join(
+                os.path.dirname(os.path.realpath(__file__)), "models", model_name
+            )
         else:
             config.modelDir = model_name
-        config.fModel = os.path.join(config.modelDir, 'model.txt')
-        if user_dict == 'safe_lexicon':
-            file_name = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'dicts/safe_lexicon.txt')
+        config.fModel = os.path.join(config.modelDir, "model.txt")
+        if user_dict == "safe_lexicon":
+            file_name = os.path.join(
+                os.path.dirname(os.path.realpath(__file__)), "dicts/safe_lexicon.txt"
+            )
         else:
             file_name = user_dict
         self.preprocesser = Preprocesser(file_name)
-        self.testFeature = Feature(config, None, 'test')    # convert: keywordtransfor, process: test.txt
+        self.testFeature = Feature(
+            config, None, "test"
+        )  # convert: keywordtransfor, process: test.txt
         self.df = dataFormat(config)  # test.txt -> ftest.txt
-        self.df.readFeature(config.modelDir+'/featureIndex.txt')
-        self.df.readTag(config.modelDir+'/tagIndex.txt')
+        self.df.readFeature(config.modelDir + "/featureIndex.txt")
+        self.df.readTag(config.modelDir + "/tagIndex.txt")
         self.model = model(config, config.fModel)
-        self.idx2tag = [None]*len(self.df.tagIndexMap)
+        self.idx2tag = [None] * len(self.df.tagIndexMap)
         for i in self.df.tagIndexMap:
             self.idx2tag[self.df.tagIndexMap[i]] = i
         if config.nLabel == 2:
-            B = B_single = 'B'
-            I_first = I = I_end = 'I'
+            B = B_single = "B"
+            I_first = I = I_end = "I"
         elif config.nLabel == 3:
-            B = B_single = 'B'
-            I_first = I = 'I'
-            I_end = 'I_end'
+            B = B_single = "B"
+            I_first = I = "I"
+            I_end = "I_end"
         elif config.nLabel == 4:
-            B = 'B'
-            B_single = 'B_single'
-            I_first = I = 'I'
-            I_end = 'I_end'
+            B = "B"
+            B_single = "B_single"
+            I_first = I = "I"
+            I_end = "I_end"
         elif config.nLabel == 5:
-            B = 'B'
-            B_single = 'B_single'
-            I_first = 'I_first'
-            I = 'I'
-            I_end = 'I_end'
+            B = "B"
+            B_single = "B_single"
+            I_first = "I_first"
+            I = "I"
+            I_end = "I_end"
         self.B = B
         self.B_single = B_single
         self.I_first = I_first
         self.I = I
         self.I_end = I_end
-        print('finish')
+        print("finish")
 
     def cut(self, txt):
+        """分词，结果返回一个list"""
         config = self.config
-        txt = txt.replace('\r', '')
-        txt = txt.replace('\t', ' ')
+        txt = txt.replace("\r", "")
+        txt = txt.replace("\t", " ")
         ary = txt.split(config.lineEnd)
         ret = []
         for im in ary:
-            if len(im)==0:
+            if len(im) == 0:
                 continue
             imary = im.split(config.blank)
             tmpary = []
@@ -147,9 +165,9 @@ class pkuseg:
                         x = self.testFeature.keywordTransfer(c)
                         if config.numLetterNorm:
                             if x in config.num:
-                                x = '**Num'
+                                x = "**Num"
                             if x in config.letter:
-                                x = '**Letter'
+                                x = "**Letter"
                         transed.append(x)
                     l = len(transed)
                     all_features = []
@@ -157,10 +175,10 @@ class pkuseg:
                         nodeFeatures = []
                         self.testFeature.getNodeFeatures(i, transed, nodeFeatures)
                         for j, f in enumerate(nodeFeatures):
-                            if f != '/':
-                                id = f.split(config.slash)[0]   # id == f?
+                            if f != "/":
+                                id = f.split(config.slash)[0]  # id == f?
                                 if not id in self.testFeature.featureSet:
-                                    nodeFeatures[j] = '/'
+                                    nodeFeatures[j] = "/"
                         all_features.append(nodeFeatures)
                     all_feature_idx = []
                     for k in range(l):
@@ -168,18 +186,18 @@ class pkuseg:
                         ary = all_features[k]
                         featureLine = []
                         for i, f in enumerate(ary):
-                            if f == '/':
+                            if f == "/":
                                 continue
                             ary2 = f.split(config.slash)
                             tmp = []
                             for j in ary2:
-                                if j != '':
+                                if j != "":
                                     tmp.append(j)
                             ary2 = tmp
-                            feature = str(i+1)+'.'+ary2[0]
-                            value = ''
+                            feature = str(i + 1) + "." + ary2[0]
+                            value = ""
                             real = False
-                            if len(ary2)>1:
+                            if len(ary2) > 1:
                                 value = ary2[1]
                                 real = True
                             if not feature in self.df.featureIndexMap:
@@ -189,9 +207,9 @@ class pkuseg:
                             if not real:
                                 featureLine.append(str(fIndex))
                             else:
-                                featureLine.append(str(fIndex)+'/'+value)
+                                featureLine.append(str(fIndex) + "/" + value)
                         if flag == 0:
-                            featureLine.append('0')
+                            featureLine.append("0")
                         all_feature_idx.append(featureLine)
                     XX = dataSet()
                     XX.nFeature = len(self.df.featureIndexMap)
@@ -201,74 +219,78 @@ class pkuseg:
                     XX.append(seq)
                     tb = toolbox(config, XX, False, self.model)
                     taglist = tb.test(XX, 0, dynamic=True)
-                    taglist = taglist[0].split(',')[:-1]
+                    taglist = taglist[0].split(",")[:-1]
                     out = []
-                    now = ''
+                    now = ""
                     isstart = True
                     for t, k in zip(taglist, w):
                         if isstart:
                             now = k
                             isstart = False
-                        elif self.idx2tag[int(t)].find('B')>=0:
+                        elif self.idx2tag[int(t)].find("B") >= 0:
                             out.append(now)
                             now = k
                         else:
-                            now = now+k
+                            now = now + k
                     out.append(now)
                     ret.extend(out)
         return ret
 
+
 def train(trainFile, testFile, savedir, nthread=10):
+    """用于训练模型"""
     config = Config()
     starttime = time.time()
     if not os.path.exists(trainFile):
-        raise Exception('trainfile does not exist.')
+        raise Exception("trainfile does not exist.")
     if not os.path.exists(testFile):
-        raise Exception('testfile does not exist.')
+        raise Exception("testfile does not exist.")
     if not os.path.exists(config.tempFile):
         os.makedirs(config.tempFile)
-    if not os.path.exists(config.tempFile+'/output'):
-        os.mkdir(config.tempFile+'/output')
-    config.runMode = 'train'
+    if not os.path.exists(config.tempFile + "/output"):
+        os.mkdir(config.tempFile + "/output")
+    config.runMode = "train"
     config.trainFile = trainFile
     config.testFile = testFile
     config.modelDir = savedir
-    config.fModel = os.path.join(config.modelDir, 'model.txt')
+    config.fModel = os.path.join(config.modelDir, "model.txt")
     config.nThread = nthread
     run(config)
     clearDir(config.tempFile)
-    print('Total time: '+str(time.time()-starttime))
+    print("Total time: " + str(time.time() - starttime))
+
 
 def _proc(seg, lines, start, end, q):
     for i in range(start, end):
         l = lines[i].strip()
         ret = seg.cut(l)
-        q.put((i, ' '.join(ret)))
+        q.put((i, " ".join(ret)))
 
-def test(readFile, outputFile, model_name='ctb8', user_dict=[], nthread=10):
+
+def test(readFile, outputFile, model_name="ctb8", user_dict=[], nthread=10):
+    """批处理测试，多进程加速"""
     starttime = time.time()
     seg = pkuseg(model_name, user_dict)
     if not os.path.exists(readFile):
-        raise Exception('inputfile does not exist.')
-    with open(readFile, encoding='utf-8') as f:
+        raise Exception("inputfile does not exist.")
+    with open(readFile, encoding="utf-8") as f:
         lines = f.readlines()
     total = len(lines)
-    step = (total+nthread-1)//nthread
+    step = (total + nthread - 1) // nthread
     q = Queue()
     procs = []
     for i in range(nthread):
-        start = i*step
-        end = min(start+step, total)
+        start = i * step
+        end = min(start + step, total)
         p = Process(target=_proc, args=(seg, lines, start, end, q))
         p.start()
         procs.append(p)
-    result = [None]*total
+    result = [None] * total
     for i in range(total):
         j, ans = q.get()
         result[j] = ans
     for p in procs:
         p.join()
-    with open(outputFile, 'w', encoding='utf-8') as f:
-        f.write('\n'.join(result))
-    print('Total time: '+str(time.time()-starttime))
-
+    with open(outputFile, "w", encoding="utf-8") as f:
+        f.write("\n".join(result))
+    print("Total time: " + str(time.time() - starttime))
