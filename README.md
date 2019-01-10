@@ -27,18 +27,27 @@ pkuseg具有如下几个特点：
 
 ## 编译和安装
 
-**目前仅支持python3**，python2支持正在加紧施工。
+目前**仅支持python3**，python2支持正在加紧施工。
 
-1. 通过pip3下载(自带模型文件)
+1. 通过PyPI安装(自带模型文件)：
 	```
 	pip3 install pkuseg
 	之后通过import pkuseg来引用
 	```
-   如果下载速度不理想，建议使用镜像源，比如
+   **建议更新到最新版本**以获得更好的开箱体验(新版默认提供CTB8的预训练模型、默认关闭词典)：
+   	```
+	pip3 install -U pkuseg
+	```
+2. 如果PyPI官方源下载速度不理想，建议使用镜像源，比如：   
+   初次安装：
 	```
 	pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple pkuseg
 	```
-2. 从github下载(需要下载模型文件，见[预训练模型](#预训练模型))
+   更新：
+	```
+	pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -U pkuseg
+	```
+3. 从GitHub下载(需要下载模型文件，见[预训练模型](#预训练模型))
 	```
 	将pkuseg文件放到目录下，通过import pkuseg使用
 	模型需要下载或自己训练。
@@ -187,7 +196,7 @@ pkuseg具有如下几个特点：
 
 我们预训练好其它分词软件的模型可以在如下地址下载：
 
-- jieba: To be uploaded
+- jieba: 在MSRA、CTB8、WEIBO、PKU语料上的预训练模型，[下载地址](https://pan.baidu.com/s/1F_pQc5UOZ3k9VJYcF9pw3w)，提取码：rnh7
 - THULAC: 在MSRA、CTB8、WEIBO、PKU语料上的预训练模型，[下载地址](https://pan.baidu.com/s/11L95ZZtRJdpMYEHNUtPWXA)，提取码：iv82
 
 其中jieba的默认模型为统计模型，主要基于训练数据上的词频信息，我们在不同训练集上重新统计了词频信息。对于THULAC，我们使用其提供的接口进行训练(C++版本)，得到了在不同领域的预训练模型。
