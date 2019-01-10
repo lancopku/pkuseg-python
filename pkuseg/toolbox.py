@@ -4,7 +4,7 @@ from .model import *
 from .inference import *
 from .gradient import *
 from .optimizer import *
-from .dataformat import *
+from .data_format import *
 import time
 
 

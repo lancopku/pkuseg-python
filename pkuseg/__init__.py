@@ -1,6 +1,6 @@
 from .feature import *
 from .config import Config
-from .dataformat import *
+from .data_format import *
 from .toolbox import *
 from .inference import *
 from .model import *
