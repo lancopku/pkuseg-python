@@ -1,14 +1,14 @@
 from .feature import *
 from .dataformat import *
 from .toolbox import *
-from .resSummarize import write as reswrite
-from .resSummarize import summarize
+from .res_summarize import write as reswrite
+from .res_summarize import summarize
 import sys
 import os
 from .inference import *
 from .config import Config
 import time
-from .ProcessData import tocrfoutput
+from .process_data import tocrfoutput
 
 
 def run(config=None):
