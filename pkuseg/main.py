@@ -8,8 +8,6 @@ import os
 from .inference import *
 from .config import Config
 import time
-from .process_data import tocrfoutput
-
 
 def run(config=None):
     if config is None:
@@ -41,22 +39,6 @@ def run(config=None):
             richEdge.train()
         else:
             train(config)
-    elif config.runMode.find("test") >= 0:
-        config.swLog.write("\nstart testing...\n")
-        if config.runMode.find("rich") >= 0:
-            richEdge.test()
-        else:
-            test(config)
-        tocrfoutput(
-            config,
-            os.path.join(config.outFolder, "outputTag.txt"),
-            config.outputFile,
-            os.path.join(config.tempFile, "test.raw.txt"),
-        )
-    elif config.rumMode.find("cv") >= 0:
-        print("\nstart cross validation")
-        config.swLog.write("\nstart cross validation\n")
-        crossValidation(config)
     else:
         raise Exception("unknown mode")
 

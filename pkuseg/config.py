@@ -27,9 +27,7 @@ class Config:
         self.readFile = "data/small_test.utf8"
         self.outputFile = "data/small_test_output.utf8"
 
-        self.runMode = (
-            "test"
-        )  # train (normal training), train.rich (training with rich edge features), test, tune£¬ tune.rich, cv (cross validation), cv.rich
+        self.runMode = "train"
         self.modelOptimizer = "crf.adf"
         self.rate0 = 0.05  # init value of decay rate in SGD and ADF training
         self.regs = [1]
