@@ -178,7 +178,7 @@ pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)
 
 #### 多进程
 
-当将以上代码示例置于文件中运行时，如涉及多进程功能，请务必使用`if __name__ == '__main__'`保护全局语句，如：
+当将以上代码示例置于文件中运行时，如涉及多进程功能，请务必使用`if __name__ == '__main__'`保护全局语句，如：  
 mp.py文件
 ```python3
 import pkuseg
@@ -288,11 +288,11 @@ year = {2016}}
 1. [为什么要发布pkuseg？](https://github.com/lancopku/pkuseg-python/wiki#1-为什么要发布pkuseg)
 2. [pkuseg使用了哪些技术？](https://github.com/lancopku/pkuseg-python/wiki#2-pkuseg使用了哪些技术)
 3. [无法使用多进程分词和训练功能，提示RuntimeError和BrokenPipeError。](https://github.com/lancopku/pkuseg-python/wiki#3-无法使用多进程分词和训练功能提示runtimeerror和brokenpipeerror)
-4. [是如何跟其它工具包在细领域数据上进行比较的？](https://github.com/lancopku/pkuseg-python/wiki#3-是如何跟其它工具包在细领域数据上进行比较的)
-5. [在黑盒测试集上进行比较的话，效果如何？](https://github.com/lancopku/pkuseg-python/wiki#4-在黑盒测试集上进行比较的话，效果如何)
-6. [如果我不了解待分词语料的所属领域呢？](https://github.com/lancopku/pkuseg-python/wiki#5-如果我不了解待分词语料的所属领域呢)
-7. [如何看待在一些特定样例上的分词结果？](https://github.com/lancopku/pkuseg-python/wiki#6-如何看待在一些特定样例上的分词结果)
-8. [如何看待网络上的文稿？](https://github.com/lancopku/pkuseg-python/wiki#7-如何看待网络上的文稿)
+4. [是如何跟其它工具包在细领域数据上进行比较的？](https://github.com/lancopku/pkuseg-python/wiki#4-是如何跟其它工具包在细领域数据上进行比较的)
+5. [在黑盒测试集上进行比较的话，效果如何？](https://github.com/lancopku/pkuseg-python/wiki#5-在黑盒测试集上进行比较的话效果如何)
+6. [如果我不了解待分词语料的所属领域呢？](https://github.com/lancopku/pkuseg-python/wiki#6-如果我不了解待分词语料的所属领域呢)
+7. [如何看待在一些特定样例上的分词结果？](https://github.com/lancopku/pkuseg-python/wiki#7-如何看待在一些特定样例上的分词结果)
+8. [如何看待网络上的文稿？](https://github.com/lancopku/pkuseg-python/wiki#8-如何看待网络上的文稿)
 
 
 
