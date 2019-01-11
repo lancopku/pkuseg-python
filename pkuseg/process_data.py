@@ -1,3 +1,5 @@
+import os
+
 def tocrfoutput(config, readpath, writedatapath, rawdatapath):
     with open(os.path.join(config.modelDir, "tagIndex.txt")) as tagfile:
         lines = tagfile.readlines()
