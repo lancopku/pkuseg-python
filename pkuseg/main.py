@@ -207,6 +207,7 @@ def basicTrain(config, XTest, tb):
             config.diffList.append(config.diff)
             scoreList = tb.test(XTest, i)
             config.scoreListList.append(scoreList)
+            score = scoreList[0]
 
             logstr = "iter{}  diff={}  train-time(sec)={}  {}={}%".format(
                 config.glbIter,

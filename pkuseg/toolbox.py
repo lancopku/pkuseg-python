@@ -259,7 +259,7 @@ class toolbox:
             start = i * interval
             end = min(start + interval, len(X2))
             proc = Process(
-                target=toolbox.taskRunner_test, args=(self, X2, start, end, Q)
+                target=toolbox.taskRunner_test, args=(self.Inf, self.Model, X2, start, end, Q)
             )
             proc.start()
             procs.append(proc)
@@ -271,11 +271,12 @@ class toolbox:
         for proc in procs:
             proc.join()
 
-    def taskRunner_test(self, X2, start, end, Q):
+    @staticmethod
+    def taskRunner_test(Inf, Model, X2, start, end, Q):
         for k in range(start, end):
             x = X2[k]
             tags = []
-            prob = self.Inf.decodeViterbi_fast(self.Model, x._x, tags)
+            prob = Inf.decodeViterbi_fast(Model, x._x, tags)
             Q.put((k, tags))
 
 
