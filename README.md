@@ -292,7 +292,8 @@ year = {2016}}
 5. [在黑盒测试集上进行比较的话，效果如何？](https://github.com/lancopku/pkuseg-python/wiki#5-在黑盒测试集上进行比较的话效果如何)
 6. [如果我不了解待分词语料的所属领域呢？](https://github.com/lancopku/pkuseg-python/wiki#6-如果我不了解待分词语料的所属领域呢)
 7. [如何看待在一些特定样例上的分词结果？](https://github.com/lancopku/pkuseg-python/wiki#7-如何看待在一些特定样例上的分词结果)
-8. [如何看待网络上的文稿？](https://github.com/lancopku/pkuseg-python/wiki#8-如何看待网络上的文稿)
+8. [关于运行速度问题？](https://github.com/lancopku/pkuseg-python/wiki#8-关于运行速度问题？)
+9. [如何看待网络上的文稿？](https://github.com/lancopku/pkuseg-python/wiki#9-如何看待网络上的文稿)
 
 
 
