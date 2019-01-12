@@ -108,7 +108,7 @@ pkuseg具有如下几个特点：
 
 #### 默认模型在不同领域的测试效果
 
-考虑到很多用户在尝试分词工具的时候，大多数时候会使用工具包自带模型测试。为了直接对比“初始”性能，我们也比较了各个工具包的默认模型在不同领域的测试效果(感谢 @yangbisheng2009 的建议)。请注意，这样的比较只是为了说明默认情况下的效果，这样的比较不是公平的。
+考虑到很多用户在尝试分词工具的时候，大多数时候会使用工具包自带模型测试。为了直接对比“初始”性能，我们也比较了各个工具包的默认模型在不同领域的测试效果(感谢 @yangbisheng2009 的建议)。请注意，这样的比较只是为了说明默认情况下的效果，并不是公平的。
 
 | Default | Training Corpus         | MSRA  | CTB8  | PKU   | WEIBO | All Average | OOD Average |
 | ------- | ----------------------- | :---: | :---: | :---: | :---: | :---------: | :---------: |
@@ -128,7 +128,7 @@ pkuseg具有如下几个特点：
 
 以下代码示例适用于python交互式环境。
 
-代码示例1：使用默认模型及默认词典分词
+代码示例1：使用默认配置进行分词，使用CTB8预训练模型，不使用词典
 ```python3
 import pkuseg
 
@@ -137,7 +137,7 @@ text = seg.cut('我爱北京天安门')                        # 进行分词
 print(text)
 ```
 
-代码示例2：设置用户自定义词典
+代码示例2：使用默认模型，并使用自定义词典。请留意**凡是在词典中的词一定会单独成词**，因而请仅加入必须切分出来的词。
 ```python3
 import pkuseg
 
@@ -147,7 +147,7 @@ text = seg.cut('我爱北京天安门')                         # 进行分词
 print(text)
 ```
 
-代码示例3：使用其它模型
+代码示例3：使用其它模型，不使用词典
 ```python3
 import pkuseg
 
@@ -157,12 +157,13 @@ text = seg.cut('我爱北京天安门')                         # 进行分词
 print(text)
 ```
 
-代码示例4：对文件分词
+代码示例4：对文件分词(使用默认模型，不使用词典)
 ```python3
 import pkuseg
 
-pkuseg.test('input.txt', 'output.txt', nthread=20)     # 对input.txt的文件分词输出到output.txt中，
-                                                       # 使用默认模型和词典，开20个进程
+# 对input.txt的文件分词输出到output.txt中
+# 使用默认模型，不使用词典，开20个进程
+pkuseg.test('input.txt', 'output.txt', nthread=20)     
 ```
 
 
@@ -172,7 +173,7 @@ import pkuseg
 
 # 训练文件为'msr_training.utf8'
 # 测试文件为'msr_test_gold.utf8'
-# 模型存到'./models'目录下，开20个进程训练模型
+# 训练好的模型存到'./models'目录下，开20个进程训练模型
 pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)	
 ```
 
@@ -209,8 +210,8 @@ pkuseg.pkuseg(model_name='ctb8', user_dict=[])
 pkuseg.test(readFile, outputFile, model_name='ctb8', user_dict=[], nthread=10)
 	readFile		输入文件路径
 	outputFile		输出文件路径
-	model_name		同pkuseg.pkuseg
-	user_dict		同pkuseg.pkuseg
+	model_name		模型路径。同pkuseg.pkuseg
+	user_dict		设置用户词典。同pkuseg.pkuseg
 	nthread			测试时开的进程数
 ```
 
@@ -249,6 +250,10 @@ pkuseg.train(trainFile, testFile, savedir, nthread=10)
 
 欢迎更多用户可以分享自己训练好的细分领域模型。
 
+## 版本历史
+
+- v0.0.11
+  - 修订默认配置：CTB8作为默认模型，不使用词典
 
 
 ## 开源协议
@@ -292,7 +297,7 @@ year = {2016}}
 5. [在黑盒测试集上进行比较的话，效果如何？](https://github.com/lancopku/pkuseg-python/wiki#5-在黑盒测试集上进行比较的话效果如何)
 6. [如果我不了解待分词语料的所属领域呢？](https://github.com/lancopku/pkuseg-python/wiki#6-如果我不了解待分词语料的所属领域呢)
 7. [如何看待在一些特定样例上的分词结果？](https://github.com/lancopku/pkuseg-python/wiki#7-如何看待在一些特定样例上的分词结果)
-8. [关于运行速度问题？](https://github.com/lancopku/pkuseg-python/wiki#8-关于运行速度问题？)
+8. [关于运行速度问题？](https://github.com/lancopku/pkuseg-python/wiki#8-关于运行速度问题)
 9. [如何看待网络上的文稿？](https://github.com/lancopku/pkuseg-python/wiki#9-如何看待网络上的文稿)
 
 
