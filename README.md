@@ -194,6 +194,8 @@ python3 mp.py
 ```
 详见[无法使用多进程分词和训练功能，提示RuntimeError和BrokenPipeError](https://github.com/lancopku/pkuseg-python/wiki#3-无法使用多进程分词和训练功能提示runtimeerror和brokenpipeerror)。
 
+**在Windows平台上，请当文件足够大时再使用多进程分词功能**，详见[关于多进程速度问题](https://github.com/lancopku/pkuseg-python/wiki#9-关于多进程速度问题)。
+
 #### 参数说明
 
 模型配置
@@ -298,7 +300,8 @@ year = {2016}}
 6. [如果我不了解待分词语料的所属领域呢？](https://github.com/lancopku/pkuseg-python/wiki#6-如果我不了解待分词语料的所属领域呢)
 7. [如何看待在一些特定样例上的分词结果？](https://github.com/lancopku/pkuseg-python/wiki#7-如何看待在一些特定样例上的分词结果)
 8. [关于运行速度问题？](https://github.com/lancopku/pkuseg-python/wiki#8-关于运行速度问题)
-9. [如何看待网络上的文稿？](https://github.com/lancopku/pkuseg-python/wiki#9-如何看待网络上的文稿)
+9. [关于多进程速度问题？](https://github.com/lancopku/pkuseg-python/wiki#9-关于多进程速度问题)
+10. [如何看待网络上的文稿？](https://github.com/lancopku/pkuseg-python/wiki#10-如何看待网络上的文稿)
 
 
 
