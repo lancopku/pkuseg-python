@@ -142,7 +142,8 @@ class pkuseg:
     def cut(self, txt):
         """分词，结果返回一个list"""
         config = self.config
-        txt = txt.replace("\r", "")
+        txt = txt.strip()
+        # txt = txt.replace("\r", "")
         txt = txt.replace("\t", " ")
         ary = txt.split(config.lineEnd)
         ret = []
@@ -260,37 +261,148 @@ def train(trainFile, testFile, savedir, nthread=10):
     print("Total time: " + str(time.time() - starttime))
 
 
-def _proc(seg, lines, start, end, q):
+def _test_single_proc(
+    input_file, output_file, model_name="ctb8", user_dict=None, verbose=False
+):
+
+    times = []
+    times.append(time.time())
+    if user_dict is None:
+        user_dict = []
+    seg = pkuseg(model_name, user_dict)
+
+    times.append(time.time())
+    if not os.path.exists(input_file):
+        raise Exception("input_file {} does not exist.".format(input_file))
+    with open(input_file, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+
+    times.append(time.time())
+    results = []
+    for line in lines:
+        results.append(" ".join(seg.cut(line)))
+
+    times.append(time.time())
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write("\n".join(results))
+    times.append(time.time())
+
+    print("total_time:\t{:.3f}".format(times[-1] - times[0]))
+
+    if verbose:
+        time_strs = ["load_model", "read_file", "word_seg", "write_file"]
+        for key, value in zip(
+            time_strs,
+            [end - start for start, end in zip(times[:-1], times[1:])],
+        ):
+            print("{}:\t{:.3f}".format(key, value))
+
+
+def _proc_deprecated(seg, lines, start, end, q):
     for i in range(start, end):
         l = lines[i].strip()
         ret = seg.cut(l)
         q.put((i, " ".join(ret)))
 
 
-def test(readFile, outputFile, model_name="ctb8", user_dict=[], nthread=10):
-    """批处理测试，多进程加速"""
-    starttime = time.time()
+def _proc(seg, in_queue, out_queue):
+    # TODO: load seg (json or pickle serialization) in sub_process
+    #       to avoid pickle seg online when using start method other
+    #       than fork
+    while True:
+        item = in_queue.get()
+        if item is None:
+            return
+        idx, line = item
+        out_queue.put((idx, " ".join(seg.cut(line))))
+
+
+def _test_multi_proc(
+    input_file,
+    output_file,
+    nthread,
+    model_name="ctb8",
+    user_dict=None,
+    verbose=False,
+):
+
+    times = []
+    times.append(time.time())
+    if user_dict is None:
+        user_dict = []
     seg = pkuseg(model_name, user_dict)
-    if not os.path.exists(readFile):
-        raise Exception("inputfile does not exist.")
-    with open(readFile, encoding="utf-8") as f:
+
+    times.append(time.time())
+    if not os.path.exists(input_file):
+        raise Exception("input_file {} does not exist.".format(input_file))
+    with open(input_file, "r", encoding="utf-8") as f:
         lines = f.readlines()
-    total = len(lines)
-    step = (total + nthread - 1) // nthread
-    q = Queue()
+
+    times.append(time.time())
+    in_queue = Queue()
+    out_queue = Queue()
     procs = []
     for i in range(nthread):
-        start = i * step
-        end = min(start + step, total)
-        p = Process(target=_proc, args=(seg, lines, start, end, q))
-        p.start()
+        p = Process(target=_proc, args=(seg, in_queue, out_queue))
         procs.append(p)
-    result = [None] * total
-    for i in range(total):
-        j, ans = q.get()
-        result[j] = ans
+
+    for idx, line in enumerate(lines):
+        in_queue.put((idx, line))
+
+    for proc in procs:
+        in_queue.put(None)
+        proc.start()
+
+    times.append(time.time())
+    result = [None] * len(lines)
+    for _ in result:
+        idx, line = out_queue.get()
+        result[idx] = line
+
+    times.append(time.time())
     for p in procs:
         p.join()
-    with open(outputFile, "w", encoding="utf-8") as f:
+
+    times.append(time.time())
+    with open(output_file, "w", encoding="utf-8") as f:
         f.write("\n".join(result))
-    print("Total time: " + str(time.time() - starttime))
+    times.append(time.time())
+
+    print("total_time:\t{:.3f}".format(times[-1] - times[0]))
+
+    if verbose:
+        time_strs = [
+            "load_model",
+            "read_file",
+            "start_proc",
+            "word_seg",
+            "join_proc",
+            "write_file",
+        ]
+
+        for key, value in zip(
+            time_strs,
+            [end - start for start, end in zip(times[:-1], times[1:])],
+        ):
+            print("{}:\t{:.3f}".format(key, value))
+
+
+def test(
+    input_file,
+    output_file,
+    model_name="ctb8",
+    user_dict=None,
+    nthread=10,
+    verbose=False,
+):
+
+    if nthread > 1:
+        _test_multi_proc(
+            input_file, output_file, nthread, model_name, user_dict, verbose
+        )
+    else:
+        _test_single_proc(
+            input_file, output_file, model_name, user_dict, verbose
+        )
+
+
