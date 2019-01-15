@@ -20,12 +20,13 @@ class Config:
 
     def __init__(self):
         # main setting
-        self.trainFile = "data/small_training.utf8"
-        self.testFile = "data/small_test.utf8"
-        self.homepath = tempfile.gettempdir()
-        self.tempFile = os.path.join(self.homepath, ".pkuseg/temp")
-        self.readFile = "data/small_test.utf8"
-        self.outputFile = "data/small_test_output.utf8"
+        self.trainFile = os.path.join("data", "small_training.utf8")
+        self.testFile = os.path.join("data", "small_test.utf8")
+        self._tmp_dir = tempfile.TemporaryDirectory()
+        self.homepath = self._tmp_dir.name
+        self.tempFile = os.path.join(self.homepath, ".pkuseg", "temp")
+        self.readFile = os.path.join("data", "small_test.utf8")
+        self.outputFile = os.path.join("data", "small_test_output.utf8")
 
         self.runMode = "train"
         self.modelOptimizer = "crf.adf"
@@ -41,7 +42,7 @@ class Config:
         self.trainSizeScale = 1  # for scaling the size of training data
         self.ttlIter = 20  # of training iterations
         self.nUpdate = 10  # for ADF training
-        self.outFolder = os.path.join(self.tempFile, "output/")
+        self.outFolder = os.path.join(self.tempFile, "output")
         self.save = 1  # save model file
         self.rawResWrite = True
         self.miniBatch = 1  # mini-batch in stochastic training
@@ -79,7 +80,7 @@ class Config:
         self.outDir = self.outFolder
         self.testrawDir = "rawinputs/"
         self.testinputDir = "inputs/"
-        self.tempDir = os.path.join(self.homepath, ".pkuseg/temp")
+        self.tempDir = os.path.join(self.homepath, ".pkuseg", "temp")
         self.testoutputDir = "entityoutputs/"
 
         self.GL_init = True
@@ -105,7 +106,7 @@ class Config:
         self.fGoldTest = os.path.join(self.tempFile, "gtest.txt")
 
         self.modelDir = os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), "models/ctb8"
+            os.path.dirname(os.path.realpath(__file__)), "models", "ctb8"
         )
         self.fModel = os.path.join(self.modelDir, "model.txt")
 
