@@ -47,7 +47,6 @@ class Preprocesser:
         now.isword = True
 
     def solve(self, txt):
-        print(self.trie)
         """对文本进行预处理"""
         outlst = []
         iswlst = []
