@@ -47,6 +47,7 @@ class Preprocesser:
         now.isword = True
 
     def solve(self, txt):
+        print(self.trie)
         """对文本进行预处理"""
         outlst = []
         iswlst = []
@@ -57,16 +58,23 @@ class Preprocesser:
             now = self.trie
             j = i
             found = False
+            last_word_idx = -1 # 表示从当前位置i往后匹配，最长匹配词词尾的idx
             while True:
                 c = txt[j]
-                if not c in now.children:
-                    break
-                now = now.children[c]
-                j += 1
-                if now.isword:
+                if not c in now.children and last_word_idx != -1:
                     found = True
                     break
-                if j == l:
+                if not c in now.children and last_word_idx == -1:
+                    break
+                now = now.children[c]
+                if now.isword:
+                    last_word_idx = j
+                j += 1
+                if j == l and last_word_idx == -1:
+                    break
+                if j == l and last_word_idx != -1 :
+                    j = last_word_idx + 1
+                    found = True
                     break
             if found:
                 if last != i:
@@ -406,3 +414,11 @@ def test(
         )
 
 
+
+if __name__ == "__main__" :
+    #lexicon = ['北京市我']
+    lexicon = ['北京市我天安门', '北京市我']
+    seg = pkuseg(user_dict=lexicon)
+    text = seg.cut("我爱北京市我爱天安门北京市我天安门11")
+    print(text)
+    
