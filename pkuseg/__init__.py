@@ -413,11 +413,3 @@ def test(
         )
 
 
-
-if __name__ == "__main__" :
-    #lexicon = ['北京市我']
-    lexicon = ['北京市我天安门', '北京市我']
-    seg = pkuseg(user_dict=lexicon)
-    text = seg.cut("我爱北京市我爱天安门北京市我天安门11")
-    print(text)
-    
