@@ -1,50 +1,88 @@
 import os
+import sys
 import numpy as np
-from .config import Config
+
+from .config import config
 
 
-class model:
-    def __init__(self, config, *args):
-        if len(args) == 1:
-            file = args[0]
-            if os.path.exists(file):
-                self.load(file)
-            else:
-                print(file)
-        elif len(args) == 2:
-            if type(args[1]) == bool:
-                m, wCopy = args
-                self.NTag = m.NTag
-                if wCopy:
-                    self.W = m.W.copy()
-                else:
-                    self.W = np.zeros_like(m.W)
-            else:
-                X, fGen = args
-                self.NTag = X.NTag
-                if config.random == 0:
-                    self.W = np.zeros(fGen.NCompleteFeature)
-                elif config.random == 1:
-                    self.W = np.random.random(size=(fGen.NCompleteFeature,)) * 2 - 1
-                else:
-                    raise Exception("invalid argument")
+class Model:
+    def __init__(self, n_feature, n_tag):
+
+        self.n_tag = n_tag
+        self.n_feature = n_feature
+        self.n_transition_feature = n_tag * (n_feature + n_tag)
+        if config.random:
+            self.w = np.random.random(size=(self.n_transition_feature,)) * 2 - 1
         else:
-            raise Exception("invalid argument")
+            self.w = np.zeros(self.n_transition_feature)
 
-    def load(self, file):
-        with open(file, encoding="utf-8") as f:
-            txt = f.read()
-        txt = txt.replace("\r", "")
-        ary = txt.split(Config.lineEnd)
-        self.NTag = int(ary[0])
-        wsize = int(ary[1])
-        self.W = np.zeros(wsize)
+    def _get_node_tag_feature_id(self, feature_id, tag_id):
+        return feature_id * self.n_tag + tag_id
+
+    def _get_tag_tag_feature_id(self, pre_tag_id, tag_id):
+        return self.n_feature * self.n_tag + tag_id * self.n_tag + pre_tag_id
+
+    @classmethod
+    def load(cls):
+        model_path = os.path.join(config.modelDir, "weights.npz")
+        if os.path.exists(model_path):
+            npz = np.load(model_path)
+            sizes = npz["sizes"]
+            w = npz["w"]
+            model = cls.__new__(cls)
+            model.n_tag = int(sizes[0])
+            model.n_feature = int(sizes[1])
+            model.n_transition_feature = model.n_tag * (
+                model.n_feature + model.n_tag
+            )
+            model.w = w
+            assert model.w.shape[0] == model.n_transition_feature
+            return model
+
+        print(
+            "WARNING: weights.npz does not exist, try loading using old format",
+            file=sys.stderr,
+        )
+
+        model_path = os.path.join(config.modelDir, "model.txt")
+        with open(model_path, encoding="utf-8") as f:
+            ary = f.readlines()
+
+        model = cls.__new__(cls)
+        model.n_tag = int(ary[0].strip())
+        wsize = int(ary[1].strip())
+        w = np.zeros(wsize)
         for i in range(2, wsize):
-            self.W[i - 2] = float(ary[i])
+            w[i - 2] = float(ary[i].strip())
+        model.w = w
+        model.n_feature = wsize // model.n_tag - model.n_tag
+        model.n_transition_feature = wsize
 
-    def save(self, file):
-        with open(file, "w", encoding="utf-8") as f:
-            f.write(str(self.NTag) + "\n")
-            f.write(str(self.W.shape[0]) + "\n")
-            for im in self.W:
-                f.write("%.4f\n" % im)
+        model.save()
+        return model
+
+    @classmethod
+    def new(cls, model, copy_weight=True):
+
+        new_model = cls.__new__(cls)
+        new_model.n_tag = model.n_tag
+        if copy_weight:
+            new_model.w = model.w.copy()
+        else:
+            new_model.w = np.zeros_like(model.w)
+        new_model.n_feature = (
+            new_model.w.shape[0] // new_model.n_tag - new_model.n_tag
+        )
+        new_model.n_transition_feature = new_model.w.shape[0]
+        return new_model
+
+    def save(self):
+        sizes = np.array([self.n_tag, self.n_feature])
+        np.savez(
+            os.path.join(config.modelDir, "weights.npz"), sizes=sizes, w=self.w
+        )
+        # np.save
+        # with open(file, "w", encoding="utf-8") as f:
+        #     f.write("{}\n{}\n".format(self.n_tag, self.w.shape[0]))
+        #     for value in self.w:
+        #         f.write("{:.4f}\n".format(value))
