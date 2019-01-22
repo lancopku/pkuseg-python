@@ -1,12 +1,23 @@
-from .feature import *
-from .config import Config
-from .data_format import *
-from .toolbox import *
-from .inference import *
-from .model import *
-from .main import *
+from __future__ import print_function
+import sys
+
+if sys.version_info[0] < 3:
+    print("pkuseg does not support python2", file=sys.stderr)
+    sys.exit(1)
+
 import os
+import time
+import multiprocessing
+
 from multiprocessing import Process, Queue
+
+import pkuseg.trainer
+import pkuseg.inference as _inf
+
+
+from pkuseg.config import config
+from pkuseg.feature_extractor import FeatureExtractor
+from pkuseg.model import Model
 
 
 class TrieNode:
@@ -84,163 +95,149 @@ class Preprocesser:
         return outlst, iswlst
 
 
-class pkuseg:
+class PKUSeg:
     def __init__(self, model_name="ctb8", user_dict=[]):
         """初始化函数，加载模型及用户词典"""
-        print("loading model")
-        config = Config()
-        self.config = config
+        # print("loading model")
+        # config = Config()
+        # self.config = config
         if model_name in ["ctb8"]:
             config.modelDir = os.path.join(
-                os.path.dirname(os.path.realpath(__file__)), "models", model_name
+                os.path.dirname(os.path.realpath(__file__)),
+                "models",
+                model_name,
             )
         else:
             config.modelDir = model_name
-        config.fModel = os.path.join(config.modelDir, "model.txt")
+        # config.fModel = os.path.join(config.modelDir, "model.txt")
         if user_dict == "safe_lexicon":
             file_name = os.path.join(
-                os.path.dirname(os.path.realpath(__file__)), "dicts/safe_lexicon.txt"
+                os.path.dirname(os.path.realpath(__file__)),
+                "dicts", "safe_lexicon.txt",
             )
         else:
             file_name = user_dict
+
         self.preprocesser = Preprocesser(file_name)
-        self.testFeature = Feature(
-            config, None, "test"
-        )  # convert: keywordtransfor, process: test.txt
-        self.df = dataFormat(config)  # test.txt -> ftest.txt
-        self.df.readFeature(config.modelDir + "/featureIndex.txt")
-        self.df.readTag(config.modelDir + "/tagIndex.txt")
-        self.model = model(config, config.fModel)
-        self.idx2tag = [None] * len(self.df.tagIndexMap)
-        for i in self.df.tagIndexMap:
-            self.idx2tag[self.df.tagIndexMap[i]] = i
-        if config.nLabel == 2:
-            B = B_single = "B"
-            I_first = I = I_end = "I"
-        elif config.nLabel == 3:
-            B = B_single = "B"
-            I_first = I = "I"
-            I_end = "I_end"
-        elif config.nLabel == 4:
-            B = "B"
-            B_single = "B_single"
-            I_first = I = "I"
-            I_end = "I_end"
-        elif config.nLabel == 5:
-            B = "B"
-            B_single = "B_single"
-            I_first = "I_first"
-            I = "I"
-            I_end = "I_end"
-        self.B = B
-        self.B_single = B_single
-        self.I_first = I_first
-        self.I = I
-        self.I_end = I_end
-        print("finish")
+
+        self.feature_extractor = FeatureExtractor.load()
+        self.model = Model.load()
+
+        self.idx_to_tag = {
+            idx: tag for tag, idx in self.feature_extractor.tag_to_idx.items()
+        }
+
+        # self.idx2tag = [None] * len(self.testFeature.tagIndexMap)
+        # for i in self.testFeature.tagIndexMap:
+        #     self.idx2tag[self.testFeature.tagIndexMap[i]] = i
+        # if config.nLabel == 2:
+        #     B = B_single = "B"
+        #     I_first = I = I_end = "I"
+        # elif config.nLabel == 3:
+        #     B = B_single = "B"
+        #     I_first = I = "I"
+        #     I_end = "I_end"
+        # elif config.nLabel == 4:
+        #     B = "B"
+        #     B_single = "B_single"
+        #     I_first = I = "I"
+        #     I_end = "I_end"
+        # elif config.nLabel == 5:
+        #     B = "B"
+        #     B_single = "B_single"
+        #     I_first = "I_first"
+        #     I = "I"
+        #     I_end = "I_end"
+        # self.B = B
+        # self.B_single = B_single
+        # self.I_first = I_first
+        # self.I = I
+        # self.I_end = I_end
+
+        self.n_feature = len(self.feature_extractor.feature_to_idx)
+        self.n_tag = len(self.feature_extractor.tag_to_idx)
+
+        # print("finish")
+
+    def _cut(self, text):
+        """
+        直接对文本分词
+        """
+
+        examples = list(self.feature_extractor.normalize_text(text))
+        length = len(examples)
+
+        all_feature = []  # type: List[List[int]]
+        for idx in range(length):
+            node_feature_idx = self.feature_extractor.get_node_features_idx(
+                idx, examples
+            )
+            # node_feature = self.feature_extractor.get_node_features(
+            #     idx, examples
+            # )
+
+            # node_feature_idx = []
+            # for feature in node_feature:
+            #     feature_idx = self.feature_extractor.feature_to_idx.get(feature)
+            #     if feature_idx is not None:
+            #         node_feature_idx.append(feature_idx)
+            # if not node_feature_idx:
+            #     node_feature_idx.append(0)
+
+            all_feature.append(node_feature_idx)
+
+        _, tags = _inf.decodeViterbi_fast(all_feature, self.model)
+
+        words = []
+        current_word = None
+        is_start = True
+        for tag, char in zip(tags, text):
+            if is_start:
+                current_word = char
+                is_start = False
+            elif "B" in self.idx_to_tag[tag]:
+                words.append(current_word)
+                current_word = char
+            else:
+                current_word += char
+        if current_word:
+            words.append(current_word)
+
+        return words
 
     def cut(self, txt):
         """分词，结果返回一个list"""
-        config = self.config
+
         txt = txt.strip()
-        # txt = txt.replace("\r", "")
-        txt = txt.replace("\t", " ")
-        ary = txt.split(config.lineEnd)
+
         ret = []
-        for im in ary:
-            if len(im) == 0:
+
+        if not txt:
+            return ret
+
+        imary = txt.split()  # 根据空格分为多个片段
+
+        # 对每个片段分词
+        for w0 in imary:
+            if not w0:
                 continue
-            imary = im.split(config.blank)
-            tmpary = []
-            for w0 in imary:
-                if len(w0) == 0:
-                    tmpary.append(w0)
+
+            # 根据用户词典拆成更多片段
+            lst, isword = self.preprocesser.solve(w0)
+
+            for w, isw in zip(lst, isword):
+                if isw:
+                    ret.append(w)
                     continue
-                lst, isword = self.preprocesser.solve(w0)
-                for w, isw in zip(lst, isword):
-                    if isw:
-                        ret.append(w)
-                        continue
-                    transed = []
-                    for i, c in enumerate(w):
-                        x = self.testFeature.keywordTransfer(c)
-                        if config.numLetterNorm:
-                            if x in config.num:
-                                x = "**Num"
-                            if x in config.letter:
-                                x = "**Letter"
-                        transed.append(x)
-                    l = len(transed)
-                    all_features = []
-                    for i in range(l):
-                        nodeFeatures = []
-                        self.testFeature.getNodeFeatures(i, transed, nodeFeatures)
-                        for j, f in enumerate(nodeFeatures):
-                            if f != "/":
-                                id = f.split(config.slash)[0]  # id == f?
-                                if not id in self.testFeature.featureSet:
-                                    nodeFeatures[j] = "/"
-                        all_features.append(nodeFeatures)
-                    all_feature_idx = []
-                    for k in range(l):
-                        flag = 0
-                        ary = all_features[k]
-                        featureLine = []
-                        for i, f in enumerate(ary):
-                            if f == "/":
-                                continue
-                            ary2 = f.split(config.slash)
-                            tmp = []
-                            for j in ary2:
-                                if j != "":
-                                    tmp.append(j)
-                            ary2 = tmp
-                            feature = str(i + 1) + "." + ary2[0]
-                            value = ""
-                            real = False
-                            if len(ary2) > 1:
-                                value = ary2[1]
-                                real = True
-                            if not feature in self.df.featureIndexMap:
-                                continue
-                            flag = 1
-                            fIndex = self.df.featureIndexMap[feature]
-                            if not real:
-                                featureLine.append(str(fIndex))
-                            else:
-                                featureLine.append(str(fIndex) + "/" + value)
-                        if flag == 0:
-                            featureLine.append("0")
-                        all_feature_idx.append(featureLine)
-                    XX = dataSet()
-                    XX.nFeature = len(self.df.featureIndexMap)
-                    XX.nTag = len(self.df.tagIndexMap)
-                    seq = dataSeq()
-                    seq.load(all_feature_idx)
-                    XX.append(seq)
-                    tb = toolbox(config, XX, False, self.model)
-                    taglist = tb.test(XX, 0, dynamic=True)
-                    taglist = taglist[0].split(",")[:-1]
-                    out = []
-                    now = ""
-                    isstart = True
-                    for t, k in zip(taglist, w):
-                        if isstart:
-                            now = k
-                            isstart = False
-                        elif self.idx2tag[int(t)].find("B") >= 0:
-                            out.append(now)
-                            now = k
-                        else:
-                            now = now + k
-                    out.append(now)
-                    ret.extend(out)
+
+                ret.extend(self._cut(w))
+
         return ret
 
 
 def train(trainFile, testFile, savedir, nthread=10):
     """用于训练模型"""
-    config = Config()
+    # config = Config()
     starttime = time.time()
     if not os.path.exists(trainFile):
         raise Exception("trainfile does not exist.")
@@ -250,14 +247,19 @@ def train(trainFile, testFile, savedir, nthread=10):
         os.makedirs(config.tempFile)
     if not os.path.exists(config.tempFile + "/output"):
         os.mkdir(config.tempFile + "/output")
-    config.runMode = "train"
+    # config.runMode = "train"
     config.trainFile = trainFile
     config.testFile = testFile
     config.modelDir = savedir
-    config.fModel = os.path.join(config.modelDir, "model.txt")
+    # config.fModel = os.path.join(config.modelDir, "model.txt")
     config.nThread = nthread
-    run(config)
-    clearDir(config.tempFile)
+
+    os.makedirs(config.modelDir, exist_ok=True)
+
+    pkuseg.trainer.train(config)
+
+    # pkuseg.main.run(config)
+    # clearDir(config.tempFile)
     print("Total time: " + str(time.time() - starttime))
 
 
@@ -269,7 +271,7 @@ def _test_single_proc(
     times.append(time.time())
     if user_dict is None:
         user_dict = []
-    seg = pkuseg(model_name, user_dict)
+    seg = PKUSeg(model_name, user_dict)
 
     times.append(time.time())
     if not os.path.exists(input_file):
@@ -317,6 +319,16 @@ def _proc(seg, in_queue, out_queue):
         out_queue.put((idx, " ".join(seg.cut(line))))
 
 
+def _proc_alt(model_name, user_dict, in_queue, out_queue):
+    seg = PKUSeg(model_name, user_dict)
+    while True:
+        item = in_queue.get()
+        if item is None:
+            return
+        idx, line = item
+        out_queue.put((idx, " ".join(seg.cut(line))))
+
+
 def _test_multi_proc(
     input_file,
     output_file,
@@ -326,11 +338,17 @@ def _test_multi_proc(
     verbose=False,
 ):
 
+    alt = multiprocessing.get_start_method() == "spawn"
+
     times = []
     times.append(time.time())
+
     if user_dict is None:
         user_dict = []
-    seg = pkuseg(model_name, user_dict)
+    if alt:
+        seg = None
+    else:
+        seg = PKUSeg(model_name, user_dict)
 
     times.append(time.time())
     if not os.path.exists(input_file):
@@ -342,8 +360,14 @@ def _test_multi_proc(
     in_queue = Queue()
     out_queue = Queue()
     procs = []
-    for i in range(nthread):
-        p = Process(target=_proc, args=(seg, in_queue, out_queue))
+    for _ in range(nthread):
+        if alt:
+            p = Process(
+                target=_proc_alt,
+                args=(model_name, user_dict, in_queue, out_queue),
+            )
+        else:
+            p = Process(target=_proc, args=(seg, in_queue, out_queue))
         procs.append(p)
 
     for idx, line in enumerate(lines):
@@ -380,6 +404,11 @@ def _test_multi_proc(
             "write_file",
         ]
 
+        if alt:
+            times = times[1:]
+            time_strs = time_strs[1:]
+            time_strs[2] = "load_modal & word_seg"
+
         for key, value in zip(
             time_strs,
             [end - start for start, end in zip(times[:-1], times[1:])],
@@ -404,5 +433,4 @@ def test(
         _test_single_proc(
             input_file, output_file, model_name, user_dict, verbose
         )
-
 
