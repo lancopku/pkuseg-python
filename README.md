@@ -128,11 +128,11 @@ pkuseg具有如下几个特点：
 
 以下代码示例适用于python交互式环境。
 
-代码示例1：使用默认配置进行分词，使用CTB8预训练模型，不使用词典。请注意**在pip上发布的0.0.13版本起，接口改为了pkuseg.PKUSeg()，对于使用旧版本的用户请使用pkuseg.pkuseg()进行分词。**
+代码示例1：使用默认配置进行分词，使用CTB8预训练模型，不使用词典。
 ```python3
 import pkuseg
 
-seg = pkuseg.PKUSeg()                                  # 以默认配置加载模型
+seg = pkuseg.pkuseg()                                  # 以默认配置加载模型
 text = seg.cut('我爱北京天安门')                        # 进行分词
 print(text)
 ```
@@ -142,7 +142,7 @@ print(text)
 import pkuseg
 
 lexicon = ['北京大学', '北京天安门']                     # 希望分词时用户词典中的词固定不分开
-seg = pkuseg.PKUSeg(user_dict=lexicon)                  # 加载模型，给定用户词典
+seg = pkuseg.pkuseg(user_dict=lexicon)                  # 加载模型，给定用户词典
 text = seg.cut('我爱北京天安门')                         # 进行分词
 print(text)
 ```
@@ -151,7 +151,7 @@ print(text)
 ```python3
 import pkuseg
 
-seg = pkuseg.PKUSeg(model_name='./ctb8')                # 假设用户已经下载好了ctb8的模型
+seg = pkuseg.pkuseg(model_name='./ctb8')                # 假设用户已经下载好了ctb8的模型
                                                         # 并放在了'./ctb8'目录下，通过设置model_name加载该模型
 text = seg.cut('我爱北京天安门')                         # 进行分词
 print(text)
@@ -200,7 +200,7 @@ python3 mp.py
 
 模型配置
 ```
-pkuseg.PKUSeg(model_name='ctb8', user_dict=[])
+pkuseg.pkuseg(model_name='ctb8', user_dict=[])
 	model_name		模型路径。默认是'ctb8'表示我们预训练好的模型(仅对pip下载的用户)。
 	                        用户可以填自己下载或训练的模型所在的路径如model_name='./models'。
 	user_dict		设置用户词典。默认不使用词典。填'safe_lexicon'表示我们提供的一个中文词典(仅pip)。
@@ -212,8 +212,8 @@ pkuseg.PKUSeg(model_name='ctb8', user_dict=[])
 pkuseg.test(readFile, outputFile, model_name='ctb8', user_dict=[], nthread=10)
 	readFile		输入文件路径
 	outputFile		输出文件路径
-	model_name		模型路径。同pkuseg.PKUSeg
-	user_dict		设置用户词典。同pkuseg.PKUSeg
+	model_name		模型路径。同pkuseg.pkuseg
+	user_dict		设置用户词典。同pkuseg.pkuseg
 	nthread			测试时开的进程数
 ```
 
