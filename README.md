@@ -66,7 +66,7 @@ pkuseg具有如下几个特点：
 
 考虑到jieba分词和THULAC工具包等并没有提供细领域的预训练模型，为了便于比较，我们重新使用它们提供的训练接口在细领域的数据集上进行训练，用训练得到的模型进行中文分词。
 
-我们选择Linux作为测试环境，在新闻数据(MSRA)、混合型文本(CTB8)、网络文本(WEIBO)数据上对不同工具包进行了准确率测试。我们使用了第二届国际汉语分词评测比赛提供的分词评价脚本。其中MSRA与WEIBO使用标准训练集测试集划分，CTB8采用随机划分。对于不同的分词工具包，训练测试数据的划分都是一致的；**即所有的分词工具包都在相同的训练集上训练，在相同的测试集上测试**。对于需要训练的模型，如THULAC和pkuseg，在所有数据集上，我们使用默认的训练超参数。以下是pkuseg预训练代码示例:
+我们选择Linux作为测试环境，在新闻数据(MSRA)、混合型文本(CTB8)、网络文本(WEIBO)数据上对不同工具包进行了准确率测试。我们使用了第二届国际汉语分词评测比赛提供的分词评价脚本。其中MSRA与WEIBO使用标准训练集测试集划分，CTB8采用随机划分。对于不同的分词工具包，训练测试数据的划分都是一致的；**即所有的分词工具包都在相同的训练集上训练，在相同的测试集上测试**。对于需要训练的模型，如THULAC和pkuseg，在所有数据集上，我们使用默认的训练超参数。以下是pkuseg训练代码示例:
 
 ```
 pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)
@@ -125,7 +125,6 @@ pkuseg.test('msr_test.raw', 'output.txt', user_dict=None)
 | ------- | :---: | :---: | :---: | :---: | :---------: |
 | jieba  | 81.45 | 79.58 | 81.83 | 83.56 | 81.61       |
 | THULAC |	85.55 | 87.84 | 92.29 | 86.65 | 88.08 |
-
 | pkuseg | 88.24 | 88.61 | 89.88 | 90.64 | **89.34**   |
 
 其中，`All Average`显示的是在所有测试集上F-score的平均，`OOD Average`是去除对应训练语料的测试集后的平均结果。
@@ -183,7 +182,7 @@ import pkuseg
 # 训练文件为'msr_training.utf8'
 # 测试文件为'msr_test_gold.utf8'
 # 训练好的模型存到'./models'目录下，开20个进程训练模型
-# 训练模式下会保存最后一轮模型作为最终模型。
+# 训练模式下会保存最后一轮模型作为最终模型
 # 目前仅支持utf-8编码，训练集和测试集要求所有单词以单个或多个空格分开
 pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)	
 ```
@@ -326,4 +325,5 @@ year = {2016}}
 
 ## 作者
 
-Ruixuan Luo （罗睿轩）,  Jingjing Xu（许晶晶）, Xuancheng Ren（任宣丞）,  Xu Sun （孙栩）
+Ruixuan Luo （罗睿轩）,  Jingjing Xu（许晶晶）, Xuancheng Ren（任宣丞）, Yi Zhang（张艺）, Bingzhen Wei（位冰镇）， Xu Sun （孙栩）
+
