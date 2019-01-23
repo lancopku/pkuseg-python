@@ -11,7 +11,7 @@ import multiprocessing
 
 from multiprocessing import Process, Queue
 
-import pkuseg.trainer
+import pkuseg.trainer as trainer
 import pkuseg.inference as _inf
 
 
@@ -94,14 +94,70 @@ class Preprocesser:
             iswlst.append(False)
         return outlst, iswlst
 
+class Postprocesser:
+    """对分词结果后处理"""
+    def __init__(self, common_name, other_name):
+        if common_name is None and other_name is None:
+            self.do_process = False
+            return
+        self.do_process = True
+        if common_name is None:
+            self.common_words = set()
+        else:
+            with open(common_name, encoding='utf-8') as f:
+                lines = f.readlines()
+            self.common_words = set(map(lambda x:x.strip(), lines))
+        if other_name is None:
+            self.other_words = set()
+        else:
+            with open(other_name, encoding='utf-8') as f:
+                lines = f.readlines()
+            self.other_words = set(map(lambda x:x.strip(), lines))
 
-class PKUSeg:
-    def __init__(self, model_name="ctb8", user_dict=[]):
+    def post_process(self, sent, check_seperated):
+        for m in reversed(range(2, 8)): 
+            end = len(sent)-m
+            if end < 0:
+                continue
+            i = 0
+            while (i < end + 1):
+                merged_words = ''.join(sent[i:i+m])
+                if merged_words in self.common_words:
+                    do_seg = True
+                elif merged_words in self.other_words:
+                    if check_seperated:
+                        seperated = all(((w in self.common_words) 
+                            or (w in self.other_words)) for w in sent[i:i+m])
+                    else:
+                        seperated = False
+                    if seperated:
+                        do_seg = False
+                    else:
+                        do_seg = True
+                else:
+                    do_seg = False
+                if do_seg:
+                    for k in range(m):
+                        del sent[i]
+                    sent.insert(i, merged_words)
+                    i += 1
+                    end = len(sent) - m
+                else:
+                    i += 1 
+        return sent
+
+    def __call__(self, sent):
+        if not self.do_process:
+            return sent
+        return self.post_process(sent, check_seperated=True)
+
+class pkuseg:
+    def __init__(self, model_name="default", user_dict="default"):
         """初始化函数，加载模型及用户词典"""
         # print("loading model")
         # config = Config()
         # self.config = config
-        if model_name in ["ctb8"]:
+        if model_name in ["default"]:
             config.modelDir = os.path.join(
                 os.path.dirname(os.path.realpath(__file__)),
                 "models",
@@ -110,15 +166,23 @@ class PKUSeg:
         else:
             config.modelDir = model_name
         # config.fModel = os.path.join(config.modelDir, "model.txt")
-        if user_dict == "safe_lexicon":
-            file_name = os.path.join(
+        if user_dict == "default":
+            # file_name = os.path.join(
+            #     os.path.dirname(os.path.realpath(__file__)),
+            #     "dicts", "default_common.txt",
+            # )
+            file_name = None
+            other_name = os.path.join(
                 os.path.dirname(os.path.realpath(__file__)),
-                "dicts", "safe_lexicon.txt",
+                "dicts", "default.txt",
             )
         else:
             file_name = user_dict
+            other_name = None
 
-        self.preprocesser = Preprocesser(file_name)
+        # self.preprocesser = Preprocesser(file_name)
+        self.preprocesser = Preprocesser([])
+        self.postprocesser = Postprocesser(file_name, other_name)
 
         self.feature_extractor = FeatureExtractor.load()
         self.model = Model.load()
@@ -230,7 +294,8 @@ class PKUSeg:
                     ret.append(w)
                     continue
 
-                ret.extend(self._cut(w))
+                output = self._cut(w)
+                ret.extend(self.postprocesser(output))
 
         return ret
 
@@ -256,7 +321,7 @@ def train(trainFile, testFile, savedir, nthread=10):
 
     os.makedirs(config.modelDir, exist_ok=True)
 
-    pkuseg.trainer.train(config)
+    trainer.train(config)
 
     # pkuseg.main.run(config)
     # clearDir(config.tempFile)
@@ -264,14 +329,12 @@ def train(trainFile, testFile, savedir, nthread=10):
 
 
 def _test_single_proc(
-    input_file, output_file, model_name="ctb8", user_dict=None, verbose=False
+    input_file, output_file, model_name="default", user_dict="default", verbose=False
 ):
 
     times = []
     times.append(time.time())
-    if user_dict is None:
-        user_dict = []
-    seg = PKUSeg(model_name, user_dict)
+    seg = pkuseg(model_name, user_dict)
 
     times.append(time.time())
     if not os.path.exists(input_file):
@@ -320,7 +383,7 @@ def _proc(seg, in_queue, out_queue):
 
 
 def _proc_alt(model_name, user_dict, in_queue, out_queue):
-    seg = PKUSeg(model_name, user_dict)
+    seg = pkuseg(model_name, user_dict)
     while True:
         item = in_queue.get()
         if item is None:
@@ -333,8 +396,8 @@ def _test_multi_proc(
     input_file,
     output_file,
     nthread,
-    model_name="ctb8",
-    user_dict=None,
+    model_name="default",
+    user_dict="default",
     verbose=False,
 ):
 
@@ -343,12 +406,10 @@ def _test_multi_proc(
     times = []
     times.append(time.time())
 
-    if user_dict is None:
-        user_dict = []
     if alt:
         seg = None
     else:
-        seg = PKUSeg(model_name, user_dict)
+        seg = pkuseg(model_name, user_dict)
 
     times.append(time.time())
     if not os.path.exists(input_file):
@@ -419,8 +480,8 @@ def _test_multi_proc(
 def test(
     input_file,
     output_file,
-    model_name="ctb8",
-    user_dict=None,
+    model_name="default",
+    user_dict="default",
     nthread=10,
     verbose=False,
 ):

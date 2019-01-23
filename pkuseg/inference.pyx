@@ -1,5 +1,6 @@
 # distutils: language = c++
 # cython: infer_types=True
+# cython: language_level=3
 cimport cython
 import numpy as np
 cimport numpy as np
