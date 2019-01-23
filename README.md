@@ -110,11 +110,12 @@ pkuseg具有如下几个特点：
 
 考虑到很多用户在尝试分词工具的时候，大多数时候会使用工具包自带模型测试。为了直接对比“初始”性能，我们也比较了各个工具包的默认模型在不同领域的测试效果(感谢 @yangbisheng2009 的建议)。请注意，这样的比较只是为了说明默认情况下的效果，并不是公平的。
 
-| Default | Training Corpus         | MSRA  | CTB8  | PKU   | WEIBO | All Average | OOD Average |
-| ------- | ----------------------- | :---: | :---: | :---: | :---: | :---------: | :---------: |
-| jieba   | ?                       | 81.45 | 79.58 | 81.83 | 83.56 | 81.61       | ?           |
-| THULAC  | 人民日报(PKU?)|	85.55 | 87.84 | 92.29 | 86.65 | 88.08 | 86.68?      |
-| pkuseg  | CTB8                    | 83.67 | 95.69 | 89.67 | 91.19 | **90.06**   | 88.18   |
+| Default | Training Corpus         | MSRA  | CTB8  | PKU   | WEIBO | All Average |
+| ------- | ----------------------- | :---: | :---: | :---: | :---: | :---------: |
+| jieba   | ?                       | 81.45 | 79.58 | 81.83 | 83.56 | 81.61       |
+| THULAC  | 人民日报(PKU?)|	85.55 | 87.84 | 92.29 | 86.65 | 88.08 |
+
+| pkuseg  | CTB8+PKU+WEIBO | 88.24 | 88.61 | 89.88 | 90.64 | **89.34**   |
 
 其中，`All Average`显示的是在所有测试集上F-score的平均，`OOD Average`是去除对应训练语料的测试集后的平均结果。THULAC的介绍中显示默认模型的训练语料为人民日报，同时提供词性标注功能，我们推测其使用的是PKU数据集，如果理解有误，欢迎指正。我们暂时没有发现jieba的默认基于词频模型的语料来源。
 
@@ -128,7 +129,7 @@ pkuseg具有如下几个特点：
 
 以下代码示例适用于python交互式环境。
 
-代码示例1：使用默认配置进行分词，使用CTB8预训练模型，不使用词典。
+代码示例1：使用默认配置进行分词，使用通用预训练模型，使用词典。
 ```python3
 import pkuseg
 
@@ -141,8 +142,7 @@ print(text)
 ```python3
 import pkuseg
 
-lexicon = ['北京大学', '北京天安门']                     # 希望分词时用户词典中的词固定不分开
-seg = pkuseg.pkuseg(user_dict=lexicon)                  # 加载模型，给定用户词典
+seg = pkuseg.pkuseg(user_dict='my_dict.txt')			 # 加载默认模型，给定用户词典为当前目录下的"my_dict.txt"
 text = seg.cut('我爱北京天安门')                         # 进行分词
 print(text)
 ```
@@ -151,13 +151,13 @@ print(text)
 ```python3
 import pkuseg
 
-seg = pkuseg.pkuseg(model_name='./ctb8')                # 假设用户已经下载好了ctb8的模型
-                                                        # 并放在了'./ctb8'目录下，通过设置model_name加载该模型
+seg = pkuseg.pkuseg(model_name='./ctb8', user_dict=None)    # 假设用户已经下载好了ctb8的模型
+															# 并放在了'./ctb8'目录下，通过设置model_name加载该模型
 text = seg.cut('我爱北京天安门')                         # 进行分词
 print(text)
 ```
 
-代码示例4：对文件分词(使用默认模型，不使用词典)
+代码示例4：对文件分词(使用默认模型，使用词典)
 ```python3
 import pkuseg
 
@@ -174,8 +174,11 @@ import pkuseg
 # 训练文件为'msr_training.utf8'
 # 测试文件为'msr_test_gold.utf8'
 # 训练好的模型存到'./models'目录下，开20个进程训练模型
+# 训练模式下会保存最后一轮模型作为最终模型。
+# 目前仅支持utf-8编码，训练集和测试集要求所有单词以单个或多个空格分开
 pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)	
 ```
+
 
 #### 多进程
 
@@ -200,16 +203,15 @@ python3 mp.py
 
 模型配置
 ```
-pkuseg.pkuseg(model_name='ctb8', user_dict=[])
-	model_name		模型路径。默认是'ctb8'表示我们预训练好的模型(仅对pip下载的用户)。
+pkuseg.pkuseg(model_name="default", user_dict="default")
+	model_name		模型路径。默认是"default"表示我们预训练好的模型(仅对pip下载的用户)。
 	                        用户可以填自己下载或训练的模型所在的路径如model_name='./models'。
-	user_dict		设置用户词典。默认不使用词典。填'safe_lexicon'表示我们提供的一个中文词典(仅pip)。
-	                        用户可以传入一个包含若干自定义单词的迭代器。
+	user_dict		设置用户词典。默认使用我们提供的词典。用户可以填自己的用户词典的路径，词典格式为一行一个词。填None表示不使用词典。
 ```
 
 对文件进行分词
 ```
-pkuseg.test(readFile, outputFile, model_name='ctb8', user_dict=[], nthread=10)
+pkuseg.test(readFile, outputFile, model_name="default", user_dict="default", nthread=10)
 	readFile		输入文件路径
 	outputFile		输出文件路径
 	model_name		模型路径。同pkuseg.pkuseg
@@ -234,12 +236,14 @@ pkuseg.train(trainFile, testFile, savedir, nthread=10)
 
 - MSRA: 在MSRA（新闻语料）上训练的模型。[下载地址](https://pan.baidu.com/s/1twci0QVBeWXUg06dK47tiA)
 
-- CTB8: 在CTB8（新闻文本及网络文本的混合型语料）上训练的模型。随pip包附带的是此模型。[下载地址](https://pan.baidu.com/s/1DCjDOxB0HD2NmP9w1jm8MA)
+- CTB8: 在CTB8（新闻文本及网络文本的混合型语料）上训练的模型。[下载地址](https://pan.baidu.com/s/1DCjDOxB0HD2NmP9w1jm8MA)
 
 - WEIBO: 在微博（网络文本语料）上训练的模型。[下载地址](https://pan.baidu.com/s/1QHoK2ahpZnNmX6X7Y9iCgQ)
 
+- CTB8+PKU+WEIBO: 混合数据集训练的通用模型，经实际验证，泛化性能最好。随pip包附带的是此模型。[下载地址](https://pan.baidu.com/s/1N4Xbs5zjo84NnYsLDay2_A)
 
-其中，MSRA数据由[第二届国际汉语分词评测比赛](http://sighan.cs.uchicago.edu/bakeoff2005/)提供，CTB8数据由[LDC](https://catalog.ldc.upenn.edu/ldc2013t21)提供，WEIBO数据由[NLPCC](http://tcci.ccf.org.cn/conference/2016/pages/page05_CFPTasks.html)分词比赛提供。
+
+其中，MSRA和PKU数据由[第二届国际汉语分词评测比赛](http://sighan.cs.uchicago.edu/bakeoff2005/)提供，CTB8数据由[LDC](https://catalog.ldc.upenn.edu/ldc2013t21)提供，WEIBO数据由[NLPCC](http://tcci.ccf.org.cn/conference/2016/pages/page05_CFPTasks.html)分词比赛提供。
 
 
 
@@ -254,9 +258,12 @@ pkuseg.train(trainFile, testFile, savedir, nthread=10)
 
 ## 版本历史
 
-- v0.0.11
+- v0.0.11(2019-01-09)
   - 修订默认配置：CTB8作为默认模型，不使用词典
-
+- v0.0.14(2019-01-23)
+  - 修改了词典处理方法，扩充了词典，分词效果有提升
+  - 效率进行了优化，测试速度较之前版本提升9倍左右
+  - 增加了在大规模混合数据集训练的通用模型，并将其设为默认使用模型
 
 ## 开源协议
 1. 本代码采用MIT许可证。

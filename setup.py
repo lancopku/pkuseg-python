@@ -24,7 +24,7 @@ def setup_package():
 
     setuptools.setup(
         name="pkuseg",
-        version="0.0.13",
+        version="0.0.14",
         author="Lanco",
         author_email="luoruixuan97@pku.edu.cn",
         description="A small package for Chinese word segmentation",
@@ -32,7 +32,7 @@ def setup_package():
         long_description_content_type="text/markdown",
         url="https://github.com/lancopku/pkuseg-python",
         packages=setuptools.find_packages(),
-        package_data={"": ["*.txt*"]},
+        package_data={"": ["*.txt*", "*.pkl", "*.npz"]},
         classifiers=[
             "Programming Language :: Python :: 3",
             "License :: Other/Proprietary License",
