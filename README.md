@@ -128,7 +128,7 @@ pkuseg.test('msr_test.raw', 'output.txt', user_dict=None)
 | THULAC |	85.55 | 87.84 | 92.29 | 86.65 | 88.08 |
 | pkuseg | 88.24 | 88.61 | 89.88 | 90.64 | **89.34**   |
 
-其中，`All Average`显示的是在所有测试集上F-score的平均，`OOD Average`是去除对应训练语料的测试集后的平均结果。
+其中，`All Average`显示的是在所有测试集上F-score的平均，
 
 
 
