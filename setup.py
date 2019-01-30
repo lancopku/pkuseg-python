@@ -24,7 +24,7 @@ def setup_package():
 
     setuptools.setup(
         name="pkuseg",
-        version="0.0.14",
+        version="0.0.15",
         author="Lanco",
         author_email="luoruixuan97@pku.edu.cn",
         description="A small package for Chinese word segmentation",
