@@ -38,7 +38,7 @@ def setup_package():
             "License :: Other/Proprietary License",
             "Operating System :: OS Independent",
         ],
-        install_requires=["numpy"],
+        install_requires=["numpy==1.16.0"],
         ext_modules=cythonize(extensions, annotate=True),
         zip_safe=False,
     )
