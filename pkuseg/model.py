@@ -16,6 +16,21 @@ class Model:
         else:
             self.w = np.zeros(self.n_transition_feature)
 
+    def expand(self, n_feature, n_tag):
+        new_transition_feature = n_tag * (n_feature + n_tag)
+        if config.random:
+            new_w = np.random.random(size=(new_transition_feature,)) * 2 - 1
+        else:
+            new_w = np.zeros(new_transition_feature)
+        n_node = self.n_tag * self.n_feature
+        n_edge = self.n_tag * self.n_tag
+        new_w[:n_node] = self.w[:n_node]
+        new_w[-n_edge:] = self.w[-n_edge:]
+        self.n_tag = n_tag
+        self.n_feature = n_feature
+        self.n_transition_feature = new_transition_feature
+        self.w = new_w
+
     def _get_node_tag_feature_id(self, feature_id, tag_id):
         return feature_id * self.n_tag + tag_id
 
@@ -23,8 +38,10 @@ class Model:
         return self.n_feature * self.n_tag + tag_id * self.n_tag + pre_tag_id
 
     @classmethod
-    def load(cls):
-        model_path = os.path.join(config.modelDir, "weights.npz")
+    def load(cls, model_dir=None):
+        if model_dir is None:
+            model_dir = config.modelDir
+        model_path = os.path.join(model_dir, "weights.npz")
         if os.path.exists(model_path):
             npz = np.load(model_path)
             sizes = npz["sizes"]
@@ -44,7 +61,7 @@ class Model:
             file=sys.stderr,
         )
 
-        model_path = os.path.join(config.modelDir, "model.txt")
+        model_path = os.path.join(model_dir, "model.txt")
         with open(model_path, encoding="utf-8") as f:
             ary = f.readlines()
 
@@ -58,7 +75,7 @@ class Model:
         model.n_feature = wsize // model.n_tag - model.n_tag
         model.n_transition_feature = wsize
 
-        model.save()
+        model.save(model_dir)
         return model
 
     @classmethod
@@ -76,10 +93,12 @@ class Model:
         new_model.n_transition_feature = new_model.w.shape[0]
         return new_model
 
-    def save(self):
+    def save(self, model_dir=None):
+        if model_dir is None:
+            model_dir = config.modelDir
         sizes = np.array([self.n_tag, self.n_feature])
         np.savez(
-            os.path.join(config.modelDir, "weights.npz"), sizes=sizes, w=self.w
+            os.path.join(model_dir, "weights.npz"), sizes=sizes, w=self.w
         )
         # np.save
         # with open(file, "w", encoding="utf-8") as f:

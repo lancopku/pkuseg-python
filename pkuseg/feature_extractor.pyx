@@ -275,9 +275,15 @@ class FeatureExtractor:
             for feature, freq in feature_freq.most_common()
             if freq > config.featureTrim
         )
-        self.feature_to_idx = {
-            feature: idx for idx, feature in enumerate(feature_set)
-        }
+       
+        tot = len(self.feature_to_idx)
+        for feature in feature_set:
+            if not feature in self.feature_to_idx:
+                self.feature_to_idx[feature] = tot
+                tot += 1
+        # self.feature_to_idx = {
+        #     feature: idx for idx, feature in enumerate(feature_set)
+        # }
 
         if config.nLabel == 2:
             B = B_single = "B"
@@ -478,7 +484,7 @@ class FeatureExtractor:
                 splits = line.split(" ")
                 feature_idx = [
                     self.feature_to_idx[feat]
-                    for feat in splits[1:-1]
+                    for feat in splits[:-1]
                     if feat in self.feature_to_idx
                 ]
                 features_idx.append(feature_idx)
@@ -559,14 +565,16 @@ class FeatureExtractor:
                     f_writer.write("\n")
                 f_writer.write("\n")
 
-    def save(self):
+    def save(self, model_dir=None):
+        if model_dir is None:
+            model_dir = config.modelDir
         data = {}
         data["unigram"] = sorted(list(self.unigram))
         data["bigram"] = sorted(list(self.bigram))
         data["feature_to_idx"] = self.feature_to_idx
         data["tag_to_idx"] = self.tag_to_idx
 
-        with open(os.path.join(config.modelDir, 'features.pkl'), 'wb') as writer:
+        with open(os.path.join(model_dir, 'features.pkl'), 'wb') as writer:
             pickle.dump(data, writer, protocol=pickle.HIGHEST_PROTOCOL)
 
 
@@ -576,10 +584,12 @@ class FeatureExtractor:
         #     json.dump(data, writer, ensure_ascii=False)
 
     @classmethod
-    def load(cls):
+    def load(cls, model_dir=None):
+        if model_dir is None:
+            model_dir = config.modelDir
         extractor = cls.__new__(cls)
 
-        feature_path = os.path.join(config.modelDir, "features.pkl")
+        feature_path = os.path.join(model_dir, "features.pkl")
         if os.path.exists(feature_path):
             with open(feature_path, "rb") as reader:
                 data = pickle.load(reader)
@@ -597,7 +607,7 @@ class FeatureExtractor:
         )
 
 
-        feature_path = os.path.join(config.modelDir, "features.json")
+        feature_path = os.path.join(model_dir, "features.json")
         if os.path.exists(feature_path):
             with open(feature_path, "r", encoding="utf8") as reader:
                 data = json.load(reader)
@@ -605,7 +615,7 @@ class FeatureExtractor:
             extractor.bigram = set(data["bigram"])
             extractor.feature_to_idx = data["feature_to_idx"]
             extractor.tag_to_idx = data["tag_to_idx"]
-            extractor.save()
+            extractor.save(model_dir)
             return extractor
         print(
             "WARNING: features.json does not exist, try loading using old format",
@@ -613,21 +623,21 @@ class FeatureExtractor:
         )
 
         with open(
-            os.path.join(config.modelDir, "unigram_word.txt"),
+            os.path.join(model_dir, "unigram_word.txt"),
             "r",
             encoding="utf8",
         ) as reader:
             extractor.unigram = set([line.strip() for line in reader])
 
         with open(
-            os.path.join(config.modelDir, "bigram_word.txt"),
+            os.path.join(model_dir, "bigram_word.txt"),
             "r",
             encoding="utf8",
         ) as reader:
             extractor.bigram = set(line.strip() for line in reader)
 
         extractor.feature_to_idx = {}
-        feature_base_name = os.path.join(config.modelDir, "featureIndex.txt")
+        feature_base_name = os.path.join(model_dir, "featureIndex.txt")
         for i in range(10):
             with open(
                 "{}_{}".format(feature_base_name, i), "r", encoding="utf8"
@@ -639,7 +649,7 @@ class FeatureExtractor:
 
         extractor.tag_to_idx = {}
         with open(
-            os.path.join(config.modelDir, "tagIndex.txt"), "r", encoding="utf8"
+            os.path.join(model_dir, "tagIndex.txt"), "r", encoding="utf8"
         ) as reader:
             for line in reader:
                 tag, index = line.split(" ")
@@ -649,6 +659,6 @@ class FeatureExtractor:
             "INFO: features.json is saved",
             file=sys.stderr,
         )
-        extractor.save()
+        extractor.save(model_dir)
 
         return extractor

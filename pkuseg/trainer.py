@@ -35,7 +35,10 @@ def train(config=None):
     if config is None:
         config = Config()
 
-    feature_extractor = FeatureExtractor()
+    if config.init_model is None:
+        feature_extractor = FeatureExtractor()
+    else:
+        feature_extractor = FeatureExtractor.load(config.init_model)
     feature_extractor.build(config.trainFile)
     feature_extractor.save()
 
@@ -132,7 +135,12 @@ class Trainer:
         self.n_feature = dataset.n_feature
         self.n_tag = dataset.n_tag
 
-        self.model = Model(self.n_feature, self.n_tag)
+        if config.init_model is None:
+            self.model = Model(self.n_feature, self.n_tag)
+        else:
+            self.model = Model.load(config.init_model)
+            self.model.expand(self.n_feature, self.n_tag)
+
         self.optim = self._get_optimizer(dataset, self.model)
 
         self.feature_extractor = feature_extractor

@@ -24,7 +24,7 @@ def setup_package():
 
     setuptools.setup(
         name="pkuseg",
-        version="0.0.14",
+        version="0.0.15",
         author="Lanco",
         author_email="luoruixuan97@pku.edu.cn",
         description="A small package for Chinese word segmentation",
@@ -38,7 +38,7 @@ def setup_package():
             "License :: Other/Proprietary License",
             "Operating System :: OS Independent",
         ],
-        install_requires=["numpy"],
+        install_requires=["numpy==1.16.0"],
         ext_modules=cythonize(extensions, annotate=True),
         zip_safe=False,
     )

@@ -300,7 +300,7 @@ class pkuseg:
         return ret
 
 
-def train(trainFile, testFile, savedir, nthread=10):
+def train(trainFile, testFile, savedir, nthread=10, train_iter=20, init_model=None):
     """用于训练模型"""
     # config = Config()
     starttime = time.time()
@@ -318,6 +318,8 @@ def train(trainFile, testFile, savedir, nthread=10):
     config.modelDir = savedir
     # config.fModel = os.path.join(config.modelDir, "model.txt")
     config.nThread = nthread
+    config.ttlIter = train_iter
+    config.init_model = init_model
 
     os.makedirs(config.modelDir, exist_ok=True)
 

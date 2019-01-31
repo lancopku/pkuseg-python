@@ -34,6 +34,9 @@ pkuseg具有如下几个特点：
   - **修改了词典处理方法，扩充了词典，分词效果有提升**
   - **效率进行了优化，测试速度较之前版本提升9倍左右**
   - **增加了在大规模混合数据集训练的通用模型，并将其设为默认使用模型**
+- **新版本发布：2019-1-30**
+- **新版本特性：**
+  - **支持fine-tuning，支持设定训练轮数**
 - **为了获得好的效果和速度，强烈建议大家通过pip install更新到目前的最新版本**
 
 1. 通过PyPI安装(自带模型文件)：
@@ -230,11 +233,13 @@ pkuseg.test(readFile, outputFile, model_name="default", user_dict="default", nth
 
 模型训练
 ```
-pkuseg.train(trainFile, testFile, savedir, nthread=10)
+pkuseg.train(trainFile, testFile, savedir, nthread=10, train_iter=20, init_model=None)
 	trainFile		训练文件路径
 	testFile		测试文件路径
 	savedir			训练模型的保存路径
 	nthread			训练时开的进程数
+	train_iter		训练轮数
+	init_model		初始化模型，默认为None表示使用默认初始化，用户可以填自己想要初始化的模型的路径如init_model='./models/'
 ```
 
 
@@ -275,6 +280,8 @@ pkuseg.train(trainFile, testFile, savedir, nthread=10)
   - 修改了词典处理方法，扩充了词典，分词效果有提升
   - 效率进行了优化，测试速度较之前版本提升9倍左右
   - 增加了在大规模混合数据集训练的通用模型，并将其设为默认使用模型
+- v0.0.15(2019-01-30)
+  - 支持fine-tuning，支持设定训练轮数
 
 
 ## 开源协议
