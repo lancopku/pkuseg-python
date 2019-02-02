@@ -191,6 +191,16 @@ pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)
 ```
 
 
+代码示例6：加载预训练模型训练
+```python3
+import pkuseg
+
+# 训练文件为'train.txt'
+# 测试文件为'test.txt'
+# 加载'./pretrained'目录下的模型，训练好的模型保存在'./models'，训练10轮
+pkuseg.train('train.txt', 'test.txt', './models', train_iter=10, init_model='./pretrained')
+```
+
 #### 多进程
 
 当将以上代码示例置于文件中运行时，如涉及多进程功能，请务必使用`if __name__ == '__main__'`保护全局语句，如：  
