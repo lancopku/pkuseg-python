@@ -77,7 +77,6 @@ pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)
 pkuseg.test('msr_test.raw', 'output.txt', user_dict=None)
 ```
 
-为了方便用户的使用和比较，我们预训练好的其它工具包的模型可以在[预训练模型](##预训练模型)节下载。
 
 
 
@@ -150,7 +149,7 @@ text = seg.cut('我爱北京天安门')                        # 进行分词
 print(text)
 ```
 
-代码示例2：使用默认模型，并使用自定义词典。请留意**凡是在词典中的词一定会单独成词**，因而请仅加入必须切分出来的词。
+代码示例2：使用默认模型，并使用自定义词典。
 ```python3
 import pkuseg
 
@@ -260,14 +259,6 @@ pkuseg.train(trainFile, testFile, savedir, nthread=10, train_iter=20, init_model
 其中，MSRA数据由[第二届国际汉语分词评测比赛](http://sighan.cs.uchicago.edu/bakeoff2005/)提供，CTB8数据由[LDC](https://catalog.ldc.upenn.edu/ldc2013t21)提供，WEIBO数据由[NLPCC](http://tcci.ccf.org.cn/conference/2016/pages/page05_CFPTasks.html)分词比赛提供。
 
 
-
-我们预训练好其它分词软件的模型可以在如下地址下载：
-
-- jieba: 在MSRA、CTB8、WEIBO、PKU语料上的预训练模型，[下载地址](https://pan.baidu.com/s/1F_pQc5UOZ3k9VJYcF9pw3w)，提取码：rnh7
-- THULAC: 在MSRA、CTB8、WEIBO、PKU语料上的预训练模型，[下载地址](https://pan.baidu.com/s/11L95ZZtRJdpMYEHNUtPWXA)，提取码：iv82
-
-其中jieba的默认模型为统计模型，主要基于训练数据上的词频信息，我们在不同训练集上重新统计了词频信息。对于THULAC，我们使用其提供的接口进行训练(C++版本)，得到了在不同领域的预训练模型。
-
 欢迎更多用户可以分享自己训练好的细分领域模型。
 
 
@@ -292,7 +283,7 @@ pkuseg.train(trainFile, testFile, savedir, nthread=10, train_iter=20, init_model
 
 ## 相关论文
 
-本工具包基于以下文献：
+该代码包为科研成果，如您使用了本代码包，请引用以下论文：
 * Xu Sun, Houfeng Wang, Wenjie Li. Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection. ACL. 253–262. 2012 
 
 ```
@@ -304,15 +295,6 @@ pages = {253--262},
 year = {2012}}
 ```
 
-
-* Jingjing Xu, Xu Sun. Dependency-based Gated Recursive Neural Network for Chinese Word Segmentation. ACL 2016: 567-572
-```
-@inproceedings{DBLP:conf/acl/XuS16,
-author = {Jingjing Xu and Xu Sun},
-title = {Dependency-based Gated Recursive Neural Network for Chinese Word Segmentation},
-booktitle = {Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics, {ACL} 2016, August 7-12, 2016, Berlin, Germany, Volume 2: Short Papers},
-year = {2016}}
-```
 
 
 ## 常见问题及解答
@@ -327,7 +309,6 @@ year = {2016}}
 7. [如何看待在一些特定样例上的分词结果？](https://github.com/lancopku/pkuseg-python/wiki#7-如何看待在一些特定样例上的分词结果)
 8. [关于运行速度问题？](https://github.com/lancopku/pkuseg-python/wiki#8-关于运行速度问题)
 9. [关于多进程速度问题？](https://github.com/lancopku/pkuseg-python/wiki#9-关于多进程速度问题)
-10. [如何看待网络上的文稿？](https://github.com/lancopku/pkuseg-python/wiki#10-如何看待网络上的文稿)
 
 
 
