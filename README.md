@@ -162,8 +162,8 @@ print(text)
 ```python3
 import pkuseg
 
-seg = pkuseg.pkuseg(model_name='./ctb8', user_dict=None)    # 假设用户已经下载好了ctb8的模型并放在了'./ctb8'目录下，通过设置model_name加载该模型
-text = seg.cut('我爱北京天安门')                         # 进行分词
+seg = pkuseg.pkuseg(model_name='./ctb8', user_dict=None)     # 假设用户已经下载好了ctb8的模型并放在了'./ctb8'目录下，通过设置model_name加载该模型
+text = seg.cut('我爱北京天安门')                              # 进行分词
 print(text)
 ```
 
