@@ -292,7 +292,7 @@ pkuseg.train(trainFile, testFile, savedir, nthread=10, train_iter=20, init_model
 
 ## 相关论文
 
-该代码包主要基于以下科研论文，如您使用了本代码包，请引用：
+该代码包主要基于以下科研论文，如使用了本工具，请引用以下论文：
 * Xu Sun, Houfeng Wang, Wenjie Li. Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection. ACL. 253–262. 2012 
 
 ```
