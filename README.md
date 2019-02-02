@@ -153,7 +153,7 @@ print(text)
 ```python3
 import pkuseg
 
-seg = pkuseg.pkuseg(user_dict='my_dict.txt')			 # 加载默认模型，给定用户词典为当前目录下的"my_dict.txt"
+seg = pkuseg.pkuseg(user_dict='my_dict.txt')		# 加载默认模型，给定用户词典为当前目录下的"my_dict.txt"
 text = seg.cut('我爱北京天安门')                         # 进行分词
 print(text)
 ```
@@ -162,8 +162,7 @@ print(text)
 ```python3
 import pkuseg
 
-seg = pkuseg.pkuseg(model_name='./ctb8', user_dict=None)    # 假设用户已经下载好了ctb8的模型
-															# 并放在了'./ctb8'目录下，通过设置model_name加载该模型
+seg = pkuseg.pkuseg(model_name='./ctb8', user_dict=None)    # 假设用户已经下载好了ctb8的模型并放在了'./ctb8'目录下，通过设置model_name加载该模型
 text = seg.cut('我爱北京天安门')                         # 进行分词
 print(text)
 ```
@@ -293,7 +292,7 @@ pkuseg.train(trainFile, testFile, savedir, nthread=10, train_iter=20, init_model
 
 ## 相关论文
 
-该代码包为科研成果，如您使用了本代码包，请引用以下论文：
+该代码包主要基于以下科研论文，如您使用了本代码包，请引用：
 * Xu Sun, Houfeng Wang, Wenjie Li. Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection. ACL. 253–262. 2012 
 
 ```
