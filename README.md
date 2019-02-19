@@ -140,7 +140,7 @@ pkuseg.test('msr_test.raw', 'output.txt', user_dict=None)
 
 以下代码示例适用于python交互式环境。
 
-代码示例1：使用默认配置进行分词，使用通用预训练模型，使用词典。
+代码示例1：使用默认配置进行分词（加载通用预训练模型，使用默认词典）。
 ```python3
 import pkuseg
 
@@ -167,7 +167,7 @@ text = seg.cut('我爱北京天安门')                              # 进行分
 print(text)
 ```
 
-代码示例4：对文件分词(使用默认模型，使用词典)
+代码示例4：对文件分词（使用默认模型，使用词典）
 ```python3
 import pkuseg
 
@@ -177,20 +177,20 @@ pkuseg.test('input.txt', 'output.txt', nthread=20)
 ```
 
 
-代码示例5：训练新模型
+代码示例5：训练新模型 （模型随机初始化）
 ```python3
 import pkuseg
 
 # 训练文件为'msr_training.utf8'
 # 测试文件为'msr_test_gold.utf8'
-# 训练好的模型存到'./models'目录下，开20个进程训练模型
+# 训练好的模型存到'./models'目录下
 # 训练模式下会保存最后一轮模型作为最终模型
 # 目前仅支持utf-8编码，训练集和测试集要求所有单词以单个或多个空格分开
 pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)	
 ```
 
 
-代码示例6：加载预训练模型训练
+代码示例6：fine-tune训练（从预加载的模型继续训练）
 ```python3
 import pkuseg
 
@@ -200,7 +200,7 @@ import pkuseg
 pkuseg.train('train.txt', 'test.txt', './models', train_iter=10, init_model='./pretrained')
 ```
 
-#### 多进程
+#### 多进程分词
 
 当将以上代码示例置于文件中运行时，如涉及多进程功能，请务必使用`if __name__ == '__main__'`保护全局语句，如：  
 mp.py文件
