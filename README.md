@@ -186,7 +186,7 @@ import pkuseg
 # 训练好的模型存到'./models'目录下
 # 训练模式下会保存最后一轮模型作为最终模型
 # 目前仅支持utf-8编码，训练集和测试集要求所有单词以单个或多个空格分开
-pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)	
+pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models')	
 ```
 
 
@@ -241,11 +241,10 @@ pkuseg.test(readFile, outputFile, model_name="default", user_dict="default", nth
 
 模型训练
 ```
-pkuseg.train(trainFile, testFile, savedir, nthread=10, train_iter=20, init_model=None)
+pkuseg.train(trainFile, testFile, savedir, train_iter=20, init_model=None)
 	trainFile		训练文件路径
 	testFile		测试文件路径
 	savedir			训练模型的保存路径
-	nthread			训练时开的进程数
 	train_iter		训练轮数
 	init_model		初始化模型，默认为None表示使用默认初始化，用户可以填自己想要初始化的模型的路径如init_model='./models/'
 ```
