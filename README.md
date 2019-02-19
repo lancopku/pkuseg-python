@@ -281,7 +281,7 @@ pkuseg.train(trainFile, testFile, savedir, nthread=10, train_iter=20, init_model
   - 效率进行了优化，测试速度较之前版本提升9倍左右
   - 增加了在大规模混合数据集训练的通用模型，并将其设为默认使用模型
 - v0.0.15(2019-01-30)
-  - 支持支持fine-tune训练（从预加载的模型继续训练），支持设定训练轮数
+  - 支持fine-tune训练（从预加载的模型继续训练），支持设定训练轮数
 
 
 ## 开源协议
