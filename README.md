@@ -140,7 +140,7 @@ pkuseg.test('msr_test.raw', 'output.txt', user_dict=None)
 
 以下代码示例适用于python交互式环境。
 
-代码示例1：使用默认配置进行分词（使用默认模型，默认词典）。
+代码示例1：使用默认配置进行分词（默认模型，默认词典）。
 ```python3
 import pkuseg
 
