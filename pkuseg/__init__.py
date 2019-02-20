@@ -7,6 +7,7 @@ if sys.version_info[0] < 3:
 
 import os
 import time
+import pickle as pkl
 import multiprocessing
 
 from multiprocessing import Process, Queue
@@ -14,11 +15,17 @@ from multiprocessing import Process, Queue
 import pkuseg.trainer as trainer
 import pkuseg.inference as _inf
 
-
 from pkuseg.config import config
 from pkuseg.feature_extractor import FeatureExtractor
 from pkuseg.model import Model
+from pkuseg.download import download_model
+from pkuseg.postag import Postag
 
+model_urls = {
+    "postag": "https://github.com/lancopku/pkuseg-python/releases/download/v0.0.16/postag.zip",
+    "medical": "https://github.com/lancopku/pkuseg-python/releases/download/v0.0.16/medical.zip",
+    "tourism": "https://github.com/lancopku/pkuseg-python/releases/download/v0.0.16/tourism.zip",
+}
 
 class TrieNode:
     """建立词典的Trie树节点"""
@@ -33,6 +40,8 @@ class Preprocesser:
 
     def __init__(self, dict_file):
         """初始化建立Trie树"""
+        if dict_file is None:
+            dict_file = []
         self.dict_data = dict_file
         if isinstance(dict_file, str):
             with open(dict_file, encoding="utf-8") as f:
@@ -96,23 +105,31 @@ class Preprocesser:
 
 class Postprocesser:
     """对分词结果后处理"""
-    def __init__(self, common_name, other_name):
-        if common_name is None and other_name is None:
+    def __init__(self, common_name, other_names):
+        if common_name is None and other_names is None:
             self.do_process = False
             return
         self.do_process = True
         if common_name is None:
             self.common_words = set()
         else:
-            with open(common_name, encoding='utf-8') as f:
-                lines = f.readlines()
-            self.common_words = set(map(lambda x:x.strip(), lines))
-        if other_name is None:
+            # with open(common_name, encoding='utf-8') as f:
+            #     lines = f.readlines()
+            # self.common_words = set(map(lambda x:x.strip(), lines))
+            with open(common_name, "rb") as f:
+                all_words = pkl.load(f).strip().split("\n")
+            self.common_words = set(all_words)
+        if other_names is None:
             self.other_words = set()
         else:
-            with open(other_name, encoding='utf-8') as f:
-                lines = f.readlines()
-            self.other_words = set(map(lambda x:x.strip(), lines))
+            self.other_words = set()
+            for other_name in other_names:
+                # with open(other_name, encoding='utf-8') as f:
+                #     lines = f.readlines()
+                # self.other_words.update(set(map(lambda x:x.strip(), lines)))
+                with open(other_name, "rb") as f:
+                    all_words = pkl.load(f).strip().split("\n")
+                self.other_words.update(set(all_words))
 
     def post_process(self, sent, check_seperated):
         for m in reversed(range(2, 8)): 
@@ -152,37 +169,57 @@ class Postprocesser:
         return self.post_process(sent, check_seperated=True)
 
 class pkuseg:
-    def __init__(self, model_name="default", user_dict="default"):
+    def __init__(self, model_name="default", user_dict="default", seg_only=True):
         """初始化函数，加载模型及用户词典"""
         # print("loading model")
         # config = Config()
         # self.config = config
+        self.seg_only = seg_only
         if model_name in ["default"]:
             config.modelDir = os.path.join(
                 os.path.dirname(os.path.realpath(__file__)),
                 "models",
                 model_name,
             )
+        elif model_name in ["medical", "tourism"]:
+            config.modelDir = os.path.join(
+                config.pkuseg_home,
+                model_name,
+            )
+            download_model(model_urls[model_name], config.pkuseg_home)
         else:
             config.modelDir = model_name
         # config.fModel = os.path.join(config.modelDir, "model.txt")
-        if user_dict == "default":
-            # file_name = os.path.join(
-            #     os.path.dirname(os.path.realpath(__file__)),
-            #     "dicts", "default_common.txt",
-            # )
+        if user_dict is None:
             file_name = None
-            other_name = os.path.join(
-                os.path.dirname(os.path.realpath(__file__)),
-                "dicts", "default.txt",
-            )
+            other_names = None
         else:
-            file_name = user_dict
-            other_name = None
+            if user_dict != "default":
+                file_name = user_dict
+            else:
+                file_name = None
+            if model_name in ["medical", "tourism"]:
+                file_name = None
+                other_name = os.path.join(
+                    config.pkuseg_home,
+                    model_name,
+                    model_name+"_dict.pkl",
+                )
+                default_name = os.path.join(
+                    os.path.dirname(os.path.realpath(__file__)),
+                    "dicts", "default.pkl",
+                )
+                other_names = [other_name, default_name]
+            else:
+                default_name = os.path.join(
+                    os.path.dirname(os.path.realpath(__file__)),
+                    "dicts", "default.pkl",
+                )
+                other_names = [default_name]
 
-        # self.preprocesser = Preprocesser(file_name)
-        self.preprocesser = Preprocesser([])
-        self.postprocesser = Postprocesser(file_name, other_name)
+        self.preprocesser = Preprocesser(file_name)
+        # self.preprocesser = Preprocesser([])
+        self.postprocesser = Postprocesser(None, other_names)
 
         self.feature_extractor = FeatureExtractor.load()
         self.model = Model.load()
@@ -191,35 +228,16 @@ class pkuseg:
             idx: tag for tag, idx in self.feature_extractor.tag_to_idx.items()
         }
 
-        # self.idx2tag = [None] * len(self.testFeature.tagIndexMap)
-        # for i in self.testFeature.tagIndexMap:
-        #     self.idx2tag[self.testFeature.tagIndexMap[i]] = i
-        # if config.nLabel == 2:
-        #     B = B_single = "B"
-        #     I_first = I = I_end = "I"
-        # elif config.nLabel == 3:
-        #     B = B_single = "B"
-        #     I_first = I = "I"
-        #     I_end = "I_end"
-        # elif config.nLabel == 4:
-        #     B = "B"
-        #     B_single = "B_single"
-        #     I_first = I = "I"
-        #     I_end = "I_end"
-        # elif config.nLabel == 5:
-        #     B = "B"
-        #     B_single = "B_single"
-        #     I_first = "I_first"
-        #     I = "I"
-        #     I_end = "I_end"
-        # self.B = B
-        # self.B_single = B_single
-        # self.I_first = I_first
-        # self.I = I
-        # self.I_end = I_end
-
         self.n_feature = len(self.feature_extractor.feature_to_idx)
         self.n_tag = len(self.feature_extractor.tag_to_idx)
+
+        if not seg_only:
+            download_model(model_urls["postag"], config.pkuseg_home)
+            postag_dir = os.path.join(
+                config.pkuseg_home,
+                "postag",
+            )
+            self.tagger = Postag(postag_dir)
 
         # print("finish")
 
@@ -296,11 +314,14 @@ class pkuseg:
 
                 output = self._cut(w)
                 ret.extend(self.postprocesser(output))
-
+        
+        if not self.seg_only:
+            tags = self.tagger.tag(ret)
+            ret = list(zip(ret, tags))
         return ret
 
 
-def train(trainFile, testFile, savedir, nthread=10, train_iter=20, init_model=None):
+def train(trainFile, testFile, savedir, train_iter=20, init_model=None):
     """用于训练模型"""
     # config = Config()
     starttime = time.time()
@@ -317,7 +338,7 @@ def train(trainFile, testFile, savedir, nthread=10, train_iter=20, init_model=No
     config.testFile = testFile
     config.modelDir = savedir
     # config.fModel = os.path.join(config.modelDir, "model.txt")
-    config.nThread = nthread
+    config.nThread = 1
     config.ttlIter = train_iter
     config.init_model = init_model
 

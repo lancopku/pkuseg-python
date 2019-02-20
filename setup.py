@@ -20,11 +20,16 @@ def setup_package():
             ["pkuseg/feature_extractor.pyx"],
             include_dirs=[np.get_include()],
         ),
+        Extension(
+            "pkuseg.postag.feature_extractor",
+            ["pkuseg/postag/feature_extractor.pyx"],
+            include_dirs=[np.get_include()],
+        ),
     ]
 
     setuptools.setup(
         name="pkuseg",
-        version="0.0.15",
+        version="0.0.16",
         author="Lanco",
         author_email="luoruixuan97@pku.edu.cn",
         description="A small package for Chinese word segmentation",
@@ -38,7 +43,7 @@ def setup_package():
             "License :: Other/Proprietary License",
             "Operating System :: OS Independent",
         ],
-        install_requires=["numpy==1.16.0"],
+        install_requires=["numpy>=1.16.0"],
         ext_modules=cythonize(extensions, annotate=True),
         zip_safe=False,
     )
