@@ -1,36 +1,36 @@
-n   Ãû´Ê
-t	Ê±¼ä´Ê
-s   ´¦Ëù´Ê
-f   ·½Î»´Ê
-m   Êý´Ê
-q   Á¿´Ê
-b   Çø±ð´Ê
-r   ´ú´Ê
-v   ¶¯´Ê
-a   ÐÎÈÝ´Ê
-z   ×´Ì¬´Ê
-d   ¸±´Ê
-p   ½é´Ê
-c   Á¬´Ê
-u   Öú´Ê
-y   ÓïÆø´Ê
-e   Ì¾´Ê
-o   ÄâÉù´Ê
-i   ³ÉÓï
-l   Ï°¹ßÓÃÓï
-j   ¼ò³Æ
-h   Ç°½Ó³É·Ö
-k   ºó½Ó³É·Ö
-g   ÓïËØ
-x   ·ÇÓïËØ×Ö
-w   ±êµã·ûºÅ
-nr  ÈËÃû
-ns  µØÃû
-nt  »ú¹¹Ãû³Æ
-nx  ÍâÎÄ×Ö·û
-nz  ÆäËü×¨Ãû
-vd  ¸±¶¯´Ê
-vn  Ãû¶¯´Ê
-vx  ÐÎÊ½¶¯´Ê
-ad  ¸±ÐÎ´Ê
-an  ÃûÐÎ´Ê
+n   åè¯
+t   æ—¶é—´è¯
+s   å¤„æ‰€è¯
+f   æ–¹ä½è¯
+m   æ•°è¯
+q   é‡è¯
+b   åŒºåˆ«è¯
+r   ä»£è¯
+v   åŠ¨è¯
+a   å½¢å®¹è¯
+z   çŠ¶æ€è¯
+d   å‰¯è¯
+p   ä»‹è¯
+c   è¿žè¯
+u   åŠ©è¯
+y   è¯­æ°”è¯
+e   å¹è¯
+o   æ‹Ÿå£°è¯
+i   æˆè¯­
+l   ä¹ æƒ¯ç”¨è¯­
+j   ç®€ç§°
+h   å‰æŽ¥æˆåˆ†
+k   åŽæŽ¥æˆåˆ†
+g   è¯­ç´ 
+x   éžè¯­ç´ å­—
+w   æ ‡ç‚¹ç¬¦å·
+nr  äººå
+ns  åœ°å
+nt  æœºæž„åç§°
+nx  å¤–æ–‡å­—ç¬¦
+nz  å…¶å®ƒä¸“å
+vd  å‰¯åŠ¨è¯
+vn  ååŠ¨è¯
+vx  å½¢å¼åŠ¨è¯
+ad  å‰¯å½¢è¯
+an  åå½¢è¯
