@@ -37,6 +37,9 @@ pkuseg具有如下几个特点：
 - **新版本发布：2019-1-30**
 - **新版本特性：**
   - **支持fine-tune训练（从预加载的模型继续训练），支持设定训练轮数**
+- **新版本发布：2019-2-20**
+- **新版本特性：**
+  - **支持词性标注，提供了医疗、旅游两个细领域模型**
 - **为了获得好的效果和速度，强烈建议大家通过pip install更新到目前的最新版本**
 
 1. 通过PyPI安装(自带模型文件)：
@@ -200,6 +203,15 @@ import pkuseg
 pkuseg.train('train.txt', 'test.txt', './models', train_iter=10, init_model='./pretrained')
 ```
 
+代码示例7：使用细领域模型，进行词性标注
+```python3
+import pkuseg
+
+seg = pkuseg.pkuseg(model_name='tourism', seg_only=False)     # 加载旅游模型，设置进行词性标注
+text = seg.cut('我爱北京天安门')                               # 进行分词和词性标注
+print(text)
+```
+
 #### 多进程分词
 
 当将以上代码示例置于文件中运行时，如涉及多进程功能，请务必使用`if __name__ == '__main__'`保护全局语句，如：  
@@ -223,10 +235,12 @@ python3 mp.py
 
 模型配置
 ```
-pkuseg.pkuseg(model_name="default", user_dict="default")
+pkuseg.pkuseg(model_name="default", user_dict="default", seg_only=True)
 	model_name		模型路径。默认是"default"表示我们预训练好的模型(仅对pip下载的用户)。
 	                        用户可以填自己下载或训练的模型所在的路径如model_name='./models'。
+				在0.0.16以上版本中，我们提供了医疗、旅游两个细领域模型。用户可以填写"medical"或"tourism"来加载我们训练好的细领域模型。
 	user_dict		设置用户词典。默认使用我们提供的词典。用户可以填自己的用户词典的路径，词典格式为一行一个词。填None表示不使用词典。
+	seg_only		是否只进行分词。设置seg_only=False会在分词的同时进行词性标注。词性标注的标签含义见tags.txt。
 ```
 
 对文件进行分词
@@ -281,6 +295,8 @@ pkuseg.train(trainFile, testFile, savedir, train_iter=20, init_model=None)
   - 增加了在大规模混合数据集训练的通用模型，并将其设为默认使用模型
 - v0.0.15(2019-01-30)
   - 支持fine-tune训练（从预加载的模型继续训练），支持设定训练轮数
+- v0.0.16(2019-02-20)
+  - 支持词性标注，提供了医疗、旅游两个细领域模型
 
 
 ## 开源协议
