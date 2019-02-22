@@ -20,26 +20,24 @@ pkuseg简单易用，支持细分领域分词，有效提升了分词准确度�
 
 pkuseg具有如下几个特点：
 
-1. 多领域分词。不同于以往的通用中文分词工具，此工具包同时致力于为不同领域的数据提供个性化的预训练模型。根据待分词文本的领域特点，用户可以自由地选择不同的模型。 我们目前支持了新闻领域，网络文本领域和混合领域的分词预训练模型，同时也拟在近期推出更多的细领域预训练模型，比如医药、旅游、专利、小说等等。
+1. 多领域分词。不同于以往的通用中文分词工具，此工具包同时致力于为不同领域的数据提供个性化的预训练模型。根据待分词文本的领域特点，用户可以自由地选择不同的模型。 我们目前支持了新闻领域，网络文本领域，医药领域，旅游领域，以及混合领域的分词预训练模型。
 2. 更高的分词准确率。相比于其他的分词工具包，当使用相同的训练数据和测试数据，pkuseg可以取得更高的分词准确率。
 3. 支持用户自训练模型。支持用户使用全新的标注数据进行训练。
+4. 支持词性标注。
 
 
 
 ## 编译和安装
 
 - 目前**仅支持python3**
-- **新版本发布：2019-1-23**
-- **新版本特性：**
-  - **修改了词典处理方法，扩充了词典，分词效果有提升**
+- 新版本发布：2019-1-23
+  - 修改了词典处理方法，扩充了词典，分词效果有提升
   - **效率进行了优化，测试速度较之前版本提升9倍左右**
-  - **增加了在大规模混合数据集训练的通用模型，并将其设为默认使用模型**
-- **新版本发布：2019-1-30**
-- **新版本特性：**
-  - **支持fine-tune训练（从预加载的模型继续训练），支持设定训练轮数**
-- **新版本发布：2019-2-20**
-- **新版本特性：**
-  - **支持词性标注，提供了医疗、旅游两个细领域模型**
+  - 增加了在大规模混合数据集训练的通用模型，并将其设为默认使用模型
+- 新版本发布：2019-1-30
+  - 支持fine-tune训练（从预加载的模型继续训练），支持设定训练轮数
+- 新版本发布：2019-2-20
+  - **支持词性标注，增加了医疗、旅游细领域模型**
 - **为了获得好的效果和速度，强烈建议大家通过pip install更新到目前的最新版本**
 
 1. 通过PyPI安装(自带模型文件)：
@@ -47,7 +45,7 @@ pkuseg具有如下几个特点：
 	pip3 install pkuseg
 	之后通过import pkuseg来引用
 	```
-   **建议更新到最新版本**以获得更好的开箱体验(新版默认提供通用的预训练模型、默认开启词典)：
+   **建议更新到最新版本**以获得更好的开箱体验：
    	```
 	pip3 install -U pkuseg
 	```
@@ -73,10 +71,10 @@ pkuseg具有如下几个特点：
 
 考虑到jieba分词和THULAC工具包等并没有提供细领域的预训练模型，为了便于比较，我们重新使用它们提供的训练接口在细领域的数据集上进行训练，用训练得到的模型进行中文分词。
 
-我们选择Linux作为测试环境，在新闻数据(MSRA)、混合型文本(CTB8)、网络文本(WEIBO)数据上对不同工具包进行了准确率测试。我们使用了第二届国际汉语分词评测比赛提供的分词评价脚本。其中MSRA与WEIBO使用标准训练集测试集划分，CTB8采用随机划分。对于不同的分词工具包，训练测试数据的划分都是一致的；**即所有的分词工具包都在相同的训练集上训练，在相同的测试集上测试**。对于需要训练的模型，如THULAC和pkuseg，在所有数据集上，我们使用默认的训练超参数。以下是pkuseg训练代码示例:
+我们选择Linux作为测试环境，在新闻数据(MSRA)、混合型文本(CTB8)、网络文本(WEIBO)数据上对不同工具包进行了准确率测试。我们使用了第二届国际汉语分词评测比赛提供的分词评价脚本。其中MSRA与WEIBO使用标准训练集测试集划分，CTB8采用随机划分。对于不同的分词工具包，训练测试数据的划分都是一致的；**即所有的分词工具包都在相同的训练集上训练，在相同的测试集上测试**。对于所有数据集，pkuseg使用了不使用词典的训练和测试接口。以下是pkuseg训练和测试代码示例:
 
 ```
-pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)
+pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models')
 pkuseg.test('msr_test.raw', 'output.txt', user_dict=None)
 ```
 
@@ -143,7 +141,7 @@ pkuseg.test('msr_test.raw', 'output.txt', user_dict=None)
 
 以下代码示例适用于python交互式环境。
 
-代码示例1：使用默认配置进行分词（默认模型，默认词典）。
+代码示例1：使用默认配置进行分词（**推荐**）。
 ```python3
 import pkuseg
 
@@ -152,35 +150,55 @@ text = seg.cut('我爱北京天安门')                        # 进行分词
 print(text)
 ```
 
-代码示例2：使用默认模型，并使用自定义词典。
+代码示例2：使用用户自定义词典。
 ```python3
 import pkuseg
 
-seg = pkuseg.pkuseg(user_dict='my_dict.txt')		# 加载默认模型，给定用户词典为当前目录下的"my_dict.txt"
+seg = pkuseg.pkuseg(user_dict='my_dict.txt')		# 给定用户词典为当前目录下的"my_dict.txt"
 text = seg.cut('我爱北京天安门')                         # 进行分词
 print(text)
 ```
 
-代码示例3：使用其它模型，不使用词典
+代码示例3：指定模型分词（以CTB8模型为例）
 ```python3
 import pkuseg
 
-seg = pkuseg.pkuseg(model_name='./ctb8', user_dict=None)     # 假设用户已经下载好了ctb8的模型并放在了'./ctb8'目录下，通过设置model_name加载该模型
+seg = pkuseg.pkuseg(model_name='./ctb8')                     # 假设用户已经下载好了ctb8的模型并放在了'./ctb8'目录下，通过设置model_name加载该模型
 text = seg.cut('我爱北京天安门')                              # 进行分词
 print(text)
 ```
 
-代码示例4：对文件分词（默认模型，默认词典）
+
+代码示例4：细领域分词
+```python3
+import pkuseg
+
+seg = pkuseg.pkuseg(model_name='medicine')                   # 程序会自动下载所对应的细领域模型
+text = seg.cut('我爱北京天安门')                              # 进行分词
+print(text)
+```
+
+代码示例5：分词同时进行词性标注
+```python3
+import pkuseg
+
+seg = pkuseg.pkuseg(postag=True)                              # 开启词性标注功能
+text = seg.cut('我爱北京天安门')                               # 进行分词和词性标注
+print(text)
+```
+
+
+代码示例6：对文件分词
 ```python3
 import pkuseg
 
 # 对input.txt的文件分词输出到output.txt中
-# 使用默认模型，使用词典，开20个进程
+# 开20个进程
 pkuseg.test('input.txt', 'output.txt', nthread=20)     
 ```
 
 
-代码示例5：训练新模型 （模型随机初始化）
+代码示例7：训练新模型 （模型随机初始化）
 ```python3
 import pkuseg
 
@@ -193,7 +211,7 @@ pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models')
 ```
 
 
-代码示例6：fine-tune训练（从预加载的模型继续训练）
+代码示例8：fine-tune训练（从预加载的模型继续训练）
 ```python3
 import pkuseg
 
@@ -203,14 +221,7 @@ import pkuseg
 pkuseg.train('train.txt', 'test.txt', './models', train_iter=10, init_model='./pretrained')
 ```
 
-代码示例7：使用细领域模型，进行词性标注
-```python3
-import pkuseg
 
-seg = pkuseg.pkuseg(model_name='tourism', seg_only=False)     # 加载旅游模型，设置进行词性标注
-text = seg.cut('我爱北京天安门')                               # 进行分词和词性标注
-print(text)
-```
 
 #### 多进程分词
 
@@ -235,22 +246,32 @@ python3 mp.py
 
 模型配置
 ```
-pkuseg.pkuseg(model_name="default", user_dict="default", seg_only=True)
-	model_name		模型路径。默认是"default"表示我们预训练好的模型(仅对pip下载的用户)。
-	                        用户可以填自己下载或训练的模型所在的路径如model_name='./models'。
-				在0.0.16以上版本中，我们提供了医疗、旅游两个细领域模型。用户可以填写"medical"或"tourism"来加载我们训练好的细领域模型。
-	user_dict		设置用户词典。默认使用我们提供的词典。用户可以填自己的用户词典的路径，词典格式为一行一个词。填None表示不使用词典。
-	seg_only		是否只进行分词。设置seg_only=False会在分词的同时进行词性标注。词性标注的标签含义见tags.txt。
+pkuseg.pkuseg(model_name="default", user_dict="default", pkuseg=False)
+	model_name		模型路径。
+			        "default"，默认参数，表示使用我们预训练好的模型(仅对pip下载的用户)。
+				"news", 使用新闻领域模型。
+				"web", 使用网络领域模型。
+				"medicine", 使用医药领域模型。
+				"tourism", 使用旅游领域模型。
+			        model_path, 从用户指定路径加载模型。
+	user_dict		设置用户词典。
+				"default", 默认参数，使用我们提供的词典。
+				None, 不使用词典。
+				dict_path, 用户可以填自己的用户词典的路径，词典格式为一行一个词。
+	postag		        是否进行词性分析。
+				False, 默认参数，只进行分词，不进行词性标注。
+				True, 会在分词的同时进行词性标注。词性标注的标签含义见[tags.txt](https://github.com/lancopku/pkuseg-python/tags.txt)。
 ```
 
 对文件进行分词
 ```
-pkuseg.test(readFile, outputFile, model_name="default", user_dict="default", nthread=10)
-	readFile		输入文件路径
-	outputFile		输出文件路径
+pkuseg.test(readFile, outputFile, model_name="default", user_dict="default", postag = False, nthread=10)
+	readFile		输入文件路径。
+	outputFile		输出文件路径。
 	model_name		模型路径。同pkuseg.pkuseg
 	user_dict		设置用户词典。同pkuseg.pkuseg
-	nthread			测试时开的进程数
+	postag			设置是否开启词性分析功能。同pkuseg.pkuseg
+	nthread			测试时开的进程数。
 ```
 
 模型训练
@@ -267,18 +288,18 @@ pkuseg.train(trainFile, testFile, savedir, train_iter=20, init_model=None)
 
 ## 预训练模型
 
-分词模式下，用户需要加载预训练好的模型。我们提供了三种在不同类型数据上训练得到的模型，根据具体需要，用户可以选择不同的预训练模型。以下是对预训练模型的说明：
+直接从pip安装的用户在使用细领域分词功能时，只需要设置model_name字段为对应的领域即可，会自动下载对应的细领域模型。直接从github下载的用户则需要自己下载对应的预训练模型，并设置model_name字段为预训练模型路径。预训练模型可以在release部分可以下载。以下是对预训练模型的说明：
 
-- MSRA: 在MSRA（新闻语料）上训练的模型。[下载地址](https://pan.baidu.com/s/1twci0QVBeWXUg06dK47tiA)
+- news: 在MSRA（新闻语料）上训练的模型。
 
-- CTB8: 在CTB8（新闻文本及网络文本的混合型语料）上训练的模型。[下载地址](https://pan.baidu.com/s/1DCjDOxB0HD2NmP9w1jm8MA)
+- web: 在微博（网络文本语料）上训练的模型。
 
-- WEIBO: 在微博（网络文本语料）上训练的模型。[下载地址](https://pan.baidu.com/s/1QHoK2ahpZnNmX6X7Y9iCgQ)
+- mdicine: 在医药领域上训练的模型。
 
-- MixedModel: 混合数据集训练的通用模型。随pip包附带的是此模型。[下载地址](https://pan.baidu.com/s/1Ej2TFTOLp84FDIPoQMtsMg)
+- turism: 在旅游领域上训练的模型。
 
+- MixedModel: 混合数据集训练的通用模型。随pip包附带的是此模型。
 
-其中，MSRA数据由[第二届国际汉语分词评测比赛](http://sighan.cs.uchicago.edu/bakeoff2005/)提供，CTB8数据由[LDC](https://catalog.ldc.upenn.edu/ldc2013t21)提供，WEIBO数据由[NLPCC](http://tcci.ccf.org.cn/conference/2016/pages/page05_CFPTasks.html)分词比赛提供。
 
 
 欢迎更多用户可以分享自己训练好的细分领域模型。
