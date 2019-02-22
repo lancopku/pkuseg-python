@@ -336,7 +336,7 @@ python3 mp.py
 ## 相关论文
 
 该代码包主要基于以下科研论文，如使用了本工具，请引用以下论文：
-* Xu Sun, Houfeng Wang, Wenjie Li. Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection. ACL. 253–262. 2012 
+* Xu Sun, Houfeng Wang, Wenjie Li. [Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection](http://www.aclweb.org/anthology/P12-1027). ACL. 253–262. 2012 
 
 ```
 @inproceedings{DBLP:conf/acl/SunWL12,
