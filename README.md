@@ -227,25 +227,6 @@ pkuseg.train('train.txt', 'test.txt', './models', train_iter=10, init_model='./p
 
 
 
-#### 多进程分词
-
-当将以上代码示例置于文件中运行时，如涉及多进程功能，请务必使用`if __name__ == '__main__'`保护全局语句，如：  
-mp.py文件
-```python3
-import pkuseg
-
-if __name__ == '__main__':
-    pkuseg.test('input.txt', 'output.txt', nthread=20)
-    pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)	
-```
-运行
-```
-python3 mp.py
-```
-详见[无法使用多进程分词和训练功能，提示RuntimeError和BrokenPipeError](https://github.com/lancopku/pkuseg-python/wiki#3-无法使用多进程分词和训练功能提示runtimeerror和brokenpipeerror)。
-
-**在Windows平台上，请当文件足够大时再使用多进程分词功能**，详见[关于多进程速度问题](https://github.com/lancopku/pkuseg-python/wiki#9-关于多进程速度问题)。
-
 #### 参数说明
 
 模型配置
@@ -290,9 +271,32 @@ pkuseg.train(trainFile, testFile, savedir, train_iter=20, init_model=None)
 
 
 
+#### 多进程分词
+
+当将以上代码示例置于文件中运行时，如涉及多进程功能，请务必使用`if __name__ == '__main__'`保护全局语句，如：  
+mp.py文件
+```python3
+import pkuseg
+
+if __name__ == '__main__':
+    pkuseg.test('input.txt', 'output.txt', nthread=20)
+    pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)	
+```
+运行
+```
+python3 mp.py
+```
+详见[无法使用多进程分词和训练功能，提示RuntimeError和BrokenPipeError](https://github.com/lancopku/pkuseg-python/wiki#3-无法使用多进程分词和训练功能提示runtimeerror和brokenpipeerror)。
+
+**在Windows平台上，请当文件足够大时再使用多进程分词功能**，详见[关于多进程速度问题](https://github.com/lancopku/pkuseg-python/wiki#9-关于多进程速度问题)。
+
+
+
 ## 预训练模型
 
-直接从pip安装的用户在使用细领域分词功能时，只需要设置model_name字段为对应的领域即可，会自动下载对应的细领域模型。直接从github下载的用户则需要自己下载对应的预训练模型，并设置model_name字段为预训练模型路径。预训练模型可以在[release](https://github.com/lancopku/pkuseg-python/releases)部分下载。以下是对预训练模型的说明：
+从pip安装的用户在使用细领域分词功能时，只需要设置model_name字段为对应的领域即可，会自动下载对应的细领域模型。
+
+从github下载的用户则需要自己下载对应的预训练模型，并设置model_name字段为预训练模型路径。预训练模型可以在[release](https://github.com/lancopku/pkuseg-python/releases)部分下载。以下是对预训练模型的说明：
 
 - news: 在MSRA（新闻语料）上训练的模型。
 
