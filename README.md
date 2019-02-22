@@ -161,7 +161,7 @@ text = seg.cut('我爱北京天安门')                              # 进行分
 print(text)
 ```
 
-代码示例3：分词同时进行词性标注，各个词性标签的详细含义可参考[tags.txt](https://github.com/lancopku/pkuseg-python/tags.txt)。
+代码示例3：分词同时进行词性标注，各个词性标签的详细含义可参考[tags.txt](https://github.com/lancopku/pkuseg-python/blob/master/tags.txt)。
 ```python3
 import pkuseg
 
