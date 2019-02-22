@@ -60,7 +60,7 @@ pkuseg具有如下几个特点：
 	```
 3. 从GitHub下载(需要下载模型文件，见[预训练模型](#预训练模型))
 	```
-	运行"python setup.py build_ext -i"进行安装，安装成功后可直接通过import pkuseg使用。使用时需要自行下载或训练模型，预训练模型可详见release。
+	运行"python setup.py build_ext -i"进行安装，安装成功后可直接通过import pkuseg使用。使用时需要自行下载或训练模型，预训练模型可详见[release](https://github.com/lancopku/pkuseg-python/releases)。
 	```
 	
 
@@ -290,7 +290,7 @@ pkuseg.train(trainFile, testFile, savedir, train_iter=20, init_model=None)
 
 ## 预训练模型
 
-直接从pip安装的用户在使用细领域分词功能时，只需要设置model_name字段为对应的领域即可，会自动下载对应的细领域模型。直接从github下载的用户则需要自己下载对应的预训练模型，并设置model_name字段为预训练模型路径。预训练模型可以在release部分可以下载。以下是对预训练模型的说明：
+直接从pip安装的用户在使用细领域分词功能时，只需要设置model_name字段为对应的领域即可，会自动下载对应的细领域模型。直接从github下载的用户则需要自己下载对应的预训练模型，并设置model_name字段为预训练模型路径。预训练模型可以在[release](https://github.com/lancopku/pkuseg-python/releases)部分可以下载。以下是对预训练模型的说明：
 
 - news: 在MSRA（新闻语料）上训练的模型。
 
