@@ -59,8 +59,11 @@ pkuseg具有如下几个特点：
 	pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -U pkuseg
 	```
 3. 从GitHub下载(需要下载模型文件，见[预训练模型](#预训练模型))
-	
-	运行"python setup.py build_ext -i"进行安装，安装成功后可直接通过import pkuseg使用。使用时需要自行下载或训练模型，预训练模型可详见[release](https://github.com/lancopku/pkuseg-python/releases)。
+   运行以下命令进行安装
+	```
+	python setup.py build_ext -i
+	```
+   安装成功后可直接通过import pkuseg使用。使用时需要自行下载或训练模型，预训练模型可详见[release](https://github.com/lancopku/pkuseg-python/releases)。
 	
 	
 
