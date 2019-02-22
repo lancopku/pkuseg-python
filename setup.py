@@ -29,7 +29,7 @@ def setup_package():
 
     setuptools.setup(
         name="pkuseg",
-        version="0.0.16",
+        version="0.0.18",
         author="Lanco",
         author_email="luoruixuan97@pku.edu.cn",
         description="A small package for Chinese word segmentation",

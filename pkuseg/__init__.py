@@ -21,12 +21,6 @@ from pkuseg.model import Model
 from pkuseg.download import download_model
 from pkuseg.postag import Postag
 
-model_urls = {
-    "postag": "https://github.com/lancopku/pkuseg-python/releases/download/v0.0.16/postag.zip",
-    "medical": "https://github.com/lancopku/pkuseg-python/releases/download/v0.0.16/medical.zip",
-    "tourism": "https://github.com/lancopku/pkuseg-python/releases/download/v0.0.16/tourism.zip",
-}
-
 class TrieNode:
     """建立词典的Trie树节点"""
 
@@ -169,24 +163,24 @@ class Postprocesser:
         return self.post_process(sent, check_seperated=True)
 
 class pkuseg:
-    def __init__(self, model_name="default", user_dict="default", seg_only=True):
+    def __init__(self, model_name="default", user_dict="default", postag=False):
         """初始化函数，加载模型及用户词典"""
         # print("loading model")
         # config = Config()
         # self.config = config
-        self.seg_only = seg_only
+        self.postag = postag
         if model_name in ["default"]:
             config.modelDir = os.path.join(
                 os.path.dirname(os.path.realpath(__file__)),
                 "models",
                 model_name,
             )
-        elif model_name in ["medical", "tourism"]:
+        elif model_name in config.available_models:
             config.modelDir = os.path.join(
                 config.pkuseg_home,
                 model_name,
             )
-            download_model(model_urls[model_name], config.pkuseg_home)
+            download_model(config.model_urls[model_name], config.pkuseg_home)
         else:
             config.modelDir = model_name
         # config.fModel = os.path.join(config.modelDir, "model.txt")
@@ -194,11 +188,11 @@ class pkuseg:
             file_name = None
             other_names = None
         else:
-            if user_dict != "default":
+            if user_dict not in config.available_models:
                 file_name = user_dict
             else:
                 file_name = None
-            if model_name in ["medical", "tourism"]:
+            if model_name in config.models_with_dict:
                 file_name = None
                 other_name = os.path.join(
                     config.pkuseg_home,
@@ -231,8 +225,8 @@ class pkuseg:
         self.n_feature = len(self.feature_extractor.feature_to_idx)
         self.n_tag = len(self.feature_extractor.tag_to_idx)
 
-        if not seg_only:
-            download_model(model_urls["postag"], config.pkuseg_home)
+        if postag:
+            download_model(config.model_urls["postag"], config.pkuseg_home)
             postag_dir = os.path.join(
                 config.pkuseg_home,
                 "postag",
@@ -315,7 +309,7 @@ class pkuseg:
                 output = self._cut(w)
                 ret.extend(self.postprocesser(output))
         
-        if not self.seg_only:
+        if self.postag:
             tags = self.tagger.tag(ret)
             ret = list(zip(ret, tags))
         return ret
@@ -352,12 +346,12 @@ def train(trainFile, testFile, savedir, train_iter=20, init_model=None):
 
 
 def _test_single_proc(
-    input_file, output_file, model_name="default", user_dict="default", verbose=False
+    input_file, output_file, model_name="default", user_dict="default", postag=False, verbose=False
 ):
 
     times = []
     times.append(time.time())
-    seg = pkuseg(model_name, user_dict)
+    seg = pkuseg(model_name, user_dict, postag=postag)
 
     times.append(time.time())
     if not os.path.exists(input_file):
@@ -368,7 +362,10 @@ def _test_single_proc(
     times.append(time.time())
     results = []
     for line in lines:
-        results.append(" ".join(seg.cut(line)))
+        if not postag:
+            results.append(" ".join(seg.cut(line)))
+        else:
+            results.append(" ".join(map(lambda x:"/".join(x), seg.cut(line))))
 
     times.append(time.time())
     with open(output_file, "w", encoding="utf-8") as f:
@@ -402,17 +399,25 @@ def _proc(seg, in_queue, out_queue):
         if item is None:
             return
         idx, line = item
-        out_queue.put((idx, " ".join(seg.cut(line))))
+        if not seg.postag:
+            output_str = " ".join(seg.cut(line))
+        else:
+            output_str = " ".join(map(lambda x:"/".join(x), seg.cut(line)))
+        out_queue.put((idx, output_str))
 
 
-def _proc_alt(model_name, user_dict, in_queue, out_queue):
-    seg = pkuseg(model_name, user_dict)
+def _proc_alt(model_name, user_dict, postag, in_queue, out_queue):
+    seg = pkuseg(model_name, user_dict, postag=postag)
     while True:
         item = in_queue.get()
         if item is None:
             return
         idx, line = item
-        out_queue.put((idx, " ".join(seg.cut(line))))
+        if not postag:
+            output_str = " ".join(seg.cut(line))
+        else:
+            output_str = " ".join(map(lambda x:"/".join(x), seg.cut(line)))
+        out_queue.put((idx, output_str))
 
 
 def _test_multi_proc(
@@ -421,6 +426,7 @@ def _test_multi_proc(
     nthread,
     model_name="default",
     user_dict="default",
+    postag=False,
     verbose=False,
 ):
 
@@ -432,7 +438,7 @@ def _test_multi_proc(
     if alt:
         seg = None
     else:
-        seg = pkuseg(model_name, user_dict)
+        seg = pkuseg(model_name, user_dict, postag)
 
     times.append(time.time())
     if not os.path.exists(input_file):
@@ -448,7 +454,7 @@ def _test_multi_proc(
         if alt:
             p = Process(
                 target=_proc_alt,
-                args=(model_name, user_dict, in_queue, out_queue),
+                args=(model_name, user_dict, postag, in_queue, out_queue),
             )
         else:
             p = Process(target=_proc, args=(seg, in_queue, out_queue))
@@ -506,15 +512,16 @@ def test(
     model_name="default",
     user_dict="default",
     nthread=10,
+    postag=False,
     verbose=False,
 ):
 
     if nthread > 1:
         _test_multi_proc(
-            input_file, output_file, nthread, model_name, user_dict, verbose
+            input_file, output_file, nthread, model_name, user_dict, postag, verbose
         )
     else:
         _test_single_proc(
-            input_file, output_file, model_name, user_dict, verbose
+            input_file, output_file, model_name, user_dict, postag, verbose
         )
 

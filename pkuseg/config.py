@@ -17,9 +17,20 @@ class Config:
     num = "0123456789.几二三四五六七八九十千万亿兆零１２３４５６７８９０％"
     letter = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｇｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ／・－"
     mark = "*"
+    model_urls = {
+        "postag": "https://github.com/lancopku/pkuseg-python/releases/download/v0.0.16/postag.zip",
+        "medicine": "https://github.com/lancopku/pkuseg-python/releases/download/v0.0.16/medicine.zip",
+        "tourism": "https://github.com/lancopku/pkuseg-python/releases/download/v0.0.16/tourism.zip",
+        "news": "https://github.com/lancopku/pkuseg-python/releases/download/v0.0.16/news.zip",
+        "web": "https://github.com/lancopku/pkuseg-python/releases/download/v0.0.16/web.zip",
+    }
+    available_models = ["default", "medicine", "tourism", "web", "news"]
+    models_with_dict = ["medicine", "tourism"]
+
 
     def __init__(self):
         # main setting
+        self.pkuseg_home = os.path.expanduser(os.getenv('PKUSEG_HOME', '~/.pkuseg'))
         self.trainFile = os.path.join("data", "small_training.utf8")
         self.testFile = os.path.join("data", "small_test.utf8")
         self._tmp_dir = tempfile.TemporaryDirectory()
