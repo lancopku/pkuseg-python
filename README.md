@@ -60,7 +60,7 @@ pkuseg具有如下几个特点：
 	```
 3. 从GitHub下载(需要下载模型文件，见[预训练模型](#预训练模型))
 	```
-	将pkuseg文件放到目录下，运行"python setup.py build_ext -i"进行安装，安装成功后可直接通过import pkuseg使用。在使用时需要自行下载或训练模型，预训练模型可详见release。
+	运行"python setup.py build_ext -i"进行安装，安装成功后可直接通过import pkuseg使用。使用时需要自行下载或训练模型，预训练模型可详见release。
 	```
 	
 
