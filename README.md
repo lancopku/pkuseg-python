@@ -152,7 +152,7 @@ text = seg.cut('我爱北京天安门')                        # 进行分词
 print(text)
 ```
 
-代码示例2：额外使用自定义词典
+代码示例2：额外使用用户自定义词典
 ```python3
 import pkuseg
 
@@ -262,10 +262,10 @@ pkuseg.pkuseg(model_name="default", user_dict="default", pkuseg=False)
 	user_dict		设置用户词典。
 				"default", 默认参数，使用我们提供的词典。
 				None, 不使用词典。
-				dict_path, 可以填自己的用户词典的路径，词典格式为一行一个词，在使用默认词典的同时会额外使用用户自定义词典。
+				dict_path, 在使用默认词典的同时会额外使用用户自定义词典，可以填自己的用户词典的路径，词典格式为一行一个词。
 	postag		        是否进行词性分析。
 				False, 默认参数，只进行分词，不进行词性标注。
-				True, 会在分词的同时进行词性标注。词性标注的标签含义见[tags.txt](https://github.com/lancopku/pkuseg-python/tags.txt)。
+				True, 会在分词的同时进行词性标注。词性标注的标签含义见https://github.com/lancopku/pkuseg-python/tags.txt。
 ```
 
 对文件进行分词
