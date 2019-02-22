@@ -140,7 +140,7 @@ pkuseg.test('msr_test.raw', 'output.txt', user_dict=None)
 
 以下代码示例适用于python交互式环境。
 
-代码示例1：使用默认配置进行分词（**推荐**）。
+代码示例1：使用默认配置进行分词（**推荐**）
 ```python3
 import pkuseg
 
@@ -149,7 +149,7 @@ text = seg.cut('我爱北京天安门')                        # 进行分词
 print(text)
 ```
 
-代码示例2：使用用户自定义词典。
+代码示例2：使用用户自定义词典
 ```python3
 import pkuseg
 
@@ -158,17 +158,8 @@ text = seg.cut('我爱北京天安门')                         # 进行分词
 print(text)
 ```
 
-代码示例3：指定模型分词（以CTB8模型为例）
-```python3
-import pkuseg
 
-seg = pkuseg.pkuseg(model_name='./ctb8')                     # 假设用户已经下载好了ctb8的模型并放在了'./ctb8'目录下，通过设置model_name加载该模型
-text = seg.cut('我爱北京天安门')                              # 进行分词
-print(text)
-```
-
-
-代码示例4：细领域分词
+代码示例3：细领域分词
 ```python3
 import pkuseg
 
@@ -177,7 +168,7 @@ text = seg.cut('我爱北京天安门')                              # 进行分
 print(text)
 ```
 
-代码示例5：分词同时进行词性标注
+代码示例4：分词同时进行词性标注
 ```python3
 import pkuseg
 
@@ -187,7 +178,7 @@ print(text)
 ```
 
 
-代码示例6：对文件分词
+代码示例5：对文件分词
 ```python3
 import pkuseg
 
@@ -195,6 +186,18 @@ import pkuseg
 # 开20个进程
 pkuseg.test('input.txt', 'output.txt', nthread=20)     
 ```
+
+
+
+代码示例6：使用自训练模型分词（以CTB8模型为例）
+```python3
+import pkuseg
+
+seg = pkuseg.pkuseg(model_name='./ctb8')                     # 假设用户已经下载好了ctb8的模型并放在了'./ctb8'目录下，通过设置model_name加载该模型
+text = seg.cut('我爱北京天安门')                              # 进行分词
+print(text)
+```
+
 
 
 代码示例7：训练新模型 （模型随机初始化）
