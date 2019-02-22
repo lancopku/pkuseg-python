@@ -58,7 +58,7 @@ pkuseg具有如下几个特点：
 	```
 	pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -U pkuseg
 	```
-3. 从GitHub下载：
+3. 从GitHub下载，运行以下命令安装：
 	```
 	python setup.py build_ext -i
 	```
