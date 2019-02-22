@@ -152,17 +152,7 @@ text = seg.cut('我爱北京天安门')                        # 进行分词
 print(text)
 ```
 
-代码示例2：额外使用用户自定义词典
-```python3
-import pkuseg
-
-seg = pkuseg.pkuseg(user_dict='my_dict.txt')		# 给定用户词典为当前目录下的"my_dict.txt"
-text = seg.cut('我爱北京天安门')                         # 进行分词
-print(text)
-```
-
-
-代码示例3：细领域分词
+代码示例2：细领域分词
 ```python3
 import pkuseg
 
@@ -171,7 +161,7 @@ text = seg.cut('我爱北京天安门')                              # 进行分
 print(text)
 ```
 
-代码示例4：分词同时进行词性标注
+代码示例3：分词同时进行词性标注
 ```python3
 import pkuseg
 
@@ -181,7 +171,7 @@ print(text)
 ```
 
 
-代码示例5：对文件分词
+代码示例4：对文件分词
 ```python3
 import pkuseg
 
@@ -190,6 +180,15 @@ import pkuseg
 pkuseg.test('input.txt', 'output.txt', nthread=20)     
 ```
 
+
+代码示例5：额外使用用户自定义词典
+```python3
+import pkuseg
+
+seg = pkuseg.pkuseg(user_dict='my_dict.txt')		# 给定用户词典为当前目录下的"my_dict.txt"
+text = seg.cut('我爱北京天安门')                         # 进行分词
+print(text)
+```
 
 
 代码示例6：使用自训练模型分词（以CTB8模型为例）
