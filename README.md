@@ -250,7 +250,7 @@ python3 mp.py
 ```
 pkuseg.pkuseg(model_name="default", user_dict="default", pkuseg=False)
 	model_name		模型路径。
-			        "default"，默认参数，表示使用我们预训练好的模型(仅对pip下载的用户)。
+			        "default"，默认参数，表示使用我们预训练好的混合领域模型(仅对pip下载的用户)。
 				"news", 使用新闻领域模型。
 				"web", 使用网络领域模型。
 				"medicine", 使用医药领域模型。
@@ -279,11 +279,11 @@ pkuseg.test(readFile, outputFile, model_name="default", user_dict="default", pos
 模型训练
 ```
 pkuseg.train(trainFile, testFile, savedir, train_iter=20, init_model=None)
-	trainFile		训练文件路径
-	testFile		测试文件路径
-	savedir			训练模型的保存路径
-	train_iter		训练轮数
-	init_model		初始化模型，默认为None表示使用默认初始化，用户可以填自己想要初始化的模型的路径如init_model='./models/'
+	trainFile		训练文件路径。
+	testFile		测试文件路径。
+	savedir			训练模型的保存路径。
+	train_iter		训练轮数。
+	init_model		初始化模型，默认为None表示使用默认初始化，用户可以填自己想要初始化的模型的路径如init_model='./models/'。
 ```
 
 
