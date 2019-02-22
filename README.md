@@ -298,11 +298,11 @@ pkuseg.train(trainFile, testFile, savedir, train_iter=20, init_model=None)
 
 - web: 在微博（网络文本语料）上训练的模型。
 
-- mdicine: 在医药领域上训练的模型。
+- medicine: 在医药领域上训练的模型。
 
-- turism: 在旅游领域上训练的模型。
+- tourism: 在旅游领域上训练的模型。
 
-- MixedModel: 混合数据集训练的通用模型。随pip包附带的是此模型。
+- mixed: 混合数据集训练的通用模型。随pip包附带的是此模型。
 
 
 
