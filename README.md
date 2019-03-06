@@ -115,7 +115,7 @@ pkuseg.test('msr_test.raw', 'output.txt', user_dict=None)
 
 其中，`All Average`显示的是在所有测试集上F-score的平均。
 
-更多详细比较可参见[和其他工具包的比较](https://github.com/lancopku/pkuseg-python/wiki/%E5%92%8C%E7%8E%B0%E6%9C%89%E5%B7%A5%E5%85%B7%E5%8C%85%E7%9A%84%E6%AF%94%E8%BE%83)。
+更多详细比较可参见[和现有工具包的比较](https://github.com/lancopku/pkuseg-python/wiki/%E5%92%8C%E7%8E%B0%E6%9C%89%E5%B7%A5%E5%85%B7%E5%8C%85%E7%9A%84%E6%AF%94%E8%BE%83)。
 
 ## 使用方式
 
