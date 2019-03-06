@@ -25,7 +25,9 @@ try:
 except ImportError:
     tqdm = None  # defined below
 
-def download_model(url, model_dir, progress=True):
+HASH_REGEX = re.compile(r'-([a-f0-9]*)\.')
+
+def download_model(url, model_dir, hash_prefix, progress=True):
     if not os.path.exists(model_dir):
         os.makedirs(model_dir)
     parts = urlparse(url)
@@ -33,7 +35,7 @@ def download_model(url, model_dir, progress=True):
     cached_file = os.path.join(model_dir, filename)
     if not os.path.exists(cached_file):
         sys.stderr.write('Downloading: "{}" to {}\n'.format(url, cached_file))
-        _download_url_to_file(url, cached_file, hash_prefix=None, progress=progress)
+        _download_url_to_file(url, cached_file, hash_prefix, progress=progress)
         unzip_file(cached_file, os.path.join(model_dir, filename.split('.')[0]))
 
 

@@ -180,7 +180,7 @@ class pkuseg:
                 config.pkuseg_home,
                 model_name,
             )
-            download_model(config.model_urls[model_name], config.pkuseg_home)
+            download_model(config.model_urls[model_name], config.pkuseg_home, config.model_hash[model_name])
         else:
             config.modelDir = model_name
         # config.fModel = os.path.join(config.modelDir, "model.txt")
@@ -193,7 +193,6 @@ class pkuseg:
             else:
                 file_name = None
             if model_name in config.models_with_dict:
-                file_name = None
                 other_name = os.path.join(
                     config.pkuseg_home,
                     model_name,
@@ -226,7 +225,7 @@ class pkuseg:
         self.n_tag = len(self.feature_extractor.tag_to_idx)
 
         if postag:
-            download_model(config.model_urls["postag"], config.pkuseg_home)
+            download_model(config.model_urls["postag"], config.pkuseg_home, config.model_hash[model_name])
             postag_dir = os.path.join(
                 config.pkuseg_home,
                 "postag",
