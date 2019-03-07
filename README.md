@@ -415,7 +415,7 @@ Example 2: Domain-specific segmentation. Users are free to choose different pre-
 ```python3
 import pkuseg
 seg = pkuseg.pkuseg(model_name='medicine') 
-#automatically download the domain-specific model.
+#Automatically download the domain-specific model.
 text = seg.cut('我爱北京天安门')
 print(text)
 ```
