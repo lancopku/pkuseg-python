@@ -391,7 +391,7 @@ The pkuseg-python toolkit has the following features:
 	python setup.py build_ext -i
 	```
 	
-   Note: the github code does not contain the pre-trained models, users need to download the pre-trained models from [release](https://github.com/lancopku/pkuseg-python/releases), and set parameter ``model_name'' as the model path.
+   Note: the github code does not contain the pre-trained models, users need to download the pre-trained models from [release](https://github.com/lancopku/pkuseg-python/releases), and set parameter 'model_name' as the model path.
    
    
 	
