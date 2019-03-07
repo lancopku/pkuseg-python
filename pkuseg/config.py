@@ -27,7 +27,7 @@ class Config:
     model_hash = {
         "postag": "afdf15f4e39bc47a39be4c37e3761b0c8f6ad1783f3cd3aff52984aebc0a1da9",
         "medicine": "773d655713acd27dd1ea9f97d91349cc1b6aa2fc5b158cd742dc924e6f239dfc",
-        "tourism": "0eb1f813ba4ee06d301e652d3ed73b360fa3ad1f83103e8aca01b60e0836dee4",
+        "tourism": "1c84a0366fe6fda73eda93e2f31fd399923b2f5df2818603f426a200b05cbce9",
         "news": "18188b68e76b06fc437ec91edf8883a537fe25fa606641534f6f004d2f9a2e42",
         "web": "4867f5817f187246889f4db259298c3fcee07c0b03a2d09444155b28c366579e",
     }

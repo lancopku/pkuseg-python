@@ -225,7 +225,7 @@ class pkuseg:
         self.n_tag = len(self.feature_extractor.tag_to_idx)
 
         if postag:
-            download_model(config.model_urls["postag"], config.pkuseg_home, config.model_hash[model_name])
+            download_model(config.model_urls["postag"], config.pkuseg_home, config.model_hash["postag"])
             postag_dir = os.path.join(
                 config.pkuseg_home,
                 "postag",
