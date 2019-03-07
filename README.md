@@ -493,7 +493,7 @@ Segmentation for sentences.
 ```
 pkuseg.pkuseg(model_name = "default", user_dict = "default", postag = False)
 	model_name		The path of the used model.
-			        "default". The default mixed-domain  model.
+			        "default". The default mixed-domain model.
 				"news". The model trained on news domain data.
 				"web". The model trained on web domain data.
 				"medicine". The model trained on medicine domain data.
