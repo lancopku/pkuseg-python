@@ -136,8 +136,8 @@ print(text)
 ```python3
 import pkuseg
 
-seg = pkuseg.pkuseg(model_name='medicine')                  # 程序会自动下载所对应的细领域模型
-text = seg.cut('我爱北京天安门')                              # 进行分词
+seg = pkuseg.pkuseg(model_name='medicine')  # 程序会自动下载所对应的细领域模型
+text = seg.cut('我爱北京天安门')  # 进行分词
 print(text)
 ```
 
@@ -145,8 +145,8 @@ print(text)
 ```python3
 import pkuseg
 
-seg = pkuseg.pkuseg(postag=True)                             # 开启词性标注功能
-text = seg.cut('我爱北京天安门')                               # 进行分词和词性标注
+seg = pkuseg.pkuseg(postag=True)  # 开启词性标注功能
+text = seg.cut('我爱北京天安门')    # 进行分词和词性标注
 print(text)
 ```
 
@@ -165,8 +165,8 @@ pkuseg.test('input.txt', 'output.txt', nthread=20)
 ```python3
 import pkuseg
 
-seg = pkuseg.pkuseg(user_dict='my_dict.txt')	       # 给定用户词典为当前目录下的"my_dict.txt"
-text = seg.cut('我爱北京天安门')                         # 进行分词
+seg = pkuseg.pkuseg(user_dict='my_dict.txt')  # 给定用户词典为当前目录下的"my_dict.txt"
+text = seg.cut('我爱北京天安门')                # 进行分词
 print(text)
 ```
 
@@ -175,8 +175,8 @@ print(text)
 ```python3
 import pkuseg
 
-seg = pkuseg.pkuseg(model_name='./ctb8')                    # 假设用户已经下载好了ctb8的模型并放在了'./ctb8'目录下，通过设置model_name加载该模型
-text = seg.cut('我爱北京天安门')                              # 进行分词
+seg = pkuseg.pkuseg(model_name='./ctb8')  # 假设用户已经下载好了ctb8的模型并放在了'./ctb8'目录下，通过设置model_name加载该模型
+text = seg.cut('我爱北京天安门')            # 进行分词
 print(text)
 ```
 
