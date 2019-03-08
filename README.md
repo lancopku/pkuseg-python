@@ -123,7 +123,7 @@ pkuseg.test('msr_test.raw', 'output.txt', user_dict=None)
 
 以下代码示例适用于python交互式环境。
 
-代码示例1：使用默认配置进行分词（**推荐**）
+代码示例1：使用默认配置进行分词（**如果用户无法确定分词领域，推荐使用默认配置分词**）
 ```python3
 import pkuseg
 
@@ -132,7 +132,7 @@ text = seg.cut('我爱北京天安门')                        # 进行分词
 print(text)
 ```
 
-代码示例2：细领域分词（在使用中，如果用户明确待分词的领域，可加载对应的模型进行分词。如果用户无法确定具体领域，推荐使用在混合领域上训练的通用模型）
+代码示例2：细领域分词（**如果用户明确分词领域，推荐使用细领域配置分词**）
 ```python3
 import pkuseg
 
@@ -351,6 +351,9 @@ Ruixuan Luo （罗睿轩）,  Jingjing Xu（许晶晶）, Xuancheng Ren（任宣
 
 
 
+# Pkuseg 
+
+A multi-domain Chinese word segmentation toolkit.
 
 ## Highlights
 
