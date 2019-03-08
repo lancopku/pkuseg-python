@@ -123,7 +123,7 @@ pkuseg.test('msr_test.raw', 'output.txt', user_dict=None)
 
 以下代码示例适用于python交互式环境。
 
-代码示例1：使用默认配置进行分词（**如果用户无法确定分词领域，推荐使用默认配置分词**）
+代码示例1：使用默认配置进行分词（**如果用户无法确定分词领域，推荐使用默认模型分词**）
 ```python3
 import pkuseg
 
@@ -132,7 +132,7 @@ text = seg.cut('我爱北京天安门')                        # 进行分词
 print(text)
 ```
 
-代码示例2：细领域分词（**如果用户明确分词领域，推荐使用细领域配置分词**）
+代码示例2：细领域分词（**如果用户明确分词领域，推荐使用细领域模型分词**）
 ```python3
 import pkuseg
 
@@ -404,7 +404,7 @@ The pkuseg-python toolkit has the following features:
 #### Examples
 
 
-Example 1:	Segmentation under the default configuration (**suggested**).
+Example 1:	Segmentation under the default configuration. **If users are not sure the domain of the text to be segmented, the default configuration is recommended.**
 ```python3
 import pkuseg
 
@@ -413,7 +413,7 @@ text = seg.cut('我爱北京天安门')
 print(text)
 ```
 
-Example 2: Domain-specific segmentation. Users are free to choose different pre-trained domain models according to the domain features of the text to be segmented. If users are not sure the domain, the default model trained in the mixed-domain data is recommended.
+Example 2: Domain-specific segmentation. **If users know the text domain, they can select a pre-trained domain model according to the domain features.**
 
 ```python3
 import pkuseg
