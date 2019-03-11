@@ -57,6 +57,8 @@ pkuseg具有如下几个特点：
 	```
 	pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -U pkuseg
 	```
+   注意：安装方式一和二目前仅支持linux，mac，**windows 64 位**的python3.5，python 3.6，python 3.7版本。
+   
 3. 如果不使用pip安装方式，选择从GitHub下载，可运行以下命令安装：
 	```
 	python setup.py build_ext -i
@@ -389,6 +391,7 @@ The pkuseg-python toolkit has the following features:
 	```
 	pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -U pkuseg
 	```
+   Note: The previous two installing commands only support python3.5, python3.6, python3.7 on linux, mac, and **windows 64 bit**.
 3. If the code is downloaded from GitHub, please run the following command to install pkuseg-python:
 	```
 	python setup.py build_ext -i
