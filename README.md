@@ -57,7 +57,6 @@ pkuseg具有如下几个特点：
 	```
 	pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -U pkuseg
 	```
-   注意：安装方式一和二目前仅支持linux (Ubuntu)，mac，**windows 64 位**的python3.5，python 3.6，python 3.7版本。
    
 3. 如果不使用pip安装方式，选择从GitHub下载，可运行以下命令安装：
 	```
@@ -65,7 +64,8 @@ pkuseg具有如下几个特点：
 	```
 	
    GitHub的代码并不包括预训练模型，因此需要用户自行下载或训练模型，预训练模型可详见[release](https://github.com/lancopku/pkuseg-python/releases)。使用时需设定"model_name"为模型文件。
-	
+
+注意：**安装方式1和2目前仅支持linux(ubuntu)、mac、windows 64 位的python3版本**。如果非以上系统，请使用安装方式3进行本地编译安装。
 	
 
 ## 各类分词工具包的性能对比
