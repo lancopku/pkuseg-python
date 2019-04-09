@@ -62,7 +62,7 @@ pkuseg具有如下几个特点：
 
 ## 各类分词工具包的性能对比
 
-我们选择jieba、THULAC等国内代表分词工具包与pkuseg做性能比较，详细设置可参考[实验设置](readme/environment.md)部分。
+我们选择jieba、THULAC等国内代表分词工具包与pkuseg做性能比较，详细设置可参考[实验环境](readme/environment.md)。
 
 
 
