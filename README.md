@@ -62,7 +62,7 @@ pkuseg具有如下几个特点：
 
 ## 各类分词工具包的性能对比
 
-我们选择jieba、THULAC等国内代表分词工具包与pkuseg做性能比较。
+我们选择jieba、THULAC等国内代表分词工具包与pkuseg做性能比较，详细环境设置可参考[实验设置](environment.md)。
 
 
 
@@ -143,6 +143,7 @@ import pkuseg
 pkuseg.test('input.txt', 'output.txt', nthread=20)     
 ```
 
+更多使用示例可参见[接口](interface.md)。
 
 
 
@@ -192,22 +193,7 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 
 #### 多进程分词
 
-当将以上代码示例置于文件中运行时，如涉及多进程功能，请务必使用`if __name__ == '__main__'`保护全局语句，如：  
-mp.py文件
-```python3
-import pkuseg
-
-if __name__ == '__main__':
-    pkuseg.test('input.txt', 'output.txt', nthread=20)
-    pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)	
-```
-运行
-```
-python3 mp.py
-```
-详见[无法使用多进程分词和训练功能，提示RuntimeError和BrokenPipeError](https://github.com/lancopku/pkuseg-python/wiki#3-无法使用多进程分词和训练功能提示runtimeerror和brokenpipeerror)。
-
-**在Windows平台上，请当文件足够大时再使用多进程分词功能**，详见[关于多进程速度问题](https://github.com/lancopku/pkuseg-python/wiki#9-关于多进程速度问题)。
+当将以上代码示例置于文件中运行时，如涉及多进程功能，请务必使用`if __name__ == '__main__'`保护全局语句，详见[多进程分词](multiprocess.md)。
 
 
 
@@ -263,7 +249,7 @@ python3 mp.py
 @inproceedings{DBLP:conf/acl/SunWL12,
 author = {Xu Sun and Houfeng Wang and Wenjie Li},
 title = {Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection},
-booktitle = {The 50th Annual Meeting of the Association for Computational Linguistics, Proceedings of the Conference, July 8-14, 2012, Jeju Island, Korea- Volume 1: Long Papers},
+booktitle = {Proceedings of ACL 2012},
 pages = {253--262},
 year = {2012}}
 ```
