@@ -221,7 +221,7 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 
 ## 版本历史
 
-详见[版本历史](history.md)。
+详见[版本历史](readme/history.md)。
 
 
 ## 开源协议
