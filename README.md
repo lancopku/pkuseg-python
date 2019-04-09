@@ -1,4 +1,4 @@
-# pkuseg：一个多领域中文分词工具包 [**(English Version)**](readme_english.md)
+# pkuseg：一个多领域中文分词工具包 [**(English Version)**](readme/readme_english.md)
 
 pkuseg简单易用，支持细分领域分词，有效提升了分词准确度。
 
@@ -62,7 +62,7 @@ pkuseg具有如下几个特点：
 
 ## 各类分词工具包的性能对比
 
-我们选择jieba、THULAC等国内代表分词工具包与pkuseg做性能比较，详细环境设置可参考[实验设置](environment.md)。
+我们选择jieba、THULAC等国内代表分词工具包与pkuseg做性能比较，详细设置可参考[实验设置](environment.md)部分。
 
 
 
@@ -98,7 +98,7 @@ pkuseg具有如下几个特点：
 
 其中，`All Average`显示的是在所有测试集上F-score的平均。
 
-更多详细比较可参见[和现有工具包的比较](https://github.com/lancopku/pkuseg-python/wiki/%E5%92%8C%E7%8E%B0%E6%9C%89%E5%B7%A5%E5%85%B7%E5%8C%85%E7%9A%84%E6%AF%94%E8%BE%83)。
+更多详细比较可参见[和现有工具包的比较](readme/comparison.md)。
 
 ## 使用方式
 
@@ -143,7 +143,7 @@ import pkuseg
 pkuseg.test('input.txt', 'output.txt', nthread=20)     
 ```
 
-更多使用示例可参见[接口](interface.md)。
+其他使用示例可参见[详细代码示例](interface.md)。
 
 
 
@@ -193,7 +193,7 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 
 #### 多进程分词
 
-当将以上代码示例置于文件中运行时，如涉及多进程功能，请务必使用`if __name__ == '__main__'`保护全局语句，详见[多进程分词](multiprocess.md)。
+当将以上代码示例置于文件中运行时，如涉及多进程功能，请务必使用`if __name__ == '__main__'`保护全局语句，详见[多进程分词](readme/multiprocess.md)。
 
 
 
