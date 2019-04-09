@@ -155,50 +155,6 @@ pkuseg.test('input.txt', 'output.txt', nthread=20)
 ```
 
 
-代码示例5：额外使用用户自定义词典
-```python3
-import pkuseg
-
-seg = pkuseg.pkuseg(user_dict='my_dict.txt')  # 给定用户词典为当前目录下的"my_dict.txt"
-text = seg.cut('我爱北京天安门')                # 进行分词
-print(text)
-```
-
-
-代码示例6：使用自训练模型分词（以CTB8模型为例）
-```python3
-import pkuseg
-
-seg = pkuseg.pkuseg(model_name='./ctb8')  # 假设用户已经下载好了ctb8的模型并放在了'./ctb8'目录下，通过设置model_name加载该模型
-text = seg.cut('我爱北京天安门')            # 进行分词
-print(text)
-```
-
-
-
-代码示例7：训练新模型 （模型随机初始化）
-```python3
-import pkuseg
-
-# 训练文件为'msr_training.utf8'
-# 测试文件为'msr_test_gold.utf8'
-# 训练好的模型存到'./models'目录下
-# 训练模式下会保存最后一轮模型作为最终模型
-# 目前仅支持utf-8编码，训练集和测试集要求所有单词以单个或多个空格分开
-pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models')	
-```
-
-
-代码示例8：fine-tune训练（从预加载的模型继续训练）
-```python3
-import pkuseg
-
-# 训练文件为'train.txt'
-# 测试文件为'test.txt'
-# 加载'./pretrained'目录下的模型，训练好的模型保存在'./models'，训练10轮
-pkuseg.train('train.txt', 'test.txt', './models', train_iter=10, init_model='./pretrained')
-```
-
 
 
 #### 参数说明
