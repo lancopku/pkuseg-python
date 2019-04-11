@@ -182,3 +182,27 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 	init_model		By default, None means random initialization. Users can also load a pre-trained model as initialization, like init_model='./models/'.
 ```
 
+
+## Publication
+
+The toolkit is mainly based on the following publication. If you use the toolkit, please cite the paper:
+* Xu Sun, Houfeng Wang, Wenjie Li. [Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection](http://www.aclweb.org/anthology/P12-1027). Proceedings of ACL. 253–262. 2012 
+
+```
+@inproceedings{SunWL12,
+author = {Xu Sun and Houfeng Wang and Wenjie Li},
+title = {Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection},
+booktitle = {Proceedings of ACL},
+pages = {253--262},
+year = {2012}}
+```
+
+
+
+## Authors
+
+Ruixuan Luo, Jingjing Xu, Xuancheng Ren, Yi Zhang, Bingzhen Wei, Xu Sun  
+
+Peking University [Language Computing and Machine Learning Group](http://lanco.pku.edu.cn/)
+
+
