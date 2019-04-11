@@ -230,16 +230,16 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 
 
 
-## 相关论文
+## 论文引用
 
 该代码包主要基于以下科研论文，如使用了本工具，请引用以下论文：
-* Xu Sun, Houfeng Wang, Wenjie Li. [Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection](http://www.aclweb.org/anthology/P12-1027). ACL. 253–262. 2012 
+* Xu Sun, Houfeng Wang, Wenjie Li. [Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection](http://www.aclweb.org/anthology/P12-1027). Proceedings of ACL. 253–262. 2012 
 
 ```
-@inproceedings{DBLP:conf/acl/SunWL12,
+@inproceedings{SunWL12,
 author = {Xu Sun and Houfeng Wang and Wenjie Li},
 title = {Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection},
-booktitle = {Proceedings of ACL 2012},
+booktitle = {Proceedings of ACL},
 pages = {253--262},
 year = {2012}}
 ```
@@ -263,7 +263,9 @@ year = {2012}}
 
 ## 作者
 
-Ruixuan Luo （罗睿轩）,  Jingjing Xu（许晶晶）, Xuancheng Ren（任宣丞）, Yi Zhang（张艺）, Bingzhen Wei（位冰镇）， Xu Sun （孙栩）
+Ruixuan Luo （罗睿轩）,  Jingjing Xu（许晶晶）, Xuancheng Ren（任宣丞）, Yi Zhang（张艺）, Bingzhen Wei（位冰镇）， Xu Sun （孙栩）  
+
+北京大学 [语言计算与机器学习研究组](http://lanco.pku.edu.cn/)
 
 
 
