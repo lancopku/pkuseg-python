@@ -203,6 +203,6 @@ year = {2012}}
 
 Ruixuan Luo, Jingjing Xu, Xuancheng Ren, Yi Zhang, Bingzhen Wei, Xu Sun  
 
-Peking University [Language Computing and Machine Learning Group](http://lanco.pku.edu.cn/)
+[Language Computing and Machine Learning Group](http://lanco.pku.edu.cn/), Peking University,
 
 
