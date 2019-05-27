@@ -26,6 +26,7 @@ class TrieNode:
 
     def __init__(self, isword):
         self.isword = isword
+        self.usertag = ''
         self.children = {}
 
 
@@ -42,14 +43,23 @@ class Preprocesser:
                 lines = f.readlines()
             self.trie = TrieNode(False)
             for line in lines:
-                self.insert(line.strip())
+                fields = line.strip().split('\t')
+                word = fields[0].strip()
+                usertag = fields[1].strip() if len(fields) > 1 else ''
+                self.insert(word, usertag)
         else:
             self.trie = TrieNode(False)
-            for w in dict_file:
-                assert isinstance(w, str)
-                self.insert(w.strip())
+            for w_t in dict_file:
+                if isinstance(w_t, str):
+                    w = w_t.strip()
+                    t = ''
+                else:
+                    assert isinstance(w_t, tuple)
+                    assert len(w_t)==2
+                    w, t = map(lambda x:x.strip(), w_t)
+                self.insert(w, t)
 
-    def insert(self, word):
+    def insert(self, word, usertag):
         """Trie树中插入单词"""
         l = len(word)
         now = self.trie
@@ -59,11 +69,13 @@ class Preprocesser:
                 now.children[c] = TrieNode(False)
             now = now.children[c]
         now.isword = True
+        now.usertag = usertag
 
     def solve(self, txt):
         """对文本进行预处理"""
         outlst = []
         iswlst = []
+        taglst = []
         l = len(txt)
         last = 0
         i = 0
@@ -71,23 +83,34 @@ class Preprocesser:
             now = self.trie
             j = i
             found = False
+            usertag = ''
+            last_word_idx = -1 # 表示从当前位置i往后匹配，最长匹配词词尾的idx
             while True:
                 c = txt[j]
-                if not c in now.children:
-                    break
-                now = now.children[c]
-                j += 1
-                if now.isword:
+                if not c in now.children and last_word_idx != -1:
                     found = True
                     break
-                if j == l:
+                if not c in now.children and last_word_idx == -1:
+                    break
+                now = now.children[c]
+                if now.isword:
+                    last_word_idx = j
+                    usertag = now.usertag
+                j += 1
+                if j == l and last_word_idx == -1:
+                    break
+                if j == l and last_word_idx != -1 :
+                    j = last_word_idx + 1
+                    found = True
                     break
             if found:
                 if last != i:
                     outlst.append(txt[last:i])
                     iswlst.append(False)
+                    taglst.append('')
                 outlst.append(txt[i:j])
                 iswlst.append(True)
+                taglst.append(usertag)
                 last = j
                 i = j
             else:
@@ -95,7 +118,8 @@ class Preprocesser:
         if last < l:
             outlst.append(txt[last:l])
             iswlst.append(False)
-        return outlst, iswlst
+            taglst.append('')
+        return outlst, iswlst, taglst
 
 class Postprocesser:
     """对分词结果后处理"""
@@ -286,6 +310,7 @@ class pkuseg:
         txt = txt.strip()
 
         ret = []
+        usertags = []
 
         if not txt:
             return ret
@@ -298,18 +323,24 @@ class pkuseg:
                 continue
 
             # 根据用户词典拆成更多片段
-            lst, isword = self.preprocesser.solve(w0)
+            lst, isword, taglst = self.preprocesser.solve(w0)
 
-            for w, isw in zip(lst, isword):
+            for w, isw, usertag in zip(lst, isword, taglst):
                 if isw:
                     ret.append(w)
+                    usertags.append(usertag)
                     continue
 
                 output = self._cut(w)
-                ret.extend(self.postprocesser(output))
+                post_output = self.postprocesser(output)
+                ret.extend(post_output)
+                usertags.extend(['']*len(post_output))
         
         if self.postag:
-            tags = self.tagger.tag(ret)
+            tags = self.tagger.tag(ret.copy())
+            for i, usertag in enumerate(usertags):
+                if usertag:
+                    tags[i] = usertag
             ret = list(zip(ret, tags))
         return ret
 
