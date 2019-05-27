@@ -1,4 +1,4 @@
-# pkuseg：一个多领域中文分词工具包
+# pkuseg：一个多领域中文分词工具包 [**(English Version)**](readme/readme_english.md)
 
 pkuseg简单易用，支持细分领域分词，有效提升了分词准确度。
 
@@ -29,14 +29,6 @@ pkuseg具有如下几个特点：
 ## 编译和安装
 
 - 目前**仅支持python3**
-- 新版本发布：2019-1-23
-  - 修改了词典处理方法，扩充了词典，分词效果有提升
-  - **效率进行了优化，测试速度较之前版本提升9倍左右**
-  - 增加了在大规模混合数据集训练的通用模型，并将其设为默认使用模型
-- 新版本发布：2019-1-30
-  - 支持fine-tune训练（从预加载的模型继续训练），支持设定训练轮数
-- 新版本发布：2019-2-20
-  - **支持词性标注，增加了医疗、旅游细领域模型**
 - **为了获得好的效果和速度，强烈建议大家通过pip install更新到目前的最新版本**
 
 1. 通过PyPI安装(自带模型文件)：
@@ -70,18 +62,7 @@ pkuseg具有如下几个特点：
 
 ## 各类分词工具包的性能对比
 
-我们选择jieba、THULAC等国内代表分词工具包与pkuseg做性能比较。
-
-考虑到jieba分词和THULAC工具包等并没有提供细领域的预训练模型，为了便于比较，我们重新使用它们提供的训练接口在细领域的数据集上进行训练，用训练得到的模型进行中文分词。
-
-我们选择Linux作为测试环境，在新闻数据(MSRA)、混合型文本(CTB8)、网络文本(WEIBO)数据上对不同工具包进行了准确率测试。我们使用了第二届国际汉语分词评测比赛提供的分词评价脚本。其中MSRA与WEIBO使用标准训练集测试集划分，CTB8采用随机划分。对于不同的分词工具包，训练测试数据的划分都是一致的；**即所有的分词工具包都在相同的训练集上训练，在相同的测试集上测试**。对于所有数据集，pkuseg使用了不使用词典的训练和测试接口。以下是pkuseg训练和测试代码示例:
-
-```
-pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models')
-pkuseg.test('msr_test.raw', 'output.txt', user_dict=None)
-```
-
-
+我们选择jieba、THULAC等国内代表分词工具包与pkuseg做性能比较，详细设置可参考[实验环境](readme/environment.md)。
 
 
 
@@ -117,7 +98,7 @@ pkuseg.test('msr_test.raw', 'output.txt', user_dict=None)
 
 其中，`All Average`显示的是在所有测试集上F-score的平均。
 
-更多详细比较可参见[和现有工具包的比较](https://github.com/lancopku/pkuseg-python/wiki/%E5%92%8C%E7%8E%B0%E6%9C%89%E5%B7%A5%E5%85%B7%E5%8C%85%E7%9A%84%E6%AF%94%E8%BE%83)。
+更多详细比较可参见[和现有工具包的比较](readme/comparison.md)。
 
 ## 使用方式
 
@@ -162,50 +143,7 @@ import pkuseg
 pkuseg.test('input.txt', 'output.txt', nthread=20)     
 ```
 
-
-代码示例5：额外使用用户自定义词典
-```python3
-import pkuseg
-
-seg = pkuseg.pkuseg(user_dict='my_dict.txt')  # 给定用户词典为当前目录下的"my_dict.txt"
-text = seg.cut('我爱北京天安门')                # 进行分词
-print(text)
-```
-
-
-代码示例6：使用自训练模型分词（以CTB8模型为例）
-```python3
-import pkuseg
-
-seg = pkuseg.pkuseg(model_name='./ctb8')  # 假设用户已经下载好了ctb8的模型并放在了'./ctb8'目录下，通过设置model_name加载该模型
-text = seg.cut('我爱北京天安门')            # 进行分词
-print(text)
-```
-
-
-
-代码示例7：训练新模型 （模型随机初始化）
-```python3
-import pkuseg
-
-# 训练文件为'msr_training.utf8'
-# 测试文件为'msr_test_gold.utf8'
-# 训练好的模型存到'./models'目录下
-# 训练模式下会保存最后一轮模型作为最终模型
-# 目前仅支持utf-8编码，训练集和测试集要求所有单词以单个或多个空格分开
-pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models')	
-```
-
-
-代码示例8：fine-tune训练（从预加载的模型继续训练）
-```python3
-import pkuseg
-
-# 训练文件为'train.txt'
-# 测试文件为'test.txt'
-# 加载'./pretrained'目录下的模型，训练好的模型保存在'./models'，训练10轮
-pkuseg.train('train.txt', 'test.txt', './models', train_iter=10, init_model='./pretrained')
-```
+其他使用示例可参见[详细代码示例](readme/interface.md)。
 
 
 
@@ -255,22 +193,7 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 
 #### 多进程分词
 
-当将以上代码示例置于文件中运行时，如涉及多进程功能，请务必使用`if __name__ == '__main__'`保护全局语句，如：  
-mp.py文件
-```python3
-import pkuseg
-
-if __name__ == '__main__':
-    pkuseg.test('input.txt', 'output.txt', nthread=20)
-    pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models', nthread=20)	
-```
-运行
-```
-python3 mp.py
-```
-详见[无法使用多进程分词和训练功能，提示RuntimeError和BrokenPipeError](https://github.com/lancopku/pkuseg-python/wiki#3-无法使用多进程分词和训练功能提示runtimeerror和brokenpipeerror)。
-
-**在Windows平台上，请当文件足够大时再使用多进程分词功能**，详见[关于多进程速度问题](https://github.com/lancopku/pkuseg-python/wiki#9-关于多进程速度问题)。
+当将以上代码示例置于文件中运行时，如涉及多进程功能，请务必使用`if __name__ == '__main__'`保护全局语句，详见[多进程分词](readme/multiprocess.md)。
 
 
 
@@ -298,16 +221,7 @@ python3 mp.py
 
 ## 版本历史
 
-- v0.0.11(2019-01-09)
-  - 修订默认配置：CTB8作为默认模型，不使用词典
-- v0.0.14(2019-01-23)
-  - 修改了词典处理方法，扩充了词典，分词效果有提升
-  - 效率进行了优化，测试速度较之前版本提升9倍左右
-  - 增加了在大规模混合数据集训练的通用模型，并将其设为默认使用模型
-- v0.0.15(2019-01-30)
-  - 支持fine-tune训练（从预加载的模型继续训练），支持设定训练轮数
-- v0.0.18(2019-02-20)
-  - 支持词性标注，增加了医疗、旅游两个细领域模型
+详见[版本历史](readme/history.md)。
 
 
 ## 开源协议
@@ -316,16 +230,16 @@ python3 mp.py
 
 
 
-## 相关论文
+## 论文引用
 
 该代码包主要基于以下科研论文，如使用了本工具，请引用以下论文：
-* Xu Sun, Houfeng Wang, Wenjie Li. [Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection](http://www.aclweb.org/anthology/P12-1027). ACL. 253–262. 2012 
+* Xu Sun, Houfeng Wang, Wenjie Li. [Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection](http://www.aclweb.org/anthology/P12-1027). Proceedings of ACL. 253–262. 2012 
 
 ```
-@inproceedings{DBLP:conf/acl/SunWL12,
+@inproceedings{SunWL12,
 author = {Xu Sun and Houfeng Wang and Wenjie Li},
 title = {Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection},
-booktitle = {The 50th Annual Meeting of the Association for Computational Linguistics, Proceedings of the Conference, July 8-14, 2012, Jeju Island, Korea- Volume 1: Long Papers},
+booktitle = {Proceedings of ACL},
 pages = {253--262},
 year = {2012}}
 ```
@@ -349,192 +263,10 @@ year = {2012}}
 
 ## 作者
 
-Ruixuan Luo （罗睿轩）,  Jingjing Xu（许晶晶）, Xuancheng Ren（任宣丞）, Yi Zhang（张艺）, Bingzhen Wei（位冰镇）， Xu Sun （孙栩）
+Ruixuan Luo （罗睿轩）,  Jingjing Xu（许晶晶）, Xuancheng Ren（任宣丞）, Yi Zhang（张艺）, Bingzhen Wei（位冰镇）， Xu Sun （孙栩）  
 
+北京大学 [语言计算与机器学习研究组](http://lanco.pku.edu.cn/)
 
-
-# Pkuseg 
-
-A multi-domain Chinese word segmentation toolkit.
-
-## Highlights
-
-The pkuseg-python toolkit has the following features:
-
-1.	Supporting multi-domain Chinese word segmentation. Pkuseg-python supports multi-domain segmentation, including domains like news, web, medicine, and tourism. Users are free to choose different pre-trained models according to the domain features of the text to be segmented. If not sure the domain of the text, users are recommended to use the default model trained on mixed-domain data.
-
-2.	Higher word segmentation results. Compared with existing word segmentation toolkits, pkuseg-python can achieve higher F1 scores on the same dataset.
-
-3.	Supporting model training. Pkuseg-python  also supports users to train a new segmentation model with their own data.
-
-4.	Supporting POS tagging. We also provide users POS tagging interfaces for further lexical analysis. 
-
-
-
-## Installation
-
-- Requirements: python3
-
-1. Install pkuseg-python by using PyPI: (with the default model trained on mixed-doimain data)
-	```
-	pip3 install pkuseg
-	```
-   or update to the latest version (**suggested**):
-   	```
-	pip3 install -U pkuseg
-	```
-2. Install pkuseg-python by using image source for fast speed:
-	```
-	pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple pkuseg
-	```
-   or update to the latest version (**suggested**):
-	```
-	pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -U pkuseg
-	```
-   Note: The previous two installing commands only support python3.5, python3.6, python3.7 on linux, mac, and **windows 64 bit**.
-3. If the code is downloaded from GitHub, please run the following command to install pkuseg-python:
-	```
-	python setup.py build_ext -i
-	```
-	
-   Note: the github code does not contain the pre-trained models, users need to download the pre-trained models from [release](https://github.com/lancopku/pkuseg-python/releases), and set parameter 'model_name' as the model path.
-   
-   
-	
-
-## Usage
-
-#### Examples
-
-
-Example 1:	Segmentation under the default configuration. **If users are not sure the domain of the text to be segmented, the default configuration is recommended.**
-```python3
-import pkuseg
-
-seg = pkuseg.pkuseg() #load the default model
-text = seg.cut('我爱北京天安门')
-print(text)
-```
-
-Example 2: Domain-specific segmentation. **If users know the text domain, they can select a pre-trained domain model according to the domain features.**
-
-```python3
-import pkuseg
-seg = pkuseg.pkuseg(model_name='medicine') 
-#Automatically download the domain-specific model.
-text = seg.cut('我爱北京天安门')
-print(text)
-```
-
-Example 3：Segmentation and POS tagging. For the detailed meaning of each POS tag, please refer to [tags.txt](https://github.com/lancopku/pkuseg-python/blob/master/tags.txt).
-```python3
-import pkuseg
-
-seg = pkuseg.pkuseg(postag=True)                           
-text = seg.cut('我爱北京天安门')
-print(text)
-```
-
-
-Example 4：Segmentation with a text file as input.
-```python3
-import pkuseg
-
-#Take file 'input.txt' as input. 
-#The segmented result is stored in file 'output.txt'.
-pkuseg.test('input.txt', 'output.txt', nthread=20)     
-```
-
-
-Example 5: Segmentation with a user-defined dictionary.
-```python3
-import pkuseg
-
-seg = pkuseg.pkuseg(user_dict='my_dict.txt')
-text = seg.cut('我爱北京天安门')
-print(text)
-```
-
-
-Example 6: Segmentation with a user-trained model. Take CTB8 as an example.
-```python3
-import pkuseg
-
-seg = pkuseg.pkuseg(model_name='./ctb8') 
-text = seg.cut('我爱北京天安门')
-print(text)
-```
-
-
-
-Example 7: Training a new model (randomly initialized).
-
-```python3
-import pkuseg
-
-# Training file: 'msr_training.utf8'.
-# Test file: 'msr_test_gold.utf8'.
-# Save the trained model to './models'.
-# The training and test files are in utf-8 encoding.
-pkuseg.train('msr_training.utf8', 'msr_test_gold.utf8', './models')	
-```
-
-Example 8: Fine-tuning. Take a pre-trained model as input.
-```python3
-import pkuseg
-
-# Training file: 'train.txt'.
-# Testing file'test.txt'.
-# The path of the pre-trained model: './pretrained'.
-# Save the trained model to './models'.
-# The training and test files are in utf-8 encoding.
-pkuseg.train('train.txt', 'test.txt', './models', train_iter=10, init_model='./pretrained')
-```
-
-
-
-#### Parameter Settings
-
-Segmentation for sentences.
-```
-pkuseg.pkuseg(model_name = "default", user_dict = "default", postag = False)
-	model_name		The path of the used model.
-			        "default". The default mixed-domain model.
-				"news". The model trained on news domain data.
-				"web". The model trained on web domain data.
-				"medicine". The model trained on medicine domain data.
-				"tourism". The model trained on tourism domain data.
-			        model_path. Load a model from the user-specified path.
-	user_dict		Set up the user dictionary.
-				"default". Use the default dictionary.
-				None. No dictionary is used.
-				dict_path. The path of the user-defined dictionary. Each line only contains one word.
-	postag		        POS tagging or not.
-				False. The default setting. Segmentation without POS tagging.
-				True. Segmentation with POS tagging.
-```
-
-Segmentation for documents.
-
-```
-pkuseg.test(readFile, outputFile, model_name = "default", user_dict = "default", postag = False, nthread = 10)
-	readFile		The path of the input file.
-	outputFile		The path of the output file.
-	model_name		The path of the used model. Refer to pkuseg.pkuseg.
-	user_dict		The path of the user dictionary. Refer to pkuseg.pkuseg.
-	postag			POS tagging or not. Refer to pkuseg.pkuseg.
-	nthread			The number of threads.
-```
-
- Model training.
-```
-pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
-	trainFile		The path of the training file.
-	testFile		The path of the test file.
-	savedir			The saved path of the trained model.
-	train_iter		The maximum number of training epochs.
-	init_model		By default, None means random initialization. Users can also load a pre-trained model as initialization, like init_model='./models/'.
-```
 
 
 
