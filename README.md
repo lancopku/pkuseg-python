@@ -10,7 +10,7 @@ pkuseg简单易用，支持细分领域分词，有效提升了分词准确度�
 * [编译和安装](#编译和安装)
 * [各类分词工具包的性能对比](#各类分词工具包的性能对比)
 * [使用方式](#使用方式)
-* [相关论文](#相关论文)
+* [相关论文](#论文引用)
 * [作者](#作者)
 * [常见问题及解答](#常见问题及解答)
 
@@ -233,18 +233,27 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 ## 论文引用
 
 该代码包主要基于以下科研论文，如使用了本工具，请引用以下论文：
-* Xu Sun, Houfeng Wang, Wenjie Li. [Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection](http://www.aclweb.org/anthology/P12-1027). Proceedings of ACL. 253–262. 2012 
+* Ruixuan Luo, Jingjing Xu, Yi Zhang, Xuancheng Ren, Xu Sun. [PKUSEG: A Toolkit for Multi-Domain Chinese Word Segmentation](https://arxiv.org/abs/1906.11455). Arxiv. 2019.
 
 ```
-@inproceedings{SunWL12,
-author = {Xu Sun and Houfeng Wang and Wenjie Li},
-title = {Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection},
-booktitle = {Proceedings of ACL},
-pages = {253--262},
-year = {2012}}
+
+@article{pkuseg,
+  author = {Luo, Ruixuan and Xu, Jingjing and Zhang, Yi and Ren, Xuancheng and Sun, Xu},
+  journal = {CoRR},
+  title = {PKUSEG: A Toolkit for Multi-Domain Chinese Word Segmentation.},
+  url = {https://arxiv.org/abs/1906.11455},
+  volume = {abs/1906.11455},
+  year = 2019
+}
 ```
 
+## 其他相关论文
 
+Xu Sun, Houfeng Wang, Wenjie Li. Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection. ACL. 2012.
+
+Jingjing Xu and Xu Sun. 2016. Dependency-based gated recursive neural network for chinese word segmentation. ACL. 2016.
+
+Jingjing Xu and Xu Sun. 2017. Transfer learning for low-resource chinese word segmentation with a novel neural network. NLPCC. 2017.
 
 ## 常见问题及解答
 
