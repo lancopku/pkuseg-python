@@ -250,8 +250,8 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 ## 其他相关论文
 
 * Xu Sun, Houfeng Wang, Wenjie Li. Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection. ACL. 2012.
-* Jingjing Xu and Xu Sun. 2016. Dependency-based gated recursive neural network for chinese word segmentation. ACL. 2016.
-* Jingjing Xu and Xu Sun. 2017. Transfer learning for low-resource chinese word segmentation with a novel neural network. NLPCC. 2017.
+* Jingjing Xu and Xu Sun. Dependency-based gated recursive neural network for chinese word segmentation. ACL. 2016.
+* Jingjing Xu and Xu Sun. Transfer learning for low-resource chinese word segmentation with a novel neural network. NLPCC. 2017.
 
 ## 常见问题及解答
 
