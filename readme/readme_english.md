@@ -186,17 +186,25 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 ## Publication
 
 The toolkit is mainly based on the following publication. If you use the toolkit, please cite the paper:
-* Xu Sun, Houfeng Wang, Wenjie Li. [Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection](http://www.aclweb.org/anthology/P12-1027). Proceedings of ACL. 253–262. 2012 
+* Ruixuan Luo, Jingjing Xu, Yi Zhang, Xuancheng Ren, Xu Sun. [PKUSEG: A Toolkit for Multi-Domain Chinese Word Segmentation](https://arxiv.org/abs/1906.11455). Arxiv. 2019.
 
 ```
-@inproceedings{SunWL12,
-author = {Xu Sun and Houfeng Wang and Wenjie Li},
-title = {Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection},
-booktitle = {Proceedings of ACL},
-pages = {253--262},
-year = {2012}}
+
+@article{pkuseg,
+  author = {Luo, Ruixuan and Xu, Jingjing and Zhang, Yi and Ren, Xuancheng and Sun, Xu},
+  journal = {CoRR},
+  title = {PKUSEG: A Toolkit for Multi-Domain Chinese Word Segmentation.},
+  url = {https://arxiv.org/abs/1906.11455},
+  volume = {abs/1906.11455},
+  year = 2019
+}
 ```
 
+## Related Work
+
+* Xu Sun, Houfeng Wang, Wenjie Li. Fast Online Training with Frequency-Adaptive Learning Rates for Chinese Word Segmentation and New Word Detection. ACL. 2012.
+* Jingjing Xu and Xu Sun. Dependency-based gated recursive neural network for chinese word segmentation. ACL. 2016.
+* Jingjing Xu and Xu Sun. Transfer learning for low-resource chinese word segmentation with a novel neural network. NLPCC. 2017.
 
 
 ## Authors
