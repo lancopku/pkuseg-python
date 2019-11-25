@@ -267,6 +267,8 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 9. [关于多进程速度问题？](https://github.com/lancopku/pkuseg-python/wiki/FAQ#9-关于多进程速度问题)
 
 
+## 致谢
+
 感谢俞士汶教授（北京大学计算语言所）与邱立坤博士提供的训练数据集！
 
 ## 作者
