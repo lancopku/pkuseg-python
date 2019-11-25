@@ -1,6 +1,6 @@
 # pkuseg：一个多领域中文分词工具包 [**(English Version)**](readme/readme_english.md)
 
-pkuseg [[luo et. al, 2019](#论文引用)]简单易用，支持细分领域分词，有效提升了分词准确度。
+pkuseg 是基于论文[[luo et. al, 2019](#论文引用)]的工具包。其简单易用，支持细分领域分词，有效提升了分词准确度。
 
 
 
