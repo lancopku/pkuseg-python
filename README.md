@@ -1,6 +1,6 @@
 # pkuseg：一个多领域中文分词工具包 [**(English Version)**](readme/readme_english.md)
 
-pkuseg简单易用，支持细分领域分词，有效提升了分词准确度。
+pkuseg [[luo et. al, 2019](#论文引用)]简单易用，支持细分领域分词，有效提升了分词准确度。
 
 
 
@@ -267,6 +267,7 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 9. [关于多进程速度问题？](https://github.com/lancopku/pkuseg-python/wiki/FAQ#9-关于多进程速度问题)
 
 
+感谢俞士汶教授（北京大学计算语言所）与邱立坤博士提供的训练数据集！
 
 ## 作者
 
