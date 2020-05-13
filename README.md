@@ -55,7 +55,7 @@ pkuseg具有如下几个特点：
 	python setup.py build_ext -i
 	```
 	
-   GitHub的代码并不包括预训练模型，因此需要用户自行下载或训练模型，预训练模型可详见[release](https://github.com/lancopku/pkuseg-python/releases)。使用时需设定"model_name"为模型文件。
+   GitHub的代码并不包括预训练模型，因此需要用户自行下载或训练模型，预训练模型可详见[release](https://github.com/lancopku/pkuseg-python/releases)。使用时需设定"model_name"为模型文件所在的目录。
 
 注意：**安装方式1和2目前仅支持linux(ubuntu)、mac、windows 64 位的python3版本**。如果非以上系统，请使用安装方式3进行本地编译安装。
 	
