@@ -44,6 +44,7 @@ def setup_package():
             "Operating System :: OS Independent",
         ],
         install_requires=["numpy>=1.16.0"],
+        setup_requires=["cython", "numpy>=1.16.0"],
         ext_modules=cythonize(extensions, annotate=True),
         zip_safe=False,
     )
