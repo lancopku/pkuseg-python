@@ -37,7 +37,7 @@ def setup_package():
         long_description_content_type="text/markdown",
         url="https://github.com/lancopku/pkuseg-python",
         packages=setuptools.find_packages(),
-        package_data={"": ["*.txt*", "*.pkl", "*.npz"]},
+        package_data={"": ["*.txt*", "*.pkl", "*.npz", "*.pyx", "*.pxd"]},
         classifiers=[
             "Programming Language :: Python :: 3",
             "License :: Other/Proprietary License",
