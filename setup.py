@@ -1,10 +1,14 @@
 import setuptools
+import os
 from distutils.extension import Extension
 
 import numpy as np
-from Cython.Build import cythonize
+
+def is_source_release(path):
+    return os.path.exists(os.path.join(path, "PKG-INFO"))
 
 def setup_package():
+    root = os.path.abspath(os.path.dirname(__file__))
 
     long_description = "pkuseg-python"
 
@@ -26,10 +30,15 @@ def setup_package():
             include_dirs=[np.get_include()],
         ),
     ]
+    
+    if not is_source_release(root):
+        from Cython.Build import cythonize
+        extensions = cythonize(extensions, annotate=True)
+
 
     setuptools.setup(
         name="pkuseg",
-        version="0.0.22",
+        version="0.0.25",
         author="Lanco",
         author_email="luoruixuan97@pku.edu.cn",
         description="A small package for Chinese word segmentation",
@@ -43,9 +52,9 @@ def setup_package():
             "License :: Other/Proprietary License",
             "Operating System :: OS Independent",
         ],
-        install_requires=["numpy>=1.16.0"],
+        install_requires=["cython", "numpy>=1.16.0"],
         setup_requires=["cython", "numpy>=1.16.0"],
-        ext_modules=cythonize(extensions, annotate=True),
+        ext_modules=extensions,
         zip_safe=False,
     )
 
