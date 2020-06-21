@@ -37,13 +37,14 @@ def setup_package():
         long_description_content_type="text/markdown",
         url="https://github.com/lancopku/pkuseg-python",
         packages=setuptools.find_packages(),
-        package_data={"": ["*.txt*", "*.pkl", "*.npz"]},
+        package_data={"": ["*.txt*", "*.pkl", "*.npz", "*.pyx", "*.pxd"]},
         classifiers=[
             "Programming Language :: Python :: 3",
             "License :: Other/Proprietary License",
             "Operating System :: OS Independent",
         ],
         install_requires=["numpy>=1.16.0"],
+        setup_requires=["cython", "numpy>=1.16.0"],
         ext_modules=cythonize(extensions, annotate=True),
         zip_safe=False,
     )
