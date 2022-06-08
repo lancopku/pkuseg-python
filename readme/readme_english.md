@@ -186,12 +186,12 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 ## Publication
 
 The toolkit is mainly based on the following publication. If you use the toolkit, please cite the paper:
-* Ruixuan Luo, Jingjing Xu, Yi Zhang, Xuancheng Ren, Xu Sun. [PKUSEG: A Toolkit for Multi-Domain Chinese Word Segmentation](https://arxiv.org/abs/1906.11455). Arxiv. 2019.
+* Ruixuan Luo, Jingjing Xu, Yi Zhang, Zhiyuan Zhang, Xuancheng Ren, Xu Sun. [PKUSEG: A Toolkit for Multi-Domain Chinese Word Segmentation](https://arxiv.org/abs/1906.11455). Arxiv. 2019.
 
 ```
 
 @article{pkuseg,
-  author = {Luo, Ruixuan and Xu, Jingjing and Zhang, Yi and Ren, Xuancheng and Sun, Xu},
+  author = {Luo, Ruixuan and Xu, Jingjing and Zhang, Yi and Zhang, Zhiyuan and Ren, Xuancheng and Sun, Xu},
   journal = {CoRR},
   title = {PKUSEG: A Toolkit for Multi-Domain Chinese Word Segmentation.},
   url = {https://arxiv.org/abs/1906.11455},
@@ -209,7 +209,7 @@ The toolkit is mainly based on the following publication. If you use the toolkit
 
 ## Authors
 
-Ruixuan Luo, Jingjing Xu, Xuancheng Ren, Yi Zhang, Bingzhen Wei, Xu Sun  
+Ruixuan Luo, Jingjing Xu, Xuancheng Ren, Yi Zhang, Zhiyuan Zhang, Bingzhen Wei, Xu Sun  
 
 [Language Computing and Machine Learning Group](http://lanco.pku.edu.cn/), Peking University
 
