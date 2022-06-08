@@ -213,6 +213,16 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 
 - **mixed**: 混合数据集训练的通用模型。随pip包附带的是此模型。
 
+我们还通过领域自适应的方法，利用维基百科的未标注数据实现了几个细领域预训练模型的自动构建以及通用模型的优化，这些模型目前仅可以在release中下载：
+
+- **art**: 在艺术与文化领域上训练的模型。
+
+- **entertainment**: 在娱乐与体育领域上训练的模型。
+
+- **science**: 在科学领域上训练的模型。
+
+- **default_v2**: 使用领域自适应方法得到的优化后的通用模型，相较于默认模型规模更大，但泛化性能更好。
+
 
 
 欢迎更多用户可以分享自己训练好的细分领域模型。
@@ -233,12 +243,12 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 ## 论文引用
 
 该代码包主要基于以下科研论文，如使用了本工具，请引用以下论文：
-* Ruixuan Luo, Jingjing Xu, Yi Zhang, Xuancheng Ren, Xu Sun. [PKUSEG: A Toolkit for Multi-Domain Chinese Word Segmentation](https://arxiv.org/abs/1906.11455). Arxiv. 2019.
+* Ruixuan Luo, Jingjing Xu, Yi Zhang, Zhiyuan Zhang, Xuancheng Ren, Xu Sun. [PKUSEG: A Toolkit for Multi-Domain Chinese Word Segmentation](https://arxiv.org/abs/1906.11455). Arxiv. 2019.
 
 ```
 
 @article{pkuseg,
-  author = {Luo, Ruixuan and Xu, Jingjing and Zhang, Yi and Ren, Xuancheng and Sun, Xu},
+  author = {Luo, Ruixuan and Xu, Jingjing and Zhang, Yi and Zhang, Zhiyuan and Ren, Xuancheng and Sun, Xu},
   journal = {CoRR},
   title = {PKUSEG: A Toolkit for Multi-Domain Chinese Word Segmentation.},
   url = {https://arxiv.org/abs/1906.11455},
@@ -273,7 +283,7 @@ pkuseg.train(trainFile, testFile, savedir, train_iter = 20, init_model = None)
 
 ## 作者
 
-Ruixuan Luo （罗睿轩）,  Jingjing Xu（许晶晶）, Xuancheng Ren（任宣丞）, Yi Zhang（张艺）, Bingzhen Wei（位冰镇）， Xu Sun （孙栩）  
+Ruixuan Luo （罗睿轩）,  Jingjing Xu（许晶晶）, Xuancheng Ren（任宣丞）, Yi Zhang（张艺）, Zhiyuan Zhang（张之远）, Bingzhen Wei（位冰镇）， Xu Sun （孙栩）  
 
 北京大学 [语言计算与机器学习研究组](http://lanco.pku.edu.cn/)
 
