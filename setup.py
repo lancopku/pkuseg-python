@@ -1,12 +1,26 @@
 import setuptools
 import os
 from distutils.extension import Extension
+import sys
+import os
 
 import numpy as np
 
 def is_source_release(path):
     return os.path.exists(os.path.join(path, "PKG-INFO"))
 
+if sys.platform == 'darwin':
+    import platform
+    from distutils.sysconfig import get_config_var
+    from distutils.version import LooseVersion
+    if 'MACOSX_DEPLOYMENT_TARGET' not in os.environ:
+        current_system = LooseVersion(platform.mac_ver()[0])
+        python_target = LooseVersion(
+            get_config_var('MACOSX_DEPLOYMENT_TARGET'))
+        if python_target < '10.9' and current_system >= '10.9':
+            os.environ['MACOSX_DEPLOYMENT_TARGET'] = '10.9'
+            
+            
 def setup_package():
     root = os.path.abspath(os.path.dirname(__file__))
 
