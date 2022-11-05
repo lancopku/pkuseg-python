@@ -36,7 +36,7 @@ def download_model(url, model_dir, hash_prefix, progress=True):
     if not os.path.exists(cached_file):
         sys.stderr.write('Downloading: "{}" to {}\n'.format(url, cached_file))
         _download_url_to_file(url, cached_file, hash_prefix, progress=progress)
-        unzip_file(cached_file, os.path.join(model_dir, filename.split('.')[0]))
+    unzip_file(cached_file, os.path.join(model_dir, filename.split('.')[0]))
 
 
 def _download_url_to_file(url, dst, hash_prefix, progress):
