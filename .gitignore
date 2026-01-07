@@ -10,3 +10,4 @@ tmp/
 data/
 models/
 *stats
+*.so

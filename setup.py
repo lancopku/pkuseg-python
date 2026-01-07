@@ -2,16 +2,12 @@ import setuptools
 import os
 from distutils.extension import Extension
 
-import numpy as np
+requirements = ["cython", "numpy>=1.16.0"]
 
-def is_source_release(path):
-    return os.path.exists(os.path.join(path, "PKG-INFO"))
 
-def setup_package():
+def get_extensions():
+    import numpy as np
     root = os.path.abspath(os.path.dirname(__file__))
-
-    long_description = "pkuseg-python"
-
     extensions = [
         Extension(
             "pkuseg.inference",
@@ -30,11 +26,19 @@ def setup_package():
             include_dirs=[np.get_include()],
         ),
     ]
-    
     if not is_source_release(root):
         from Cython.Build import cythonize
         extensions = cythonize(extensions, annotate=True)
+    return extensions
 
+
+def is_source_release(path):
+    return os.path.exists(os.path.join(path, "PKG-INFO"))
+
+
+def setup_package():
+
+    long_description = "pkuseg-python"
 
     setuptools.setup(
         name="pkuseg",
@@ -52,9 +56,9 @@ def setup_package():
             "License :: Other/Proprietary License",
             "Operating System :: OS Independent",
         ],
-        install_requires=["cython", "numpy>=1.16.0"],
-        setup_requires=["cython", "numpy>=1.16.0"],
-        ext_modules=extensions,
+        install_requires=requirements,
+        setup_requires=requirements,
+        ext_modules=get_extensions(),
         zip_safe=False,
     )
 
